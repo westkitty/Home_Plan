@@ -60,14 +60,23 @@
 @media(prefers-reduced-motion:reduce){.hp-context-dialog::backdrop{backdrop-filter:none}}
 
 /* Build is a two-level architectural category, not an enormous permanent panel. */
-.architecture-palette{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(342px,calc(100vw - 22px));max-height:min(48dvh,340px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:12px;border:1px solid var(--focus-line);border-radius:17px;background:var(--focus-surface);box-shadow:0 14px 46px var(--focus-glow);backdrop-filter:blur(18px);overflow-y:auto;visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s,opacity .15s,visibility .15s}
+.architecture-palette{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:9px;padding:12px;border:1px solid var(--focus-line);border-radius:17px;background:var(--focus-surface);box-shadow:0 14px 46px var(--focus-glow);backdrop-filter:blur(18px);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s,opacity .15s,visibility .15s}
 .shell.architecture-open .architecture-palette{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
-.hp-architecture-tool{display:grid;place-items:center;min-height:58px;padding:10px;border:1px solid rgba(147,177,151,.24);border-radius:11px;color:#f0eee3;background:#2a4d39;cursor:pointer}
-.hp-architecture-tool .hp-icon{width:29px;height:29px}
-.hp-architecture-tool:hover,.hp-architecture-tool:focus-visible{background:#456c4d;border-color:#efd39d}
+.hp-arch-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(147,177,151,.20);flex-shrink:0}
+.hp-arch-categories{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hp-arch-categories::-webkit-scrollbar{display:none}
+.hp-arch-cat-btn{padding:6px 11px;min-height:34px;font-size:11px;font-weight:750;letter-spacing:.02em;color:#a9beae;background:rgba(30,55,42,.6);border:1px solid rgba(147,177,151,.18);border-radius:8px;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .12s ease,color .12s ease,border-color .12s ease,transform .1s ease}
+.hp-arch-cat-btn:hover{background:#2e523e;color:#f2eee3;border-color:rgba(182,212,183,.32)}
+.hp-arch-cat-btn.active{background:linear-gradient(135deg,#365e47,#2b4f3b);color:#f6d295;border-color:#e4ba77;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.hp-arch-header .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
+.hp-arch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:#4a6956 transparent;touch-action:pan-y}
+.hp-architecture-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:64px;min-width:0;padding:8px 4px 6px;border:1px solid rgba(147,177,151,.24);border-radius:11px;color:#f0eee3;background:#2a4d39;cursor:pointer;touch-action:manipulation;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease}
+.hp-architecture-tool:hover{background:#456c4d;border-color:#efd39d;transform:translateY(-1px)}
+.hp-architecture-tool:active{transform:scale(0.96) translateY(1px)}
 .hp-architecture-tool:focus-visible{outline:3px solid #efd39d;outline-offset:2px}
-.architecture-palette .hp-help-trigger{width:100%;min-height:58px;height:58px}
-@media(prefers-reduced-motion:reduce){.architecture-palette{transition:none}}
+.hp-architecture-tool .hp-icon{width:24px;height:24px;flex-shrink:0}
+.hp-architecture-label{font-size:10px;font-weight:650;letter-spacing:.01em;color:#e5ede6;text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.architecture-palette,.hp-architecture-tool,.hp-arch-cat-btn{transition:none}}
 /* Project drawer appearance settings: collapsed until requested. */
 .header .hp-appearance{width:100%;min-width:0;border:1px solid rgba(187,214,193,.27);border-radius:12px;background:rgba(21,48,38,.52);color:#eef4e8}
 .hp-appearance summary{display:flex;align-items:center;gap:9px;min-height:44px;padding:10px 12px;cursor:pointer;font-size:12px;font-weight:750;list-style-position:inside}
@@ -90,10 +99,14 @@
 .hp-appearance-controls input:focus-visible,.hp-appearance-controls button:focus-visible{outline:3px solid #f0cb91;outline-offset:2px}
 .hp-appearance-note{margin:9px 0 0;font-size:11px;line-height:1.5;color:#c0d6c7}
 
-/* More build categories without obstructing the scene; touch targets are at least 48px. */
-.architecture-palette{width:min(440px,calc(100vw - 18px));grid-template-columns:repeat(5,minmax(0,1fr));max-height:min(62dvh,440px);padding:10px;gap:6px;overscroll-behavior:contain;touch-action:pan-y}
-.hp-architecture-tool{min-height:56px;touch-action:manipulation}
-.architecture-palette .hp-help-trigger{min-height:56px;height:56px}
+/* Responsive touch targets and layouts for progressive disclosure */
 .hp-context-dialog button{min-width:44px;min-height:44px;touch-action:manipulation}
-.hp-help-trigger{min-width:44px;min-height:44px;touch-action:manipulation}
-@media(max-width:480px){.architecture-palette{grid-template-columns:repeat(4,minmax(0,1fr));max-height:min(58dvh,420px);width:calc(100vw - 14px);gap:6px}.hp-architecture-tool{min-height:52px;padding:7px}.hp-architecture-tool .hp-icon{width:26px;height:26px}}
+.hp-help-trigger{min-width:34px;min-height:34px;touch-action:manipulation}
+@media(max-width:480px){
+  .architecture-palette{width:calc(100vw - 12px);max-height:min(66dvh,440px);padding:10px;gap:7px}
+  .hp-arch-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .hp-architecture-tool{min-height:60px;padding:6px 3px 5px}
+  .hp-architecture-tool .hp-icon{width:22px;height:22px}
+  .hp-architecture-label{font-size:9.5px}
+  .hp-arch-cat-btn{padding:5px 8px;min-height:30px;font-size:10.5px}
+}

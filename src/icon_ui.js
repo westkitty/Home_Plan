@@ -110,35 +110,70 @@
  });
  const categories=$('categories');if(categories){observer.observe(categories,{childList:true,subtree:false});d.querySelectorAll('#categories [data-category]').forEach(el=>decorate(el,categoryDefs[el.dataset.category],'compact'));}
  decorateStatic();
- // Sims-style two-level architecture palette; the model remains visible underneath.
+ // Sims-style progressive disclosure architecture palette; the model remains visible underneath.
+ const archCategories=[
+  ['all','All'],
+  ['walls','Walls'],
+  ['openings','Openings'],
+  ['rooms','Rooms'],
+  ['setup','Setup']
+ ];
  const architecture=[
- ['walls','wall','Select walls','Select a wall and move its ends.'],['draw','draw','Single wall','Tap two positions to draw a wall segment.'],
- ['rectangle','rectangle','Rectangle walls','Drag an enclosed rectangular room. Tap two corners instead on touch.'],
- ['circle','circle','Circular walls','Drag a circle as a perimeter of editable wall segments.'],
- ['ellipse','ellipse','Oval walls','Drag an oval room. Each segment remains editable.'],
- ['triangle','triangle','Triangle walls','Drag a triangular room outline.'],
- ['l-shape','lshape','L-shaped walls','Drag an L-shaped room outline.'],
- ['rooms','plan','Edit rooms','Rename, add, remove rooms and set indoor/outdoor zones.'],
- ['porch','porch','Add porch','Add an outdoor floor zone for a porch.'],
- ['balcony','balcony','Add balcony','Add a balcony study zone outside the unit.'],
- ['door','door','Door','Place a provisional door on a wall.'],['window','window','Window','Place a provisional window on a wall.'],
- ['outlet','outlet','Outlet','Mark a provisional electrical outlet.'],['opening','passage','Passage','Make an open passage through a wall.'],
- ['entry','house','Main entry','Place the entrance doorway on an architectural wall.'],
- ['lighting','moon','Lighting','Choose night, exterior dimming, and indoor glow.'],
- ['finishes','paint','Floor finishes','Choose carpet, hardwood, and tile material styles in the room editor.'],
- ['blank','broom','Blank plan','Start from empty space; requires confirmation.']
+  ['walls','walls','wall','Select walls','Select a wall and move its ends.'],
+  ['draw','walls','draw','Single wall','Tap two positions to draw a wall segment.'],
+  ['rectangle','walls','rectangle','Rectangle','Drag an enclosed rectangular room. Tap two corners instead on touch.'],
+  ['circle','walls','circle','Circle','Drag a circle as a perimeter of editable wall segments.'],
+  ['ellipse','walls','ellipse','Oval','Drag an oval room. Each segment remains editable.'],
+  ['triangle','walls','triangle','Triangle','Drag a triangular room outline.'],
+  ['l-shape','walls','lshape','L-Shape','Drag an L-shaped room outline.'],
+  ['door','openings','door','Door','Place a provisional door on a wall.'],
+  ['window','openings','window','Window','Place a provisional window on a wall.'],
+  ['outlet','openings','outlet','Outlet','Mark a provisional electrical outlet.'],
+  ['opening','openings','passage','Passage','Make an open passage through a wall.'],
+  ['entry','openings','house','Main entry','Place the entrance doorway on an architectural wall.'],
+  ['rooms','rooms','plan','Edit rooms','Rename, add, remove rooms and set indoor/outdoor zones.'],
+  ['porch','rooms','porch','Porch','Add an outdoor floor zone for a porch.'],
+  ['balcony','rooms','balcony','Balcony','Add a balcony study zone outside the unit.'],
+  ['lighting','setup','moon','Lighting','Choose night, exterior dimming, and indoor glow.'],
+  ['finishes','setup','paint','Floor finishes','Choose carpet, hardwood, and tile material styles in the room editor.'],
+  ['blank','setup','broom','Blank plan','Start from empty space; requires confirmation.']
  ];
  const arch=$('architecturePalette');
- if(arch){for(const [id,ico,label,detail] of architecture){const b=d.createElement('button');b.type='button';b.dataset.buildAction=id;b.className='hp-architecture-tool';b.setAttribute('aria-label',label);b.dataset.tooltip=label+' — '+detail;b.innerHTML=svg(ico);arch.append(b);}
- arch.addEventListener('click',e=>{const b=e.target.closest('[data-build-action]');if(!b)return;const action=b.dataset.buildAction,bridge=window.homePlanStudioBridge;
-  window.HomePlanFocus?.closeFloating?.(true);
-  if(action==='walls')bridge.setTool('build');else if(action==='draw')bridge.startWall?.();
-  else if(['rectangle','circle','ellipse','triangle','l-shape'].includes(action))bridge.startShape?.(action);
-  else if(action==='rooms')bridge.openRooms?.();else if(action==='finishes'){document.getElementById('launchStudio')?.click();document.querySelector('[data-studio-tab="finishes"]')?.click();}else if(action==='lighting')bridge.openLighting?.();
-  else if(action==='porch'||action==='balcony')bridge.addRoomZone?.(action==='porch'?'Porch':'Balcony',true);
-  else if(action==='blank')bridge.newBlank?.();else bridge.setFixtureKind?.(action);
-  window.HomePlanFocus?.sync?.();
- });}
+ if(arch){
+  const header=d.createElement('div');header.className='hp-arch-header';
+  const catBar=d.createElement('div');catBar.className='hp-arch-categories';catBar.setAttribute('role','tablist');catBar.setAttribute('aria-label','Architecture tool categories');
+  for(const [catId,catName] of archCategories){
+   const cb=d.createElement('button');cb.type='button';cb.className='hp-arch-cat-btn'+(catId==='all'?' active':'');cb.dataset.archCategory=catId;cb.setAttribute('role','tab');cb.setAttribute('aria-selected',catId==='all'?'true':'false');cb.textContent=catName;catBar.append(cb);
+  }
+  header.append(catBar);
+  arch.append(header);
+  const grid=d.createElement('div');grid.className='hp-arch-grid';grid.id='archToolsGrid';
+  for(const [id,cat,ico,label,detail] of architecture){
+   const b=d.createElement('button');b.type='button';b.dataset.buildAction=id;b.dataset.archCategory=cat;b.className='hp-architecture-tool';b.setAttribute('aria-label',label);b.dataset.tooltip=label+' — '+detail;b.innerHTML=`${svg(ico)}<span class="hp-architecture-label">${label}</span>`;grid.append(b);
+  }
+  arch.append(grid);
+  catBar.addEventListener('click',e=>{
+   const cb=e.target.closest('[data-arch-category]');if(!cb)return;
+   const targetCat=cb.dataset.archCategory;
+   catBar.querySelectorAll('[data-arch-category]').forEach(btn=>{const isMatch=btn===cb;btn.classList.toggle('active',isMatch);btn.setAttribute('aria-selected',isMatch?'true':'false');});
+   grid.querySelectorAll('.hp-architecture-tool').forEach(tool=>{const show=targetCat==='all'||tool.dataset.archCategory===targetCat;tool.style.display=show?'':'none';});
+  });
+  arch.addEventListener('click',e=>{
+   const b=e.target.closest('[data-build-action]');if(!b)return;
+   const action=b.dataset.buildAction,bridge=window.homePlanStudioBridge;
+   window.HomePlanFocus?.closeFloating?.(true);
+   if(action==='walls')bridge.setTool('build');
+   else if(action==='draw')bridge.startWall?.();
+   else if(['rectangle','circle','ellipse','triangle','l-shape'].includes(action))bridge.startShape?.(action);
+   else if(action==='rooms')bridge.openRooms?.();
+   else if(action==='finishes'){document.getElementById('launchStudio')?.click();document.querySelector('[data-studio-tab="finishes"]')?.click();}
+   else if(action==='lighting')bridge.openLighting?.();
+   else if(action==='porch'||action==='balcony')bridge.addRoomZone?.(action==='porch'?'Porch':'Balcony',true);
+   else if(action==='blank')bridge.newBlank?.();
+   else bridge.setFixtureKind?.(action);
+   window.HomePlanFocus?.sync?.();
+  });
+ }
  // Feature descriptions are available without mouse hover, and do not interrupt work automatically.
  const help={
   project:['Project & files','Save keeps this layout on this device. Export creates files you can keep elsewhere. Undo and Redo step through editing changes. Settings lets you choose the background color behind the model. Design Lab contains measurements and finishes; Survey Studio guides evidence capture.','Your project is local-first. Export a JSON backup before changing devices; evidence photos and videos are not included in a public project export.'],
@@ -151,7 +186,7 @@
   studio:['Design Lab','Insights reviews the plan. Layout handles geometry and placement analysis. Finishes explores materials. Views controls presentation. Budget estimates costs.','Changes to the editable model remain distinct from your original survey evidence. Finish returns you to the apartment.'],
   survey:['Survey Studio','Follow the room route, collect useful photos or videos, and record real measurements with a source. The capture and review tools help distinguish confirmed facts from provisional geometry.','Survey media remains private on the device unless you explicitly export or share a ZIP. A photograph alone does not certify dimensions.']
  };
- const mounts=[['project','projectPanel','.header .header-end'],['appearance','appearanceSettings','.hp-appearance-head'],['tools','toolsPanel',null],['architecture','architecturePalette',null],['views','viewControls',null],['catalog','catalogShelf','.shelf-top'],['inspector','inspector','.ins-head'],['studio','studioLayer','.studio-head'],['survey','surveyLayer','.survey-header-actions']];
+ const mounts=[['project','projectPanel','.header .header-end'],['appearance','appearanceSettings','.hp-appearance-head'],['tools','toolsPanel',null],['architecture','architecturePalette','.hp-arch-header'],['views','viewControls',null],['catalog','catalogShelf','.shelf-top'],['inspector','inspector','.ins-head'],['studio','studioLayer','.studio-head'],['survey','surveyLayer','.survey-header-actions']];
  for(const [key,id,target] of mounts){const host=target?d.querySelector(target):$(id);if(!host)continue;const b=d.createElement('button');b.type='button';b.className='hp-help-trigger';b.dataset.help=key;b.setAttribute('aria-label',`Help with ${help[key][0]}`);b.dataset.tooltip=`Help with ${help[key][0]}`;b.innerHTML=svg('help');host.append(b);}
  const dlg=d.createElement('dialog');dlg.id='hpContextHelp';dlg.className='hp-context-dialog';dlg.setAttribute('aria-labelledby','hpContextTitle');dlg.innerHTML=`<div class="hp-help-head"><span class="hp-help-kicker">HOME PLAN / GUIDE</span><button type="button" id="hpContextClose" aria-label="Close guide" title="Close guide">×</button></div><h2 id="hpContextTitle"></h2><p id="hpContextBody"></p><p class="hp-help-note" id="hpContextNote"></p><div class="hp-help-actions"><button type="button" id="hpContextDone">Back to apartment</button></div>`;d.body.append(dlg);
  let returnFocus=null;

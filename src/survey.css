@@ -52,7 +52,7 @@
 .survey-visual-label>span{font-size:9px;letter-spacing:.15em;color:#e4bb81;font-weight:900}
 .survey-visual-label strong{font:600 20px/1.25 Georgia,serif;color:#ebefe4}
 .survey-visual-label small{font-size:11px;line-height:1.55;color:#b9c8b6}
-.survey-reason{background:#344239;border:1px solid rgba(182,212,183,0.30);color:#dce9d9;padding:12px 15px;border-radius:10px;font-size:12px;line-height:1.55;margin:15px 0}
+.survey-reason{background:#344239;border:1px solid var(--border-line);color:#dce9d9;padding:12px 15px;border-radius:10px;font-size:12px;line-height:1.55;margin:15px 0}
 .survey-reason strong{color:#f3d2a5}
 .survey-tools{margin:15px 0}
 .survey-capture-buttons{display:flex;gap:8px;flex-wrap:wrap}

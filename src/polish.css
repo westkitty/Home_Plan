@@ -20,7 +20,7 @@ body{background:#10201c}
 .stage{background:#c8d2cb}
 .stage::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 2px 0 #fff8d44a,inset 0 -12px 35px #1c302e15}
 #stage canvas{image-rendering:auto;outline:none}
-.viewport-hud{top:20px;left:22px;max-width:min(348px,49%);padding:14px 16px 15px 17px;background:linear-gradient(90deg,#f9f5e5db,#f9f5e5b4 74%,#f9f5e500);border:1px solid rgba(182,212,183,0.30);border-radius:12px;filter:drop-shadow(0 3px 9px #263f3324)}
+.viewport-hud{top:20px;left:22px;max-width:min(348px,49%);padding:14px 16px 15px 17px;background:linear-gradient(90deg,#f9f5e5db,#f9f5e5b4 74%,#f9f5e500);border:1px solid var(--border-line);border-radius:12px;filter:drop-shadow(0 3px 9px #263f3324)}
 .viewport-hud .eyebrow{color:#6a806c;letter-spacing:.20em;font-size:9px}
 .viewport-hud h2{font-size:clamp(19px,1.85vw,27px);line-height:1.13;font-weight:700;color:#263c34;margin:4px 0}
 .viewport-hud p{color:#4c695b;line-height:1.54;font-weight:540;font-size:11px}
