@@ -114,3 +114,7 @@ body{background:#10201c}
 
 /* The field for the current survey instruction comes before its illustrative reference on a phone. */
 @media(max-width:650px){.survey-main{display:flex;flex-direction:column}.survey-main-top{order:0}.survey-main h3{order:1}.survey-direction{order:2}#surveyStepTools{order:3;margin:10px 0 13px}.survey-visual{order:4}.survey-reason{order:5}.survey-evidence{order:6}}
+
+/* Real-world location view toggle accent */
+.view-controls button[data-view="realworld"]{border-left:2px solid #5a8d75}
+.view-controls button[data-view="realworld"].active{background:linear-gradient(135deg,#efc789 0%,#e2b46c 100%);color:#152b22;border-left-color:#274d3d}

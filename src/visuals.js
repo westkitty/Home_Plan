@@ -69,7 +69,156 @@ window.HomePlanVisuals = (() => {
       const y = i * spacing + .5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
     }
   }
-  function stageSlab(ctx, engine, bounds, colors, light, quality) {
+  function drawRealWorldGround(ctx, engine, light, quality) {
+    const dark = light === 'night';
+    const lawn = poly(engine, [[-16, -.02, -10], [22, -.02, -10], [22, -.02, 22], [-16, -.02, 22]]);
+    if (lawn) {
+      trace(ctx, lawn);
+      ctx.fillStyle = dark ? '#15291e' : light === 'evening' ? '#3d5238' : '#45664d';
+      ctx.fill();
+    }
+    const road = poly(engine, [[-16, -.01, 13.8], [22, -.01, 13.8], [22, -.01, 19.8], [-16, -.01, 19.8]]);
+    if (road) {
+      trace(ctx, road);
+      ctx.fillStyle = dark ? '#151918' : '#2c3330';
+      ctx.fill();
+      line(ctx, engine.project(-16, -.005, 16.7), engine.project(22, -.005, 16.7), '#e5be53', 1.8);
+      line(ctx, engine.project(-16, -.005, 16.9), engine.project(22, -.005, 16.9), '#e5be53', 1.8);
+      line(ctx, engine.project(-16, -.005, 14.1), engine.project(22, -.005, 14.1), '#d8ded9', 1.4);
+      line(ctx, engine.project(-16, -.005, 19.5), engine.project(22, -.005, 19.5), '#d8ded9', 1.4);
+    }
+    const curb = poly(engine, [[-16, .08, 13.65], [22, .08, 13.65], [22, .08, 13.8], [-16, .08, 13.8]]);
+    if (curb) {
+      trace(ctx, curb);
+      ctx.fillStyle = dark ? '#283630' : '#8c9891';
+      ctx.fill();
+    }
+    const sidewalk = poly(engine, [[-16, .02, 12.2], [22, .02, 12.2], [22, .02, 13.65], [-16, .02, 13.65]]);
+    if (sidewalk) {
+      trace(ctx, sidewalk);
+      ctx.fillStyle = dark ? '#34453e' : '#b2bcb5';
+      ctx.fill();
+      ctx.strokeStyle = dark ? '#222f2a' : '#88948d'; ctx.lineWidth = 1;
+      for (let x = -15; x <= 21; x += 2.5) {
+        line(ctx, engine.project(x, .025, 12.2), engine.project(x, .025, 13.65), ctx.strokeStyle, 1);
+      }
+    }
+    const parkGreen = poly(engine, [[-16, .02, 19.8], [22, .02, 19.8], [22, .02, 22.0], [-16, .02, 22.0]]);
+    if (parkGreen) {
+      trace(ctx, parkGreen);
+      ctx.fillStyle = dark ? '#13241b' : '#38553f';
+      ctx.fill();
+    }
+    const walkMain = poly(engine, [[3.3, .02, 9.2], [5.4, .02, 9.2], [5.4, .02, 12.2], [3.3, .02, 12.2]]);
+    if (walkMain) {
+      trace(ctx, walkMain);
+      ctx.fillStyle = dark ? '#36473f' : '#b8c2bc';
+      ctx.fill();
+    }
+    const walkPagoda = poly(engine, [[5.4, .02, 9.6], [9.3, .02, 8.2], [9.3, .02, 9.4], [5.4, .02, 10.6]]);
+    if (walkPagoda) {
+      trace(ctx, walkPagoda);
+      ctx.fillStyle = dark ? '#32423b' : '#aeb7b1';
+      ctx.fill();
+    }
+    const bedC = engine.project(11.2, .03, 8.8);
+    const bedR = engine.project(13.8, .03, 8.8);
+    if (bedC && bedR) {
+      const rad = Math.hypot(bedR.x - bedC.x, bedR.y - bedC.y);
+      ctx.save();
+      ctx.beginPath();
+      if (ctx.ellipse) ctx.ellipse(bedC.x, bedC.y, rad, rad * 0.52, 0, 0, Math.PI * 2);
+      else ctx.arc(bedC.x, bedC.y, rad, 0, Math.PI * 2);
+      ctx.fillStyle = dark ? '#22362b' : '#5d4738';
+      ctx.fill();
+      ctx.strokeStyle = dark ? '#3a5245' : '#887363';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  function drawRealWorldLandmarks(ctx, engine, light) {
+    const dark = light === 'night';
+    const treeCoords = [
+      [-7.5, 11.2, 1.8], [0.6, 11.5, 1.5], [16.5, 11.2, 1.9],
+      [-10.0, 21.0, 2.2], [1.5, 21.2, 2.4], [13.5, 21.0, 2.3]
+    ];
+    for (const [tx, tz, trad] of treeCoords) {
+      const base = engine.project(tx, 0, tz);
+      const top = engine.project(tx, 3.4, tz);
+      if (!base || !top) continue;
+      ctx.save();
+      line(ctx, base, top, dark ? '#281c15' : '#523c2a', 3.5);
+      const can = engine.project(tx, 4.2, tz);
+      if (can) {
+        const rad = trad * Math.abs(engine.project(tx + 1, 4.2, tz)?.x - can.x || 18);
+        ctx.beginPath();
+        if (ctx.ellipse) ctx.ellipse(can.x, can.y, rad, rad * 0.75, 0, 0, Math.PI * 2);
+        else ctx.arc(can.x, can.y, rad, 0, Math.PI * 2);
+        ctx.fillStyle = dark ? 'rgba(28,49,38,.85)' : 'rgba(58,96,68,.82)';
+        ctx.fill();
+        ctx.strokeStyle = dark ? 'rgba(52,85,68,.55)' : 'rgba(92,142,106,.65)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    const aptCenter = engine.project(4.35, 5.5, 3.85);
+    const aptAnchor = engine.project(4.35, 2.8, 8.8);
+    if (aptCenter && aptAnchor) {
+      ctx.save();
+      line(ctx, aptAnchor, aptCenter, dark ? '#efc789' : '#c36f29', 1.5, [4, 3]);
+      ctx.fillStyle = dark ? '#efc789' : '#c36f29';
+      ctx.beginPath();
+      ctx.arc(aptAnchor.x, aptAnchor.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      const text = '⌖ APT E · 2ND FLOOR';
+      const sub = '613 N FRONT ST';
+      ctx.font = '700 11px system-ui';
+      const tw = Math.max(ctx.measureText(text).width, ctx.measureText(sub).width) + 20;
+      const ch = 34;
+      const bx = aptCenter.x - tw / 2, by = aptCenter.y - ch - 4;
+      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw, ch, 8); ctx.fill(); ctx.stroke(); }
+      else { ctx.fillRect(bx, by, tw, ch); ctx.strokeRect(bx, by, tw, ch); }
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? '#efc789' : '#b25d19';
+      ctx.fillText(text, aptCenter.x, by + 14);
+      ctx.font = '600 9px system-ui';
+      ctx.fillStyle = dark ? '#a2bcaf' : '#456557';
+      ctx.fillText(sub, aptCenter.x, by + 27);
+      ctx.restore();
+    }
+    const pagCenter = engine.project(11.2, 4.4, 8.8);
+    const pagDeck = engine.project(11.2, 0.4, 8.8);
+    if (pagCenter && pagDeck) {
+      ctx.save();
+      line(ctx, pagDeck, pagCenter, dark ? '#85b99e' : '#316954', 1.2, [3, 3]);
+      ctx.font = '700 10px system-ui';
+      const pText = '⛩ GARDEN PAGODA';
+      const ptw = ctx.measureText(pText).width + 16;
+      const pby = pagCenter.y - 18;
+      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(pagCenter.x - ptw/2, pby, ptw, 20, 6); ctx.fill(); ctx.stroke(); }
+      else { ctx.fillRect(pagCenter.x - ptw/2, pby, ptw, 20); ctx.strokeRect(pagCenter.x - ptw/2, pby, ptw, 20); }
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? '#d4efe1' : '#234a3b';
+      ctx.fillText(pText, pagCenter.x, pby + 14);
+      ctx.restore();
+    }
+    const roadPt = engine.project(4.35, 0.05, 18.2);
+    if (roadPt) {
+      ctx.save();
+      ctx.font = '800 10px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? 'rgba(238,208,154,.65)' : 'rgba(255,255,255,.75)';
+      ctx.fillText('▲ NORTH FRONT STREET · (ST. JOSEPH RIVERFRONT PARK)', roadPt.x, roadPt.y);
+      ctx.restore();
+    }
+  }
+  function stageSlab(ctx, engine, bounds, colors, light, quality, plan) {
+    if (plan?.view?.style === 'realworld') {
+      drawRealWorldGround(ctx, engine, light, quality);
+      return;
+    }
     const b = bounds, r = .1;
     const deck = poly(engine, [[b.minX, -.21, b.minZ], [b.maxX, -.21, b.minZ], [b.maxX, -.21, b.maxZ], [b.minX, -.21, b.maxZ]]);
     if (!deck) return;
@@ -425,7 +574,7 @@ function annotations(ctx, engine, app) {
     ctx.save(); engine.C=engine.camera(); engine._showGrid=plan.view.grid;
     try{
       background(ctx,w,h,light,c,plan.studio);
-      stageSlab(ctx,engine,roomBounds(plan),c,light,quality);
+      stageSlab(ctx,engine,roomBounds(plan),c,light,quality,plan);
       const faceIndices=[[0,1,3,2],[4,6,7,5],[0,4,5,1],[2,3,7,6],[0,2,6,4],[1,5,7,3]];
       const faces=[],itemById=new Map(plan.items.map(it=>[it.id,it]));
       for(const box of boxes){
@@ -481,6 +630,7 @@ function annotations(ctx, engine, app) {
       roomLabels(ctx,engine,plan,light);
       entranceLabel(ctx,engine,plan,light);
       annotations(ctx,engine,app);
+      if(plan.view?.style==='realworld') drawRealWorldLandmarks(ctx,engine,light);
       selectedHighlight(ctx,engine,app,quality);
       if(app.tool==='build'){
         for(const wall of plan.walls)for(let k=0;k<2;k++){

@@ -13,6 +13,9 @@ const hp=ctx.__hp,app=hp.app;assert.equal(app.engineName,'offline');assert.equal
 let items=app.plan.items.length;hp.addFurniture('chair');assert.equal(app.plan.items.length,items+1);assert.equal(app.selected.kind,'item');assert.ok(app.history.length>0);hp.act('rotate90');assert.equal(app.plan.items.at(-1).r,90);hp.act('duplicate');assert.equal(app.plan.items.length,items+2);hp.act('delete');assert.equal(app.plan.items.length,items+1);const undoCount=app.history.length;hp.act('fitAll');hp.act('focusAll');assert.equal(app.focus,'all');
 // Furniture geometry and camera should be invertible on the floor.
 hp.viewStyle('orbit');const q=app.engine.project(2.5,0,2.5);assert.ok(q&&Number.isFinite(q.x)&&Number.isFinite(q.y));const back=app.engine.ground(q);assert.ok(Math.abs(back.x-2.5)<.001&&Math.abs(back.z-2.5)<.001,JSON.stringify(back));
+hp.viewStyle('realworld');assert.equal(app.plan.view.style,'realworld');
+const rwBoxes=app.sceneCache||[];assert.ok(rwBoxes.some(b=>b.kind&&b.kind.startsWith('pagoda_')),'Realworld scene must include pagoda');assert.ok(rwBoxes.some(b=>b.kind&&b.kind.startsWith('building_')),'Realworld scene must include building structures');
+hp.viewStyle('dollhouse');assert.equal(app.plan.view.style,'dollhouse');
 // Direct property edits, including furniture footprint overrides.
 hp.select('item',app.plan.items.at(-1).id);hp.changeField('w','2.4');assert.equal(app.plan.items.at(-1).w,2.4);
 // Wall editor endpoint adjustments.

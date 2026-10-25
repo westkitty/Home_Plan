@@ -322,6 +322,10 @@ body{background:#10201c}
 
 /* The field for the current survey instruction comes before its illustrative reference on a phone. */
 @media(max-width:650px){.survey-main{display:flex;flex-direction:column}.survey-main-top{order:0}.survey-main h3{order:1}.survey-direction{order:2}#surveyStepTools{order:3;margin:10px 0 13px}.survey-visual{order:4}.survey-reason{order:5}.survey-evidence{order:6}}
+
+/* Real-world location view toggle accent */
+.view-controls button[data-view="realworld"]{border-left:2px solid #5a8d75}
+.view-controls button[data-view="realworld"].active{background:linear-gradient(135deg,#efc789 0%,#e2b46c 100%);color:#152b22;border-left-color:#274d3d}
 </style><style>/* Model-first workspace. Original editor modules remain mounted and reachable on demand. */
 :root{--focus-ink:#152b23;--focus-surface:rgba(23,43,35,.94);--focus-line:rgba(182,212,183,.30);--focus-glow:rgba(7,25,17,.22)}
 html,body{width:100%;height:100%;margin:0;overflow:hidden}
@@ -584,7 +588,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
  <button type="button" id="focusViews" class="focus-view-toggle" aria-expanded="false" aria-controls="viewControls" aria-label="Choose camera view"><span id="focusViewName">Dollhouse</span><span class="focus-chevron" aria-hidden="true">⌄</span></button>
  <nav class="focus-dock" aria-label="Quick editing tools"><button type="button" id="focusMove" class="is-active" aria-pressed="true" title="Select and move furniture (V)"><span class="focus-icon" aria-hidden="true">↖</span>Move</button><button type="button" id="focusAdd" aria-expanded="false" aria-controls="catalogShelf" title="Add furniture (A)"><span class="focus-icon" aria-hidden="true">＋</span>Add</button><button type="button" id="focusBuild" aria-pressed="false" title="Edit walls (B)"><span class="focus-icon" aria-hidden="true">▱</span>Build</button><button type="button" id="focusTools" aria-expanded="false" aria-controls="toolsPanel" title="All tools and help"><span class="focus-icon" aria-hidden="true">☷</span><span id="focusToolsLabel">Tools</span></button></nav>
  <section id="architecturePalette" class="architecture-palette" aria-label="Architectural build tools"></section><div id="focusSelection" class="focus-selection" hidden aria-live="polite"><span class="focus-selection-name" id="focusSelectionName"></span><button type="button" id="focusEdit" aria-controls="inspector" aria-expanded="false">Edit</button><button type="button" id="focusDeselect" class="focus-deselect" title="Deselect" aria-label="Deselect">×</button></div>
- <div class="viewport-hud"><span class="eyebrow" id="sceneModeLabel">01 / Dollhouse workshop</span><h2 id="sceneTitle">Your apartment, from above.</h2><p id="sceneSubtitle">Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.</p></div><div class="view-controls" id="viewControls" role="group" aria-label="Camera views"><button data-view="dollhouse" class="active">Dollhouse</button><button data-view="orbit">3D orbit</button><button data-view="top">Top plan</button><div class="focus-view-divider"></div><button type="button" id="focusFit">⌖ Fit entire apartment</button><button type="button" id="focusMap" aria-pressed="false">▦ Show floor map</button><button type="button" id="focusZoom" aria-pressed="false">＋ Show zoom controls</button><button type="button" id="focusInfo" aria-pressed="false">ⓘ About this model</button></div><div class="map-card" aria-label="2D apartment minimap"><div class="map-title">FLOOR INDEX <span id="roomBadge">ALL ROOMS</span></div><canvas id="minimap" width="348" height="312" aria-label="Overhead mini-map; tap a room to focus on it"></canvas><p class="legend">AMBER = provisional openings · BLUE = selected</p></div><div class="floating-actions"><button class="round-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button><button class="round-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button class="round-btn" id="fitBtn" title="Fit whole apartment" aria-label="Fit model">⌖</button><button class="round-btn" id="mobileInspectorBtn" title="Show editor controls" aria-label="Show editor controls">≡</button></div><div id="selectionLabel" class="selection-label"></div><div id="toast" role="status" aria-live="polite" class="toast"></div></section>
+ <div class="viewport-hud"><span class="eyebrow" id="sceneModeLabel">01 / Dollhouse workshop</span><h2 id="sceneTitle">Your apartment, from above.</h2><p id="sceneSubtitle">Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.</p></div><div class="view-controls" id="viewControls" role="group" aria-label="Camera views"><button data-view="dollhouse" class="active">Dollhouse</button><button data-view="orbit">3D orbit</button><button data-view="top">Top plan</button><button data-view="realworld" id="viewRealWorld" title="Real-world location: 613 N Front St, Apt E (2nd Floor), Niles, MI">Real world</button><div class="focus-view-divider"></div><button type="button" id="focusFit">⌖ Fit entire apartment</button><button type="button" id="focusMap" aria-pressed="false">▦ Show floor map</button><button type="button" id="focusZoom" aria-pressed="false">＋ Show zoom controls</button><button type="button" id="focusInfo" aria-pressed="false">ⓘ About this model</button></div><div class="map-card" aria-label="2D apartment minimap"><div class="map-title">FLOOR INDEX <span id="roomBadge">ALL ROOMS</span></div><canvas id="minimap" width="348" height="312" aria-label="Overhead mini-map; tap a room to focus on it"></canvas><p class="legend">AMBER = provisional openings · BLUE = selected</p></div><div class="floating-actions"><button class="round-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button><button class="round-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button class="round-btn" id="fitBtn" title="Fit whole apartment" aria-label="Fit model">⌖</button><button class="round-btn" id="mobileInspectorBtn" title="Show editor controls" aria-label="Show editor controls">≡</button></div><div id="selectionLabel" class="selection-label"></div><div id="toast" role="status" aria-live="polite" class="toast"></div></section>
 <aside class="inspector" id="inspector"><div class="ins-head"><span class="eyebrow">DESIGN INSPECTOR</span><h3 id="panelHeading">Edit your space</h3><p id="panelSubtitle">Select furniture or a wall to make changes.</p></div><div class="ins-tabs" role="tablist" aria-label="Inspector panels"><button class="active" data-tab="edit" role="tab" aria-selected="true">EDIT</button><button data-tab="space" role="tab" aria-selected="false">SPACE</button><button data-tab="project" role="tab" aria-selected="false">PROJECT</button><button id="closeInspector" class="hidden" aria-label="Close inspector">✕</button></div><div class="ins-body" id="inspectorBody"></div></aside>
 <section class="shelf" id="catalogShelf" aria-label="Furniture and fixture catalog"><div class="shelf-top"><span class="shelf-title">OBJECT LIBRARY</span><div class="shelf-categories" id="categories"></div><div class="catalog-search"><label for="catalogSearch" class="sr-only">Search furniture</label><input id="catalogSearch" type="search" placeholder="Search furniture…" autocomplete="off"><button type="button" id="catalogFavorites" aria-pressed="false" title="Show favorite items">☆ Favorites</button></div></div><div class="shelf-items" id="catalog"></div></section>
 </div>
@@ -851,7 +855,7 @@ const walls=x.walls.map((w,i)=>({id:safeId(w.id,'wall'+i),a:w.a.map(n=>round(n,3
 const fixtures=x.fixtures.map((f,i)=>{if(!wallIds.has(safeId(f.wall,''))||!['door','window','opening','outlet','entry'].includes(f.type)||!finiteBound(f.at,0,1)||!finiteBound(f.width,.05,5))throw Error('Invalid fixture reference');return{id:safeId(f.id,'fixture'+i),wall:safeId(f.wall,''),type:f.type,at:clamp(f.at,.03,.97),width:clamp(f.width,.08,5),confidence:String(f.confidence||'unverified').slice(0,30),swing:f.swing==='right'?'right':'left'};});
 const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:f.room?safeId(f.room,''):'',...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
 const v=x.view||{},start=initialPlan().view;
-return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};}
+return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit','realworld'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};}
 </script><script>'use strict';
 // Local, source-owned interior design primitives. Room zones remain provisional until measured.
 const STUDIO_PALETTES={
@@ -1060,7 +1064,156 @@ window.HomePlanVisuals = (() => {
       const y = i * spacing + .5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
     }
   }
-  function stageSlab(ctx, engine, bounds, colors, light, quality) {
+  function drawRealWorldGround(ctx, engine, light, quality) {
+    const dark = light === 'night';
+    const lawn = poly(engine, [[-16, -.02, -10], [22, -.02, -10], [22, -.02, 22], [-16, -.02, 22]]);
+    if (lawn) {
+      trace(ctx, lawn);
+      ctx.fillStyle = dark ? '#15291e' : light === 'evening' ? '#3d5238' : '#45664d';
+      ctx.fill();
+    }
+    const road = poly(engine, [[-16, -.01, 13.8], [22, -.01, 13.8], [22, -.01, 19.8], [-16, -.01, 19.8]]);
+    if (road) {
+      trace(ctx, road);
+      ctx.fillStyle = dark ? '#151918' : '#2c3330';
+      ctx.fill();
+      line(ctx, engine.project(-16, -.005, 16.7), engine.project(22, -.005, 16.7), '#e5be53', 1.8);
+      line(ctx, engine.project(-16, -.005, 16.9), engine.project(22, -.005, 16.9), '#e5be53', 1.8);
+      line(ctx, engine.project(-16, -.005, 14.1), engine.project(22, -.005, 14.1), '#d8ded9', 1.4);
+      line(ctx, engine.project(-16, -.005, 19.5), engine.project(22, -.005, 19.5), '#d8ded9', 1.4);
+    }
+    const curb = poly(engine, [[-16, .08, 13.65], [22, .08, 13.65], [22, .08, 13.8], [-16, .08, 13.8]]);
+    if (curb) {
+      trace(ctx, curb);
+      ctx.fillStyle = dark ? '#283630' : '#8c9891';
+      ctx.fill();
+    }
+    const sidewalk = poly(engine, [[-16, .02, 12.2], [22, .02, 12.2], [22, .02, 13.65], [-16, .02, 13.65]]);
+    if (sidewalk) {
+      trace(ctx, sidewalk);
+      ctx.fillStyle = dark ? '#34453e' : '#b2bcb5';
+      ctx.fill();
+      ctx.strokeStyle = dark ? '#222f2a' : '#88948d'; ctx.lineWidth = 1;
+      for (let x = -15; x <= 21; x += 2.5) {
+        line(ctx, engine.project(x, .025, 12.2), engine.project(x, .025, 13.65), ctx.strokeStyle, 1);
+      }
+    }
+    const parkGreen = poly(engine, [[-16, .02, 19.8], [22, .02, 19.8], [22, .02, 22.0], [-16, .02, 22.0]]);
+    if (parkGreen) {
+      trace(ctx, parkGreen);
+      ctx.fillStyle = dark ? '#13241b' : '#38553f';
+      ctx.fill();
+    }
+    const walkMain = poly(engine, [[3.3, .02, 9.2], [5.4, .02, 9.2], [5.4, .02, 12.2], [3.3, .02, 12.2]]);
+    if (walkMain) {
+      trace(ctx, walkMain);
+      ctx.fillStyle = dark ? '#36473f' : '#b8c2bc';
+      ctx.fill();
+    }
+    const walkPagoda = poly(engine, [[5.4, .02, 9.6], [9.3, .02, 8.2], [9.3, .02, 9.4], [5.4, .02, 10.6]]);
+    if (walkPagoda) {
+      trace(ctx, walkPagoda);
+      ctx.fillStyle = dark ? '#32423b' : '#aeb7b1';
+      ctx.fill();
+    }
+    const bedC = engine.project(11.2, .03, 8.8);
+    const bedR = engine.project(13.8, .03, 8.8);
+    if (bedC && bedR) {
+      const rad = Math.hypot(bedR.x - bedC.x, bedR.y - bedC.y);
+      ctx.save();
+      ctx.beginPath();
+      if (ctx.ellipse) ctx.ellipse(bedC.x, bedC.y, rad, rad * 0.52, 0, 0, Math.PI * 2);
+      else ctx.arc(bedC.x, bedC.y, rad, 0, Math.PI * 2);
+      ctx.fillStyle = dark ? '#22362b' : '#5d4738';
+      ctx.fill();
+      ctx.strokeStyle = dark ? '#3a5245' : '#887363';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  function drawRealWorldLandmarks(ctx, engine, light) {
+    const dark = light === 'night';
+    const treeCoords = [
+      [-7.5, 11.2, 1.8], [0.6, 11.5, 1.5], [16.5, 11.2, 1.9],
+      [-10.0, 21.0, 2.2], [1.5, 21.2, 2.4], [13.5, 21.0, 2.3]
+    ];
+    for (const [tx, tz, trad] of treeCoords) {
+      const base = engine.project(tx, 0, tz);
+      const top = engine.project(tx, 3.4, tz);
+      if (!base || !top) continue;
+      ctx.save();
+      line(ctx, base, top, dark ? '#281c15' : '#523c2a', 3.5);
+      const can = engine.project(tx, 4.2, tz);
+      if (can) {
+        const rad = trad * Math.abs(engine.project(tx + 1, 4.2, tz)?.x - can.x || 18);
+        ctx.beginPath();
+        if (ctx.ellipse) ctx.ellipse(can.x, can.y, rad, rad * 0.75, 0, 0, Math.PI * 2);
+        else ctx.arc(can.x, can.y, rad, 0, Math.PI * 2);
+        ctx.fillStyle = dark ? 'rgba(28,49,38,.85)' : 'rgba(58,96,68,.82)';
+        ctx.fill();
+        ctx.strokeStyle = dark ? 'rgba(52,85,68,.55)' : 'rgba(92,142,106,.65)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    const aptCenter = engine.project(4.35, 5.5, 3.85);
+    const aptAnchor = engine.project(4.35, 2.8, 8.8);
+    if (aptCenter && aptAnchor) {
+      ctx.save();
+      line(ctx, aptAnchor, aptCenter, dark ? '#efc789' : '#c36f29', 1.5, [4, 3]);
+      ctx.fillStyle = dark ? '#efc789' : '#c36f29';
+      ctx.beginPath();
+      ctx.arc(aptAnchor.x, aptAnchor.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      const text = '⌖ APT E · 2ND FLOOR';
+      const sub = '613 N FRONT ST';
+      ctx.font = '700 11px system-ui';
+      const tw = Math.max(ctx.measureText(text).width, ctx.measureText(sub).width) + 20;
+      const ch = 34;
+      const bx = aptCenter.x - tw / 2, by = aptCenter.y - ch - 4;
+      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw, ch, 8); ctx.fill(); ctx.stroke(); }
+      else { ctx.fillRect(bx, by, tw, ch); ctx.strokeRect(bx, by, tw, ch); }
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? '#efc789' : '#b25d19';
+      ctx.fillText(text, aptCenter.x, by + 14);
+      ctx.font = '600 9px system-ui';
+      ctx.fillStyle = dark ? '#a2bcaf' : '#456557';
+      ctx.fillText(sub, aptCenter.x, by + 27);
+      ctx.restore();
+    }
+    const pagCenter = engine.project(11.2, 4.4, 8.8);
+    const pagDeck = engine.project(11.2, 0.4, 8.8);
+    if (pagCenter && pagDeck) {
+      ctx.save();
+      line(ctx, pagDeck, pagCenter, dark ? '#85b99e' : '#316954', 1.2, [3, 3]);
+      ctx.font = '700 10px system-ui';
+      const pText = '⛩ GARDEN PAGODA';
+      const ptw = ctx.measureText(pText).width + 16;
+      const pby = pagCenter.y - 18;
+      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(pagCenter.x - ptw/2, pby, ptw, 20, 6); ctx.fill(); ctx.stroke(); }
+      else { ctx.fillRect(pagCenter.x - ptw/2, pby, ptw, 20); ctx.strokeRect(pagCenter.x - ptw/2, pby, ptw, 20); }
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? '#d4efe1' : '#234a3b';
+      ctx.fillText(pText, pagCenter.x, pby + 14);
+      ctx.restore();
+    }
+    const roadPt = engine.project(4.35, 0.05, 18.2);
+    if (roadPt) {
+      ctx.save();
+      ctx.font = '800 10px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = dark ? 'rgba(238,208,154,.65)' : 'rgba(255,255,255,.75)';
+      ctx.fillText('▲ NORTH FRONT STREET · (ST. JOSEPH RIVERFRONT PARK)', roadPt.x, roadPt.y);
+      ctx.restore();
+    }
+  }
+  function stageSlab(ctx, engine, bounds, colors, light, quality, plan) {
+    if (plan?.view?.style === 'realworld') {
+      drawRealWorldGround(ctx, engine, light, quality);
+      return;
+    }
     const b = bounds, r = .1;
     const deck = poly(engine, [[b.minX, -.21, b.minZ], [b.maxX, -.21, b.minZ], [b.maxX, -.21, b.maxZ], [b.minX, -.21, b.maxZ]]);
     if (!deck) return;
@@ -1416,7 +1569,7 @@ function annotations(ctx, engine, app) {
     ctx.save(); engine.C=engine.camera(); engine._showGrid=plan.view.grid;
     try{
       background(ctx,w,h,light,c,plan.studio);
-      stageSlab(ctx,engine,roomBounds(plan),c,light,quality);
+      stageSlab(ctx,engine,roomBounds(plan),c,light,quality,plan);
       const faceIndices=[[0,1,3,2],[4,6,7,5],[0,4,5,1],[2,3,7,6],[0,2,6,4],[1,5,7,3]];
       const faces=[],itemById=new Map(plan.items.map(it=>[it.id,it]));
       for(const box of boxes){
@@ -1472,6 +1625,7 @@ function annotations(ctx, engine, app) {
       roomLabels(ctx,engine,plan,light);
       entranceLabel(ctx,engine,plan,light);
       annotations(ctx,engine,app);
+      if(plan.view?.style==='realworld') drawRealWorldLandmarks(ctx,engine,light);
       selectedHighlight(ctx,engine,app,quality);
       if(app.tool==='build'){
         for(const wall of plan.walls)for(let k=0;k<2;k++){
@@ -1522,7 +1676,7 @@ function commitShape(from,to){let shape;try{shape=makeShape(app.shapeKind,from,t
 function drawShapeGhost(engine){if(app.tool!=='shape'||!app.shapeKind)return;const g=app.drag?.mode==='shape'?app.drag:app.shapeDraft;if(!g)return;let shape;try{shape=makeShape(app.shapeKind,g.start,g.end);}catch{return;}const points=shape.points.map(v=>engine.project(v[0],.08,v[1]));if(points.some(p=>!p))return;
  const ctx=engine.ctx;ctx.save();ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);for(const p of points.slice(1))ctx.lineTo(p.x,p.y);ctx.closePath();ctx.fillStyle='rgba(57,208,184,.17)';ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#10a88c';ctx.setLineDash([8,5]);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
 window.homePlanDrawShapePreview=drawShapeGhost;
-function viewStyle(style){app.plan.view.style=style;const v=app.plan.view;if(style==='top'){v.pitch=1.565;v.yaw=0;v.dist=16;}else if(style==='dollhouse'){v.pitch=.94;v.yaw=.78;v.dist=16;}else{v.pitch=.72;v.yaw=1.0;v.dist=13;}document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===style));engineDraw();updateMini();}
+function viewStyle(style){app.plan.view.style=style;app.sceneCache=null;if(app.engineName==='three')app.engine.rebuild();const v=app.plan.view;if(style==='top'){v.pitch=1.565;v.yaw=0;v.dist=16;v.target=[4.3,0,4.0];}else if(style==='dollhouse'){v.pitch=.94;v.yaw=.78;v.dist=16;v.target=[4.3,0,4.0];}else if(style==='realworld'){v.pitch=.58;v.yaw=.96;v.dist=27;v.target=[4.3,1.8,4.0];}else{v.pitch=.72;v.yaw=1.0;v.dist=13;v.target=[4.3,0,4.0];}document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===style));if(style==='realworld'){if($('sceneModeLabel'))$('sceneModeLabel').textContent='REAL WORLD / 613 N FRONT ST';if($('sceneTitle'))$('sceneTitle').textContent='Parkview & Apt E (2nd Floor)';if($('sceneSubtitle'))$('sceneSubtitle').textContent='3D site context: Parkview Apartments, 2nd-floor Apt E, front garden pagoda, and N Front St corridor.';}else{if($('sceneModeLabel'))$('sceneModeLabel').textContent=style==='top'?'03 / Overhead floor plan':style==='orbit'?'02 / 3D orbit':'01 / Dollhouse workshop';if($('sceneTitle'))$('sceneTitle').textContent='Your apartment, from above.';if($('sceneSubtitle'))$('sceneSubtitle').textContent='Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.';}engineDraw();updateMini();}
 function engineDraw(){if(app.engine)app.engine.draw();}
 function pulseSelection(){
  if(typeof window.requestAnimationFrame!=='function'||app.quality<=1||document.hidden||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
@@ -1615,7 +1769,7 @@ function wheel(e){e.preventDefault();const v=app.plan.view;v.dist=clamp(v.dist*M
 function rotateSelection(delta){if(!app.selected||app.selected.kind!=='item')return;transact(()=>{const r=selectedRecord();r.r=(r.r+delta+360)%360;});}
 function key(e){if(e.target.closest('input,select,textarea,button,[contenteditable]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();return;}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();return;}if(e.key.toLowerCase()==='q'){e.preventDefault();rotateSelection(-15);}else if(e.key.toLowerCase()==='e'){e.preventDefault();rotateSelection(15);}else if((e.key==='Delete'||e.key==='Backspace')&&selectedRecord()){e.preventDefault();act('delete');}else if(e.key.toLowerCase()==='f'){e.preventDefault();focusRoom('all');}else if(e.key==='Escape'){app.addingWall=null;app.shapeDraft=null;if(app.tool==='shape')setTool('build');else clearSelect();closeModal();}}
 function minimapTransform(w=mini.width,h=mini.height){const px=app.plan.rooms.flatMap(r=>[r.x,r.x+r.w]),pz=app.plan.rooms.flatMap(r=>[r.z,r.z+r.d]);for(const wa of app.plan.walls){px.push(wa.a[0],wa.b[0]);pz.push(wa.a[1],wa.b[1]);}for(const it of app.plan.items){px.push(it.x);pz.push(it.z);}const minX=Math.min(0,...px),maxX=Math.max(8.7,...px),minZ=Math.min(0,...pz),maxZ=Math.max(8.3,...pz),pad=16,ratio=Math.min((w-2*pad)/Math.max(.5,maxX-minX),(h-2*pad)/Math.max(.5,maxZ-minZ));return{ratio,x:(w-(maxX-minX)*ratio)/2-minX*ratio,z:(h-(maxZ-minZ)*ratio)/2-minZ*ratio};}
-function updateMini(){const w=mini.width,h=mini.height,ctx=miniCtx;ctx.clearRect(0,0,w,h);ctx.fillStyle='#101d19';ctx.fillRect(0,0,w,h);ctx.save();ctx.strokeStyle='rgba(80,120,100,.14)';ctx.lineWidth=0.7;for(let gx=16;gx<w;gx+=16){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}for(let gz=16;gz<h;gz+=16){ctx.beginPath();ctx.moveTo(0,gz);ctx.lineTo(w,gz);ctx.stroke();}ctx.fillStyle='#eed09a';ctx.font='700 9px system-ui';ctx.textAlign='center';ctx.fillText('▲ N',w-20,16);ctx.restore();const {ratio,x,z}=minimapTransform(w,h);app.plan.rooms.forEach(r=>{const isFocus=r.id===app.focus;ctx.fillStyle=isFocus?'#c8dfd1':'#33473f';ctx.beginPath();const points=polygonForShape(r.shape||'rectangle',r.x,r.z,r.x+r.w,r.z+r.d);points.forEach((p,i)=>{if(i===0)ctx.moveTo(x+p[0]*ratio,z+p[1]*ratio);else ctx.lineTo(x+p[0]*ratio,z+p[1]*ratio)});ctx.closePath();ctx.fill();ctx.strokeStyle=isFocus?'#efc789':'#597567';ctx.lineWidth=isFocus?2:1;ctx.stroke();ctx.fillStyle='#dce9dd';ctx.font='bold 15px system-ui';ctx.fillText(r.name.split(' ')[0],x+r.x*ratio+8,z+r.z*ratio+20);});if(app.plan.view.walls){ctx.strokeStyle='#e2bf7e';ctx.lineWidth=3;app.plan.walls.forEach(wa=>{ctx.beginPath();ctx.moveTo(x+wa.a[0]*ratio,z+wa.a[1]*ratio);ctx.lineTo(x+wa.b[0]*ratio,z+wa.b[1]*ratio);ctx.stroke();});}const overlap=collisions(app.plan);app.plan.items.filter(it=>!it.hidden&&app.plan.studio?.furnishings!==false).forEach(it=>{const sp=itemSpec(it),cx=x+it.x*ratio,cz=z+it.z*ratio;ctx.save();ctx.translate(cx,cz);ctx.rotate(it.r*Math.PI/180);ctx.fillStyle=app.selected?.id===it.id?'#6fe6e0':overlap.has(it.id)?'#e18a78':sp.color;ctx.fillRect(-sp.w*ratio/2,-sp.d*ratio/2,sp.w*ratio,sp.d*ratio);ctx.restore();});const fItem=app.plan.items.find(it=>it.type==='fountain'&&!it.hidden);if(fItem){const fx=x+fItem.x*ratio,fz=z+fItem.z*ratio;ctx.save();ctx.strokeStyle='rgba(111,230,224,.85)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(fx,fz,6,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#6fe6e0';ctx.beginPath();ctx.arc(fx,fz,2.5,0,Math.PI*2);ctx.fill();ctx.restore();}app.plan.fixtures.forEach(o=>{const wa=app.plan.walls.find(w=>w.id===o.wall);if(!wa)return;const p=wallPoint(wa,o.at);ctx.fillStyle=o.type==='window'?'#8cc8d3':o.type==='outlet'?'#edcda0':'#ffbe72';ctx.beginPath();ctx.arc(x+p[0]*ratio,z+p[1]*ratio,o.type==='outlet'?2:4,0,Math.PI*2);ctx.fill();});if(window.homePlanStudioDrawMini)window.homePlanStudioDrawMini(ctx,{x,z,ratio,w,h});}
+function updateMini(){const w=mini.width,h=mini.height,ctx=miniCtx;ctx.clearRect(0,0,w,h);ctx.fillStyle='#101d19';ctx.fillRect(0,0,w,h);ctx.save();ctx.strokeStyle='rgba(80,120,100,.14)';ctx.lineWidth=0.7;for(let gx=16;gx<w;gx+=16){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}for(let gz=16;gz<h;gz+=16){ctx.beginPath();ctx.moveTo(0,gz);ctx.lineTo(w,gz);ctx.stroke();}ctx.fillStyle='#eed09a';ctx.font='700 9px system-ui';ctx.textAlign='center';ctx.fillText('▲ N',w-20,16);ctx.restore();const {ratio,x,z}=minimapTransform(w,h);app.plan.rooms.forEach(r=>{const isFocus=r.id===app.focus;ctx.fillStyle=isFocus?'#c8dfd1':'#33473f';ctx.beginPath();const points=polygonForShape(r.shape||'rectangle',r.x,r.z,r.x+r.w,r.z+r.d);points.forEach((p,i)=>{if(i===0)ctx.moveTo(x+p[0]*ratio,z+p[1]*ratio);else ctx.lineTo(x+p[0]*ratio,z+p[1]*ratio)});ctx.closePath();ctx.fill();ctx.strokeStyle=isFocus?'#efc789':'#597567';ctx.lineWidth=isFocus?2:1;ctx.stroke();ctx.fillStyle='#dce9dd';ctx.font='bold 15px system-ui';ctx.fillText(r.name.split(' ')[0],x+r.x*ratio+8,z+r.z*ratio+20);});if(app.plan.view.walls){ctx.strokeStyle='#e2bf7e';ctx.lineWidth=3;app.plan.walls.forEach(wa=>{ctx.beginPath();ctx.moveTo(x+wa.a[0]*ratio,z+wa.a[1]*ratio);ctx.lineTo(x+wa.b[0]*ratio,z+wa.b[1]*ratio);ctx.stroke();});}const overlap=collisions(app.plan);app.plan.items.filter(it=>!it.hidden&&app.plan.studio?.furnishings!==false).forEach(it=>{const sp=itemSpec(it),cx=x+it.x*ratio,cz=z+it.z*ratio;ctx.save();ctx.translate(cx,cz);ctx.rotate(it.r*Math.PI/180);ctx.fillStyle=app.selected?.id===it.id?'#6fe6e0':overlap.has(it.id)?'#e18a78':sp.color;ctx.fillRect(-sp.w*ratio/2,-sp.d*ratio/2,sp.w*ratio,sp.d*ratio);ctx.restore();});const fItem=app.plan.items.find(it=>it.type==='fountain'&&!it.hidden);if(fItem){const fx=x+fItem.x*ratio,fz=z+fItem.z*ratio;ctx.save();ctx.strokeStyle='rgba(111,230,224,.85)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(fx,fz,6,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#6fe6e0';ctx.beginPath();ctx.arc(fx,fz,2.5,0,Math.PI*2);ctx.fill();ctx.restore();}app.plan.fixtures.forEach(o=>{const wa=app.plan.walls.find(w=>w.id===o.wall);if(!wa)return;const p=wallPoint(wa,o.at);ctx.fillStyle=o.type==='window'?'#8cc8d3':o.type==='outlet'?'#edcda0':'#ffbe72';ctx.beginPath();ctx.arc(x+p[0]*ratio,z+p[1]*ratio,o.type==='outlet'?2:4,0,Math.PI*2);ctx.fill();});if(app.plan.view.style==='realworld'){ctx.save();ctx.fillStyle='#1e2b26';ctx.fillRect(0,h-28,w,28);ctx.strokeStyle='#e5be53';ctx.lineWidth=1;if(ctx.setLineDash)ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(0,h-14);ctx.lineTo(w,h-14);ctx.stroke();if(ctx.setLineDash)ctx.setLineDash([]);ctx.fillStyle='#eed09a';ctx.font='700 9px system-ui';ctx.textAlign='center';ctx.fillText('▲ N FRONT ST · RIVERFRONT PARK',w/2,h-7);ctx.fillStyle='rgba(26,50,40,.92)';ctx.strokeStyle='#efc789';ctx.lineWidth=1;if(ctx.roundRect){ctx.beginPath();ctx.roundRect(8,8,136,20,4);ctx.fill();ctx.stroke();}else{ctx.fillRect(8,8,136,20);ctx.strokeRect(8,8,136,20);}ctx.fillStyle='#efc789';ctx.font='700 9px system-ui';ctx.textAlign='left';ctx.fillText('⌖ 2ND FL · APT E',14,21);ctx.restore();}if(window.homePlanStudioDrawMini)window.homePlanStudioDrawMini(ctx,{x,z,ratio,w,h});}
 function focusFromMini(e){const r=mini.getBoundingClientRect(),px=(e.clientX-r.left)*mini.width/r.width,pz=(e.clientY-r.top)*mini.height/r.height,w=mini.width,h=mini.height,transform=minimapTransform(w,h),ratio=transform.ratio,x=transform.x,z=transform.z,X=(px-x)/ratio,Z=(pz-z)/ratio,room=app.plan.rooms.find(v=>X>=v.x&&X<=v.x+v.w&&Z>=v.z&&Z<=v.z+v.d);if(room){focusRoom(room.id);if(app.tool==='build'){select('room',room.id);}else say('Focused '+room.name);}}
 function download(name,contents,mime){const a=document.createElement('a');const url=URL.createObjectURL(new Blob([contents],{type:mime}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
 function exportJSON(){download('home-plan-layout.json',JSON.stringify(app.plan,null,2),'application/json');say('Layout exported as JSON');}
@@ -1669,20 +1823,45 @@ else if(item.type==='vent'){add(0,h/2,0,w,h,d);for(let i=-2;i<=2;i++)add(i*w*.13
 else if(item.type==='pipe'){add(0,h/2,0,w*.55,h,d*.55);add(0,h+.025,0,w,.06,d,'#cee2e4');}
 else add(0,h/2,0,w,h,d);
 return parts;}
-function sceneBoxes(){if(app.sceneCache)return app.sceneCache;const out=[];const st=app.plan.studio||STUDIO_DEFAULTS;const push=(x,y,z,sx,sy,sz,color,rot=0,kind=null,id=null)=>{if(sx<=.001||sy<=.001||sz<=.001)return;out.push({x,y,z,sx,sy,sz,color,rot,kind,id});};
+function sceneBoxes(){if(app.sceneCache)return app.sceneCache;const out=[];const st=app.plan.studio||STUDIO_DEFAULTS;const isReal=app.plan.view?.style==='realworld';const floorY=isReal?2.8:0;const push=(x,y,z,sx,sy,sz,color,rot=0,kind=null,id=null)=>{if(sx<=.001||sy<=.001||sz<=.001)return;out.push({x,y,z,sx,sy,sz,color,rot,kind,id});};
 if(st.rooms!==false)app.plan.rooms.filter(r=>r.id!==st.hideRoom).forEach(r=>{
  const custom=['circle','ellipse','triangle','l-shape'].includes(r.shape);
- if(!custom){push(r.x+r.w/2,-.072,r.z+r.d/2,r.w,.10,r.d,r.color,0,'room',r.id);out[out.length-1].indoor=r.zone!=='outdoor';return;}
+ if(!custom){push(r.x+r.w/2,-.072+floorY,r.z+r.d/2,r.w,.10,r.d,r.color,0,'room',r.id);out[out.length-1].indoor=r.zone!=='outdoor';return;}
  const strips=24,step=r.d/strips;for(let i=0;i<strips;i++){const v=(i+.5)/strips;let from=0,to=1;
   if(r.shape==='circle'||r.shape==='ellipse'){const half=Math.sqrt(Math.max(.001,1-(2*v-1)**2))/2;from=.5-half;to=.5+half;}
   else if(r.shape==='triangle'){const half=v/2;from=.5-half;to=.5+half;}
   else if(r.shape==='l-shape'&&v>.45){to=.52;}
-  const box={x:r.x+(from+to)*r.w/2,y:-.072,z:r.z+step*(i+.5),sx:(to-from)*r.w,sy:.10,sz:step*1.045,color:r.color,rot:0,kind:'room',id:r.id,customFloor:true,indoor:r.zone!=='outdoor'};
+  const box={x:r.x+(from+to)*r.w/2,y:-.072+floorY,z:r.z+step*(i+.5),sx:(to-from)*r.w,sy:.10,sz:step*1.045,color:r.color,rot:0,kind:'room',id:r.id,customFloor:true,indoor:r.zone!=='outdoor'};
   if(box.sx>.01)out.push(box);
  }
 });
-if(app.plan.view.walls)app.plan.walls.forEach(w=>{const wHeight=Math.min(w.height,st.cutHeight??3);const len=length(w.a,w.b),rot=Math.atan2(w.b[1]-w.a[1],w.b[0]-w.a[0]),fs=app.plan.fixtures.filter(f=>f.wall===w.id&&f.type!=='outlet').map(f=>({f,at:clamp(f.at*len-f.width/2,.05,len-.05),to:clamp(f.at*len+f.width/2,.05,len-.05)})).sort((a,b)=>a.at-b.at);let at=0;const segment=(start,end,bottom,height,color=w.color||'#a1aaa1')=>{height=Math.min(height,Math.max(0,wHeight-bottom));if(end-start<.03||height<.02)return;const t=(start+end)/(len*2),p=wallPoint(w,t),L=end-start;push(p[0],bottom+height/2,p[1],L,height,w.thick,color,rot,'wall',w.id);};for(const o of fs){if(o.at<at+.02)continue;segment(at,o.at,0,wHeight);const f=o.f;if(f.type==='window'){segment(o.at,o.to,0,.87);segment(o.at,o.to,2.02,Math.max(0,wHeight-2.02));segment(o.at+.07,o.to-.07,.92,1.04,'#84bfc6');}else{segment(o.at,o.to,2.14,Math.max(0,wHeight-2.14));}at=o.to;}segment(at,len,0,wHeight);app.plan.fixtures.filter(f=>st.fixtureMarkers!==false&&f.wall===w.id&&f.type==='outlet').forEach(f=>{const p=wallPoint(w,f.at);push(p[0],.38,p[1],.18,.17,.14,'#e2d6b7',rot,'fixture',f.id);});});
-const overlapMap=collisions(app.plan);if(st.furnishings!==false)app.plan.items.filter(it=>!it.hidden).forEach(item=>{const a=item.r*Math.PI/180,c=Math.cos(a),s=Math.sin(a);const hits=overlapMap.has(item.id);for(const part of furnitureParts(item)){const x=item.x+part.ox*c-part.oz*s,z=item.z+part.ox*s+part.oz*c;const indoorRoom=app.plan.rooms.find(r=>r.id===item.room)||roomByPoint(app.plan,item.x,item.z);const outdoor=indoorRoom?.zone==='outdoor';const isIndoor=!outdoor;const before=out.length;push(x,part.y,z,part.sx,part.sy,part.sz,hits?'#ce8b7a':item.color||part.color,a,'item',item.id);if(out.length>before)out[out.length-1].indoor=isIndoor;}if(app.selected?.kind==='item'&&app.selected.id===item.id){const sp=itemSpec(item);push(item.x,.015,item.z,sp.w+.1,.026,sp.d+.1,'#3dbdb4',a,'selection',item.id);}});
+if(app.plan.view.walls)app.plan.walls.forEach(w=>{const wHeight=Math.min(w.height,st.cutHeight??3);const len=length(w.a,w.b),rot=Math.atan2(w.b[1]-w.a[1],w.b[0]-w.a[0]),fs=app.plan.fixtures.filter(f=>f.wall===w.id&&f.type!=='outlet').map(f=>({f,at:clamp(f.at*len-f.width/2,.05,len-.05),to:clamp(f.at*len+f.width/2,.05,len-.05)})).sort((a,b)=>a.at-b.at);let at=0;const segment=(start,end,bottom,height,color=w.color||'#a1aaa1')=>{height=Math.min(height,Math.max(0,wHeight-bottom));if(end-start<.03||height<.02)return;const t=(start+end)/(len*2),p=wallPoint(w,t),L=end-start;push(p[0],bottom+height/2+floorY,p[1],L,height,w.thick,color,rot,'wall',w.id);};for(const o of fs){if(o.at<at+.02)continue;segment(at,o.at,0,wHeight);const f=o.f;if(f.type==='window'){segment(o.at,o.to,0,.87);segment(o.at,o.to,2.02,Math.max(0,wHeight-2.02));segment(o.at+.07,o.to-.07,.92,1.04,'#84bfc6');}else{segment(o.at,o.to,2.14,Math.max(0,wHeight-2.14));}at=o.to;}segment(at,len,0,wHeight);app.plan.fixtures.filter(f=>st.fixtureMarkers!==false&&f.wall===w.id&&f.type==='outlet').forEach(f=>{const p=wallPoint(w,f.at);push(p[0],.38+floorY,p[1],.18,.17,.14,'#e2d6b7',rot,'fixture',f.id);});});
+const overlapMap=collisions(app.plan);if(st.furnishings!==false)app.plan.items.filter(it=>!it.hidden).forEach(item=>{const a=item.r*Math.PI/180,c=Math.cos(a),s=Math.sin(a);const hits=overlapMap.has(item.id);for(const part of furnitureParts(item)){const x=item.x+part.ox*c-part.oz*s,z=item.z+part.ox*s+part.oz*c;const indoorRoom=app.plan.rooms.find(r=>r.id===item.room)||roomByPoint(app.plan,item.x,item.z);const outdoor=indoorRoom?.zone==='outdoor';const isIndoor=!outdoor;const before=out.length;push(x,part.y+floorY,z,part.sx,part.sy,part.sz,hits?'#ce8b7a':item.color||part.color,a,'item',item.id);if(out.length>before)out[out.length-1].indoor=isIndoor;}if(app.selected?.kind==='item'&&app.selected.id===item.id){const sp=itemSpec(item);push(item.x,.015+floorY,item.z,sp.w+.1,.026,sp.d+.1,'#3dbdb4',a,'selection',item.id);}});
+if(isReal){
+ push(4.35, 1.35, 3.85, 12.8, 2.7, 9.8, '#a8a093', 0, 'building_base');
+ push(4.35, 0.45, 3.85, 13.0, 0.9, 10.0, '#756353', 0, 'building_wainscot');
+ push(4.35, 2.65, 9.1, 2.8, 0.16, 1.4, '#38463f', 0, 'building_canopy');
+ push(3.1, 1.32, 9.6, 0.18, 2.64, 0.18, '#f5f3ec', 0, 'building_post');
+ push(5.6, 1.32, 9.6, 0.18, 2.64, 0.18, '#f5f3ec', 0, 'building_post');
+ push(4.35, 1.15, 8.8, 1.8, 2.3, 0.1, '#537d88', 0, 'building_door');
+ push(4.35, 2.74, 9.2, 13.0, 0.12, 1.8, '#9e978b', 0, 'walkway_deck');
+ push(4.35, 3.32, 10.05, 13.0, 0.96, 0.08, '#32453b', 0, 'walkway_railing');
+ push(4.35, 6.85, 1.2, 13.0, 2.7, 4.8, '#b2aba0', 0, 'building_upper');
+ push(4.35, 8.55, 2.5, 13.6, 1.1, 8.5, '#3b4742', 0, 'building_roof');
+ push(-4.5, 4.0, 3.85, 5.0, 8.0, 10.0, '#9c9589', 0, 'building_wing_w');
+ push(-4.5, 8.4, 3.85, 5.4, 1.1, 10.4, '#38433f', 0, 'building_roof_w');
+ push(13.2, 4.0, 3.85, 5.0, 8.0, 10.0, '#9c9589', 0, 'building_wing_e');
+ push(13.2, 8.4, 3.85, 5.4, 1.1, 10.4, '#38433f', 0, 'building_roof_e');
+ const pX = 11.2, pZ = 8.8;
+ push(pX, 0.18, pZ, 3.6, 0.35, 3.6, '#6b4d37', Math.PI/6, 'pagoda_deck');
+ push(pX - 1.9, 0.09, pZ, 0.6, 0.18, 1.4, '#583e2c', 0, 'pagoda_step');
+ for(let a=0; a<6; a++){const ang = a*Math.PI/3; push(pX + 1.45*Math.cos(ang), 1.45, pZ + 1.45*Math.sin(ang), 0.15, 2.3, 0.15, '#563c2a', 0, 'pagoda_post');}
+ for(let a=1; a<6; a++){const ang = (a - 0.5)*Math.PI/3; push(pX + 1.42*Math.cos(ang), 0.82, pZ + 1.42*Math.sin(ang), 1.35, 0.78, 0.08, '#6a4a33', ang + Math.PI/2, 'pagoda_railing');}
+ push(pX, 2.78, pZ, 4.2, 0.35, 4.2, '#313e38', Math.PI/6, 'pagoda_roof_lower');
+ push(pX, 3.25, pZ, 2.8, 0.42, 2.8, '#26332d', Math.PI/6, 'pagoda_roof_upper');
+ push(pX, 3.85, pZ, 0.24, 0.72, 0.24, '#e0b571', 0, 'pagoda_finial');
+ push(pX, 2.3, pZ, 0.25, 0.35, 0.25, '#ffe29e', 0, 'pagoda_lantern');
+}
 return app.sceneCache=out;}
 function pointInPoly(pt,poly){let inside=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){let a=poly[i],b=poly[j];if((a.y>pt.y)!==(b.y>pt.y)&&pt.x<(b.x-a.x)*(pt.y-a.y)/(b.y-a.y)+a.x)inside=!inside;}return inside;}
 function pointSegDistance(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=clamp(((p.x-a.x)*dx+(p.y-a.y)*dy)/(dx*dx+dy*dy||1),0,1);return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));}
@@ -1729,7 +1908,7 @@ ground(p){this.setRay(p);const result=this.raycaster.ray.intersectPlane(this.flo
 pick(p,tool){this.setRay(p);const hits=this.raycaster.intersectObjects(this.modelRoot.children,true);for(const hit of hits){let n=hit.object,meta=null;while(n&&n!==this.modelRoot){if(n.userData?.kind){meta=n.userData;break;}n=n.parent;}if(!meta)continue;if(tool==='furnish'&&meta.kind==='item'||tool==='build'&&meta.kind==='wall'||tool==='opening'&&(meta.kind==='fixture'||meta.kind==='wall'))return{...meta};}return null;}
 dispose(){this.disposed=true;for(const x of [...this.modelRoot.children]){x.traverse(n=>{n.geometry?.dispose();if(n.material){for(const m of Array.isArray(n.material)?n.material:[n.material]){m.map?.dispose();m.dispose?.();}}});}this.scene.remove(this.modelRoot);this.grid.geometry.dispose();this.grid.material.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }
-window.homePlanStudioBridge={getPlan:()=>app.plan,
+window.homePlanStudioBridge={getPlan:()=>app.plan,getBoxes:sceneBoxes,getApp:()=>app,
  openRooms:()=>{app.tab='space';document.querySelectorAll('[data-tab]').forEach(b=>{b.classList.toggle('active',b.dataset.tab==='space');b.setAttribute('aria-selected',String(b.dataset.tab==='space'));});updateInspector();openInspector();},
  openLighting:()=>{app.tab='project';document.querySelectorAll('[data-tab]').forEach(b=>{b.classList.toggle('active',b.dataset.tab==='project');b.setAttribute('aria-selected',String(b.dataset.tab==='project'));});updateInspector();openInspector();$('lightPreset')?.scrollIntoView?.({block:'center'});},
  newBlank:()=>act('newBlank'),transaction:(fn,options={})=>transact(()=>fn(app.plan),{surveyOnly:options.geometry===false}),getSelection:()=>app.selected,getSelected:selectedRecord,select,clearSelect,focusRoom,viewStyle,setTool,setFixtureKind:kind=>{if(!['door','window','outlet','opening','entry'].includes(kind))return;app.fixtureType=kind;setTool('opening');say('Tap a wall to place '+kind);},startWall:()=>act('addWall'),startShape,addRoomZone,draw:engineDraw,rebuild:engineRebuild,notify:say,clearRoute:()=>{app.studioRoute=null;},setRoute:r=>{app.studioRoute=r;updateMini();engineDraw();},getRoute:()=>app.studioRoute,updateMini,refresh:afterChange,exportJSON,exportSVG,exportPNG,download,applyCamera:c=>{Object.assign(app.plan.view,{yaw:c.yaw,pitch:c.pitch,dist:c.dist,target:[...c.target]});engineDraw();updateMini();persist();},saveNamed};
@@ -2055,7 +2234,7 @@ install();
  function visibleMode(){return document.querySelector('#toolsPanel [data-tool].active')?.dataset.tool||'furnish';}
  function sync(){
   const tool=visibleMode();const advanced={navigate:'Explore',opening:'Openings',measure:'Tape',annotate:'Notes'};byId('focusToolsLabel').textContent=advanced[tool]||'Tools';byId('focusTools').classList.toggle('is-active',!!advanced[tool]);for(const id of ['focusMove','focusBuild']){const active=tool===(id==='focusMove'?'furnish':'build');byId(id)?.classList.toggle('is-active',active);byId(id)?.setAttribute('aria-pressed',String(active));}
-  const style=bridge.getPlan()?.view?.style||'dollhouse';const viewLabel={dollhouse:'Dollhouse',orbit:'3D orbit',top:'Top plan'}[style]||'Views';if(byId('focusViewName'))byId('focusViewName').textContent=viewLabel;
+  const style=bridge.getPlan()?.view?.style||'dollhouse';const viewLabel={dollhouse:'Dollhouse',orbit:'3D orbit',top:'Top plan',realworld:'Real world'}[style]||'Views';if(byId('focusViewName'))byId('focusViewName').textContent=viewLabel;
   const selected=bridge.getSelection();const chip=byId('focusSelection');chip.hidden=!selected;
   if(selected){const label=(byId('selectionLabel').textContent||'Selected item').replace(/ · drag or edit measurements$/,'');byId('focusSelectionName').textContent=label||'Selected object';}
   const open=byId('inspector').classList.contains('mobile-open');byId('focusEdit')?.setAttribute('aria-expanded',String(open));
@@ -2196,7 +2375,7 @@ install();
  };
  const toolDefs={furnish:['sofa','Furniture','Select, move and arrange furniture.'],build:['wall','Walls','Edit or draw walls; change their endpoints.'],navigate:['orbit','Explore','Drag empty space to orbit; pan and zoom.'],measure:['ruler','Measure','Tap two model positions to measure their distance.'],annotate:['note','Notes','Tap the floor to leave a note.'],opening:['door','Openings','Choose a door, window, outlet or passage, then tap a wall.']};
  const categoryDefs={All:['grid','All furniture'],Favorites:['star','Favorite furniture'],Living:['sofa','Living room'],Storage:['storage','Storage'],Bedroom:['bed','Bedroom'],Office:['sliders','Desks and office'],Kitchen:['kitchen','Kitchen'],Appliances:['kitchen','Major appliances'],Bathroom:['bath','Bathroom'],Plumbing:['outlet','Plumbing and vents'],Laundry:['circle','Laundry machines'],Outdoor:['porch','Patio and balcony'],Markers:['marker','Markers and fixtures']};
- const viewDefs={dollhouse:['house','Dollhouse view'],orbit:['orbit','3D orbit view'],top:['plan','Top floor plan']};
+ const viewDefs={dollhouse:['house','Dollhouse view'],orbit:['orbit','3D orbit view'],top:['plan','Top floor plan'],realworld:['map','Real world 3D view','Real-world 3D site context: 613 N Front St, Apt E (2nd Floor), Niles, MI']};
  function decorate(el,entry,kind){if(!el||!entry)return;const [ico,label,detail]=entry;el.setAttribute('aria-label',label);el.dataset.tooltip=detail?`${label} — ${detail}`:label;el.removeAttribute('title');el.dataset.iconName=ico;const existing=el.querySelector('.focus-icon,.symbol');if(existing){existing.innerHTML=svg(ico);}else if(kind==='compact'){
    if(!el.dataset.originalLabel)el.dataset.originalLabel=el.textContent.trim();
    const symbol=d.createElement('span');symbol.className='hp-command-icon';symbol.innerHTML=svg(ico);el.prepend(symbol);el.classList.add('hp-iconified');
