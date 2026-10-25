@@ -1,0 +1,128 @@
+/* Model-first workspace. Original editor modules remain mounted and reachable on demand. */
+:root{--focus-ink:#152b23;--focus-surface:rgba(23,43,35,.94);--focus-line:rgba(182,212,183,.30);--focus-glow:rgba(7,25,17,.22)}
+html,body{width:100%;height:100%;margin:0;overflow:hidden}
+.shell{position:relative;display:block;isolation:isolate;width:100%;max-width:100vw;height:100dvh;min-height:0;overflow:hidden}
+.stage{position:absolute;inset:0;width:100%;max-width:none;height:100%;min-width:0;min-height:0;overflow:hidden;z-index:1;background:var(--scene-background,#C9E9FF)}
+#stage{position:absolute;inset:0;width:100%;height:100%;max-width:none}
+#stage canvas{width:100%;height:100%;max-width:none}
+.stage::after{box-shadow:inset 0 0 50px rgba(17,33,24,.055);pointer-events:none}
+/* Primary model surfaces intentionally disappear until requested. */
+.viewport-hud,.map-card,.floating-actions,.view-controls{visibility:hidden;opacity:0;pointer-events:none;transition:opacity .16s ease,visibility .16s ease}
+.selection-label{display:none!important}
+.shell.map-open .map-card,.shell.zoom-open .floating-actions,.shell.info-open .viewport-hud,.shell.views-open .view-controls{visibility:visible;opacity:1;pointer-events:auto}
+.viewport-hud{top:70px;left:14px;max-width:min(295px,calc(100% - 30px));pointer-events:none!important}
+.map-card{z-index:15;bottom:86px;left:14px}
+.floating-actions{z-index:15;bottom:86px;right:14px}
+/* The entire legacy header lives in a compact project popover. */
+.header{position:fixed;top:61px;left:14px;right:auto;bottom:auto;display:flex;flex-direction:column;align-items:stretch;width:min(340px,calc(100vw - 28px));max-height:min(75dvh,660px);min-width:0;overflow-y:auto;gap:12px;padding:17px;border-radius:17px;border:1px solid var(--focus-line);background:var(--focus-surface);box-shadow:0 16px 48px rgba(5,24,14,.29);backdrop-filter:blur(18px);z-index:40;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility .15s}
+.header::after{display:none}
+.shell.project-open .header{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0)}
+.header .brand{min-width:0;width:100%;gap:9px}
+.header .mark{width:34px;height:34px;flex:none;font-size:20px}
+.header .wordmark{font-size:13px}
+.header .wordmark small{font-size:8px}
+.header .project-input{display:block;width:100%;min-width:0;min-height:41px;max-width:none}
+.header .header-end{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;width:100%;margin:0;gap:8px}
+.header .header-end .btn{min-height:41px;padding:9px 8px;white-space:normal;font-size:11px}
+.header .header-end .status-pill{display:flex;align-items:center;grid-column:1/-1;font-size:10px;padding:0;border:0;background:none;color:#b5cfba}
+.header .header-end .status-pill i{flex:none}
+.mobile-actions-toggle,.mobile-actions-panel,.mobile-actions-panel:not([hidden]){display:none!important}
+/* Original navigation moves into a discoverable tool palette rather than occupying a rail. */
+.rail{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));top:auto;right:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;width:min(340px,calc(100vw - 22px));max-width:none;max-height:min(65dvh,390px);min-height:0;overflow-y:auto;padding:13px;background:var(--focus-surface);border:1px solid var(--focus-line);border-radius:17px;box-shadow:0 14px 46px var(--focus-glow);backdrop-filter:blur(18px);z-index:40;visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,9px);transition:opacity .15s,transform .15s,visibility .15s;scroll-snap-type:none}
+.shell.tools-open .rail{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.rail .rail-button{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;height:49px;width:100%;min-width:0;max-width:none;flex:none;padding:10px 12px;text-align:left;font-size:12px;font-weight:740;border:1px solid rgba(147,177,151,.17);border-radius:11px;background:rgba(38,70,55,.48)}
+.rail .rail-button .symbol{font-size:20px;width:24px;text-align:center;flex:none;color:#c4dbc4}
+.rail .rail-button.active{border-color:#d6bb86!important;background:rgba(234,196,124,.13)}
+.rail .rail-button.active::before{display:none}
+.rail .rail-button.help-only{display:flex}
+.rail .rail-separator,.rail .rail-spacer{display:none}
+/* Inspector and object library become temporary, independently scrollable work surfaces. */
+.inspector,.inspector.mobile-open{grid-area:auto;position:fixed;top:66px;right:13px;bottom:13px;left:auto;display:flex;flex-direction:column;width:min(356px,calc(100vw - 26px));max-width:none;height:auto;max-height:calc(100dvh - 79px);min-height:0;overflow:hidden;border:1px solid #6a9479b3;border-radius:17px;background:rgba(21,42,32,.97);box-shadow:0 21px 60px rgba(4,21,15,.35);backdrop-filter:blur(18px);z-index:43;visibility:hidden;opacity:0;pointer-events:none;transform:translateX(calc(100% + 30px));transition:opacity .17s,transform .2s,visibility .2s}
+.inspector.mobile-open{visibility:visible;opacity:1;pointer-events:auto;transform:translateX(0)}
+.ins-head{padding:14px 16px 11px;background:none;border-bottom:1px solid rgba(184,209,181,.2)}
+.ins-head h3{font-size:20px;margin:5px 0}
+.ins-head p{font-size:11px}
+.ins-tabs{position:relative;padding:3px 46px 0 10px;gap:0;flex:none}
+.ins-tabs button{padding:10px 5px;font-size:10px}
+#closeInspector,#closeInspector.hidden{position:absolute;right:7px;top:4px;display:grid;place-items:center;width:35px;height:35px;min-width:0;flex:none;padding:0;border:1px solid #63806b;border-radius:9px;background:#30483b;color:#eaf4e8;font-size:16px}
+.ins-body{padding:13px 15px 25px;min-height:0}
+.shelf{grid-area:auto;position:fixed;left:50%;bottom:calc(75px + env(safe-area-inset-bottom,0px));top:auto;right:auto;display:flex;flex-direction:column;width:min(800px,calc(100vw - 26px));max-width:none;height:min(310px,46dvh);max-height:calc(100dvh - 110px);min-height:0;padding:14px;z-index:38;overflow:hidden;border:1px solid var(--focus-line);border-radius:17px;background:var(--focus-surface);box-shadow:0 17px 48px rgba(5,24,14,.3);backdrop-filter:blur(18px);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,12px);transition:transform .17s,opacity .17s,visibility .17s}
+.shell.catalog-open .shelf{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.shelf .shelf-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;flex:none}
+.shelf .shelf-title{font-size:10px;letter-spacing:.12em}
+.shelf .shelf-categories{flex:1;min-width:0}
+.shelf .catalog-search{flex:0 0 100%;min-width:0}
+.shelf .shelf-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));align-content:start;gap:8px;min-height:0;max-height:none;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.shelf .catalog-tile{width:100%;min-height:56px;flex:none}
+.shelf .catalog-card{height:100%;width:100%}
+/* Model-first controls: only three small islands are visible by default. */
+.focus-project,.focus-view-toggle,.focus-dock,.focus-selection{position:absolute;z-index:30}
+.focus-project,.focus-view-toggle,.focus-dock button,.focus-selection button{appearance:none;-webkit-appearance:none;border:1px solid rgba(211,228,206,.24);color:#f0f3e8;background:rgba(18,42,32,.90);backdrop-filter:blur(15px);box-shadow:0 6px 25px rgba(17,37,26,.22);font-weight:750;line-height:1.1}
+.focus-project:hover,.focus-view-toggle:hover,.focus-dock button:hover,.focus-selection button:hover{background:rgba(32,66,49,.97);border-color:#a7c4ac}
+.focus-project:focus-visible,.focus-view-toggle:focus-visible,.focus-dock button:focus-visible,.focus-selection button:focus-visible{outline:3px solid #edc280;outline-offset:3px}
+.focus-project{top:13px;left:14px;display:flex;align-items:center;gap:8px;min-height:43px;padding:5px 12px 5px 6px;border-radius:14px;font-size:12px;letter-spacing:.025em;white-space:nowrap}
+.focus-project .focus-monogram{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#f0c78a;color:#203a30;font:900 18px Georgia,serif}
+.focus-view-toggle{top:13px;right:14px;display:flex;align-items:center;gap:7px;justify-content:center;min-height:43px;min-width:128px;padding:9px 12px;border-radius:14px;font-size:12px}
+.focus-view-toggle .focus-chevron{font-size:12px;color:#e4c48d}
+.focus-dock{bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;display:flex;align-items:center;gap:3px;max-width:calc(100vw - 20px);padding:4px;border:1px solid rgba(204,228,201,.25);border-radius:18px;background:rgba(15,38,29,.82);backdrop-filter:blur(14px);box-shadow:0 11px 29px rgba(10,25,20,.25);transform:translateX(-50%)}
+.focus-dock button{display:flex;align-items:center;justify-content:center;gap:7px;height:43px;min-width:0;padding:9px 14px;border:0;box-shadow:none;background:transparent;border-radius:13px;font-size:12px}
+.focus-dock button.is-active{background:#efc789;color:#1a382d}
+.focus-dock button.is-active .focus-icon{color:#28513b}
+.focus-dock .focus-icon{font-size:19px;font-weight:400;line-height:1}
+.focus-dock button[aria-expanded="true"]:not(.is-active){background:#395747}
+.focus-selection{bottom:calc(82px + env(safe-area-inset-bottom,0px));left:50%;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 24px);padding:5px 6px 5px 13px;border-radius:14px;background:rgba(20,52,41,.94);border:1px solid rgba(185,218,190,.48);box-shadow:0 10px 30px rgba(4,21,14,.28);transform:translateX(-50%)}
+.focus-selection[hidden]{display:none!important}
+.focus-selection-name{overflow:hidden;max-width:210px;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700;color:#eff4e8}
+.focus-selection button{min-height:33px;min-width:42px;padding:7px 10px;border-radius:9px;background:#e9c58b;border-color:#e9c58b;color:#1b392c;font-size:11px}
+.focus-selection button.focus-deselect{min-width:30px;padding:6px 8px;background:transparent;color:#dae8d9;border-color:transparent;font-size:18px}
+.view-controls{top:61px;right:14px;left:auto;display:flex;flex-direction:column;align-items:stretch;gap:5px;width:min(232px,calc(100vw - 28px));height:auto;max-height:75dvh;overflow-y:auto;padding:9px;border-radius:15px;background:var(--focus-surface);border:1px solid var(--focus-line);box-shadow:0 16px 38px var(--focus-glow);backdrop-filter:blur(18px);z-index:33}
+.view-controls button{min-height:41px;width:100%;text-align:left;padding:10px 13px;font-size:12px;font-weight:650;letter-spacing:0;color:#e5efdf}
+.view-controls button.active{background:#edc68a;color:#1c392c}
+.view-controls button[aria-pressed="true"]:not(.active){background:#456453;color:#fff5df}
+.focus-view-divider{height:1px;margin:4px 2px;background:#72877666}
+/* Keep interactive context visible in select mode, not explanatory panels. */
+.shell.info-open .viewport-hud{padding:12px 14px;max-width:305px;background:#f9f5e9ec}
+.shell.info-open .viewport-hud h2{font-size:20px}
+.shell.info-open .viewport-hud p{display:block;font-size:11px}
+@media(max-width:760px){
+ .shell{display:block;grid-template-areas:none;grid-template-columns:none;grid-template-rows:none;height:100dvh;min-height:0}
+ .stage{height:100dvh;max-width:100vw;min-height:0;width:100vw}
+ .header{top:58px;left:8px;right:auto;width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 72px)}
+ .header .brand{max-width:none}
+ .header .header-end{display:grid}
+ .header .project-input{display:block}
+ .rail{left:50%;top:auto;bottom:calc(76px + env(safe-area-inset-bottom,0px));width:min(340px,calc(100vw - 16px));height:auto;max-height:min(58dvh,390px);min-height:0;max-width:none;overflow-y:auto;overflow-x:hidden;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .rail .rail-button{height:47px;min-width:0;width:100%;flex:0 1 auto;flex-direction:row;gap:8px;scroll-snap-align:none}
+ .rail .rail-button .symbol{font-size:18px;width:20px}
+ .rail .rail-button.help-only{display:flex}
+ .shelf{left:50%;bottom:calc(75px + env(safe-area-inset-bottom,0px));width:calc(100vw - 16px);height:min(48dvh,340px);max-width:none;overflow:hidden;padding:11px}
+ .shelf .shelf-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:auto}
+ .shelf .catalog-tile{width:100%;flex:none;min-height:60px}
+ .shelf .shelf-top{gap:5px}
+ .shelf .shelf-title{font-size:10px}
+ .shelf .shelf-categories{flex:1}
+ .shelf .catalog-search{width:100%;max-width:none;flex:0 0 100%}
+ .inspector,.inspector.mobile-open{top:auto;right:8px;left:8px;bottom:calc(76px + env(safe-area-inset-bottom,0px));width:auto;max-width:none;height:min(67dvh,585px);max-height:calc(100dvh - 95px);min-height:0;overflow:hidden;border:1px solid #6a9479b3;border-radius:17px;transform:translateY(calc(100% + 125px));z-index:43}
+ .inspector.mobile-open{height:min(67dvh,585px);transform:translateY(0)}
+ .inspector.mobile-open .ins-head{padding:12px 14px 10px}
+ .inspector.mobile-open .ins-head h3{font-size:19px}
+ .inspector .ins-tabs{padding:3px 46px 0 8px}
+ .inspector .ins-tabs button{font-size:10px}
+ .focus-project{top:9px;left:9px;height:40px;min-height:40px;padding:5px 10px 5px 5px}
+ .focus-view-toggle{top:9px;right:9px;min-height:40px;height:40px;min-width:112px;padding:8px 10px}
+ .focus-dock{bottom:calc(9px + env(safe-area-inset-bottom,0px));padding:4px;gap:1px;border-radius:17px}
+ .focus-dock button{height:43px;padding:8px 11px;font-size:11px;gap:5px}
+ .focus-dock .focus-icon{font-size:18px}
+ .focus-selection{bottom:calc(72px + env(safe-area-inset-bottom,0px));padding:4px 6px 4px 10px}
+ .focus-selection-name{max-width:140px}
+ .view-controls{top:58px;right:9px}
+ .viewport-hud{top:58px;left:9px}
+ .map-card{bottom:calc(77px + env(safe-area-inset-bottom,0px));left:8px}
+ .floating-actions{bottom:calc(77px + env(safe-area-inset-bottom,0px));right:8px}
+}
+@media(max-width:370px){.focus-dock button{padding:7px 8px;font-size:10px}.focus-dock .focus-icon{font-size:17px}.focus-project .focus-project-label{display:none}.focus-project{width:43px;justify-content:center;padding:5px}.focus-view-toggle{min-width:110px}}
+@media(prefers-reduced-motion:reduce){.rail,.header,.inspector,.shelf,.view-controls,.viewport-hud,.map-card,.floating-actions{transition:none!important}}
+
+/* Preserve the Design Lab entry in the project drawer on phones. */
+.header .studio-cta{display:inline-flex!important;align-items:center;justify-content:center}
+.header .scan-cta{display:inline-flex;align-items:center;justify-content:center}

@@ -1,0 +1,219 @@
+{
+  "artifact": "Home Plan — Baby-blue configurable background source-only release",
+  "version": "0.8.0",
+  "date": "2026-10-25",
+  "scope": "Public code only. No original apartment videos, photographs, captured survey assets or private user layouts.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "size": 451,
+      "sha256": "7bc3a5b1f5af48d03231cdee6b00c068fe7f585d199c11732a785fdf2e06ee51"
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "size": 1135,
+      "sha256": "4afdd88715e7f0be7f5bbda89f0bc6f12192870cb769a13bbaafb390c1794a9d"
+    },
+    {
+      "path": "index.html",
+      "size": 333442,
+      "sha256": "46d23c987afc2ac7a34753af92569a064b69f73c6b3852dbe80fac53004dbae1"
+    },
+    {
+      "path": "README.md",
+      "size": 18155,
+      "sha256": "11e86c6ce81b1306792e1a3d0b3fdaff6c9e284624e09083960e6184c1859db8"
+    },
+    {
+      "path": "FEATURE_RECON.md",
+      "size": 9508,
+      "sha256": "7cb9acf0b06f275773b8393b8d1a2016e6e7642c421b0d7c7f0e72711d6006b6"
+    },
+    {
+      "path": "PUBLISHING.md",
+      "size": 2308,
+      "sha256": "75cb54d2c590e575ef3194da877b35d379c8a385710bd014c78406922cacdea3"
+    },
+    {
+      "path": "ICON_UX_RESEARCH.md",
+      "size": 3511,
+      "sha256": "ef008d52ab343e7130d902f6d35e2cf17031f7c521d36663b1575a5962f4ee5b"
+    },
+    {
+      "path": "QA_REPORT.md",
+      "size": 19438,
+      "sha256": "63cbcfb69dd10c03a2ebb1caa3c0982b0eefeeb270ea587e48618d304b0e54af"
+    },
+    {
+      "path": "OPERATIONAL_STATE.md",
+      "size": 20982,
+      "sha256": "261f61dae5b2895b85565368ff392ee7dd7e334842903ccd53589554e2339ded"
+    },
+    {
+      "path": "package.json",
+      "size": 1122,
+      "sha256": "628a56a988a77a3d0a805be3d496652bb34fc87734dc97028417bbda505b678e"
+    },
+    {
+      "path": "build.py",
+      "size": 1167,
+      "sha256": "1ecd98a9345286477c0a18ac37ee23c2a7cf1ca73bfb7644d36a093500a510db"
+    },
+    {
+      "path": "release_build.py",
+      "size": 3081,
+      "sha256": "33b3274a23bed215a425d866bae12a6513669cff69458203651de7d62a6d0a9b"
+    },
+    {
+      "path": "src/app.js",
+      "size": 65461,
+      "sha256": "27a4d49d1c2e6acd2bb3328cedbaabcd242f817feb3ec0ecf86776832c7ad7f1"
+    },
+    {
+      "path": "src/model.js",
+      "size": 23266,
+      "sha256": "cc9a484092609a4bd8fbc9735f99c3eed95adc813dc27a00bbdf6a8f535bb485"
+    },
+    {
+      "path": "src/studio.js",
+      "size": 41389,
+      "sha256": "8db1df5bed8c1ba66f2bc374224a6cabe5b7bf440e7fa1016c52901e732282ad"
+    },
+    {
+      "path": "src/studio_model.js",
+      "size": 14041,
+      "sha256": "4132a5e93ad0a87d81223d2fd1561eaf3371e67782a11e88c386a87e7956370b"
+    },
+    {
+      "path": "src/studio.css",
+      "size": 7611,
+      "sha256": "3d57937674e7b30ac4db247e4d1b6abd8ed41f83ac27b53ce0036dec20ebab57"
+    },
+    {
+      "path": "src/shell.html",
+      "size": 17451,
+      "sha256": "1dc35ae0ce820b99972369ede8a6f73aae34cb8c19666ff355a72b47e35e4ae8"
+    },
+    {
+      "path": "src/style.css",
+      "size": 13265,
+      "sha256": "b73c6a8359b43c1df464048eded7ea9f9a7ac9e78f15536f41d7f2be5d162b04"
+    },
+    {
+      "path": "src/appearance.js",
+      "size": 2225,
+      "sha256": "218114f4f1a3aff3c78302a57ec5bf19e7666334439bbd65978ed222ce860445"
+    },
+    {
+      "path": "src/focus.css",
+      "size": 14516,
+      "sha256": "5a719067e72976d8931c8d4b377f13f2ff28f474b06c569b09e57d390c168fa0"
+    },
+    {
+      "path": "src/focus.js",
+      "size": 7823,
+      "sha256": "e113ef7e9db78e6ab46646b4adb7364ac20b22f164589e8bc90644bf937d0241"
+    },
+    {
+      "path": "src/icon_ui.css",
+      "size": 9639,
+      "sha256": "9398a73f67c6e257c78e6686b95b3169da12f62c103649e000988599907fd049"
+    },
+    {
+      "path": "src/icon_ui.js",
+      "size": 18668,
+      "sha256": "4145ef450571c3f948475a36d73a56c515d649c525e144158f65d67ebce8d391"
+    },
+    {
+      "path": "src/survey.css",
+      "size": 16951,
+      "sha256": "194c156e6ed0ecf988978a71287fe2af0f50fb7fbe1097cc7eedf63d94817b4e"
+    },
+    {
+      "path": "src/survey.js",
+      "size": 44705,
+      "sha256": "7222bb529fa4f6b165178f71fabd141a69a12da4d1d8a74c0e3d842c9a82146b"
+    },
+    {
+      "path": "src/visuals.js",
+      "size": 24972,
+      "sha256": "ea52d5c38d2f3697a78238c5d2c12441056152cd556ca180382675f18c7a6b62"
+    },
+    {
+      "path": "src/polish.css",
+      "size": 10024,
+      "sha256": "e54b819b8ae3b7049d69b182094b356f7b7a15f0bf9bf4561d556e91ee7fe99d"
+    },
+    {
+      "path": "src/chrome.js",
+      "size": 1639,
+      "sha256": "e4820c1b222736b71397eb5a576e538fbd610bb6e36f86dff2daec57dc1d1b80"
+    },
+    {
+      "path": "tests/model.test.cjs",
+      "size": 2527,
+      "sha256": "e7246373953469efc46115970a07dc8fb5664c4a678d8a76b72a82ff4dbac151"
+    },
+    {
+      "path": "tests/survey_model.test.cjs",
+      "size": 4221,
+      "sha256": "1986cf3e0625b75f25b606e0a2866094b79640e6a7a2d38c5b390d32afbc0940"
+    },
+    {
+      "path": "tests/studio_model.test.cjs",
+      "size": 4513,
+      "sha256": "88a7092577da13ff70b4590a89c36d0688a208b983638d2b5cd467549b1ee262"
+    },
+    {
+      "path": "tests/runtime.test.cjs",
+      "size": 4541,
+      "sha256": "bac20b18c2b3cf31f6102fd6bffceefb73eb1c88c17e411c93293b7f7021ab15"
+    },
+    {
+      "path": "tests/appearance.test.cjs",
+      "size": 2299,
+      "sha256": "1444361e361bf06edcf4bc60465da237b2001cd1160dbd55b0be3f2ddad0b2b5"
+    },
+    {
+      "path": "tests/performance.cjs",
+      "size": 1759,
+      "sha256": "3c393fc8f7999f197cd7ed75d01821df920e8fdd5132cea4f78fed0fafee03d7"
+    },
+    {
+      "path": "tests/studio_browser.py",
+      "size": 10892,
+      "sha256": "c5628719a9c3cf3da5c40e82b0b68baa34c1eafc141fe670962fc1be25615f90"
+    },
+    {
+      "path": "tests/survey_browser.py",
+      "size": 9960,
+      "sha256": "5e20c311460e66cff56070ed79bd17bc6a14a637a6f731d6bdefef53c4eeb1d7"
+    },
+    {
+      "path": "tests/visual_browser.py",
+      "size": 6447,
+      "sha256": "14d27428c4fa71774c8547fee31bedc0c5b4c52ad94210304cfb1f61df95ea2e"
+    },
+    {
+      "path": "tests/focus_browser.py",
+      "size": 7720,
+      "sha256": "45f3bc5f1a56e841af333ad99041add8897df6665c5e85c3609adb2df49980d3"
+    },
+    {
+      "path": "tests/icon_ui_browser.py",
+      "size": 6799,
+      "sha256": "f6e52fc2c18713a7754c1f7c4ed1a8dda70546ceb7bbe3689ecf401bb1f559c4"
+    },
+    {
+      "path": "tests/appearance_browser.py",
+      "size": 5537,
+      "sha256": "a42bfa614e400140aa20ca9288e7b5cd4601504fea086cfa96ecc6065597d620"
+    }
+  ],
+  "limits": [
+    "No verified full offline Three.js WebGL; offline uses custom perspective Canvas",
+    "Architectural zones remain provisional pending tape/laser survey",
+    "Mobile browser emulation tested; physical device FPS/storage durability not proven",
+    "GitHub remote/Pages deployment requires separate provider verification"
+  ]
+}

@@ -1,0 +1,41 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const ctx=vm.createContext({Math,Number,JSON,Array,Map,Set,console,Date,Uint8Array,Int32Array,Intl});
+for(const file of ['model.js','studio_model.js'])vm.runInContext(fs.readFileSync(__dirname+'/../src/'+file,'utf8'),ctx);
+const calc=expr=>vm.runInContext(expr,ctx);
+const plan=calc('initialPlan()');
+assert.equal(plan.schema,4);
+assert.equal(plan.studio.units,'m');
+assert.ok(calc('totalZoneArea(initialPlan())')>0);
+assert.equal(calc('roomSquareMeters({w:2.5,d:3})'),7.5);
+assert.ok(Math.abs(calc('measuredToUnits(1,"ft")')-3.28)<.02);
+assert.ok(Math.abs(calc('areaToUnits(1,"ft")')-10.8)<.2);
+assert.equal(calc('studioDistance([0,0],[3,4])'),5);
+assert.equal(calc('roomByPoint(initialPlan(),2,2).id'),'living');
+assert.equal(calc('roomByPoint(initialPlan(),-500,0)'),null);
+assert.ok(calc('nearestFurnitureWall(initialPlan(),initialPlan().items[0])').d>=0);
+assert.ok(calc('Number.isFinite(alignedToWall(initialPlan().items[0],initialPlan().walls[0]).x)'));
+assert.ok(calc('shoppingList(initialPlan()).items.length>=12'));
+assert.equal(calc('shoppingList(initialPlan()).unpriced'),12);
+assert.ok(calc('shoppingCSV(initialPlan())').startsWith('\"Name\"'));
+assert.equal(calc('studioSafeCSV(" =SUM(1,2)")'),"\"' =SUM(1,2)\"");
+assert.ok(calc('doorSwingWarnings(initialPlan())').every(w=>typeof w.fixture==='string'));
+assert.ok(calc('furnitureClearances(initialPlan(),.75)').length>=0);
+const route=calc('walkingRoute(initialPlan(),[8.08,3.87],[2.5,2.5],.35)');assert.equal(route.ok,true);assert.ok(route.path.length>3);assert.ok(route.length>0);
+const blocked=calc('walkingRoute(initialPlan(),[8.08,3.87],[2.5,2.5],.75)');assert.equal(blocked.ok,false);
+assert.ok(calc('proposeSmartArrangement(initialPlan(),"living")').length>=4);
+assert.throws(()=>calc('proposeSmartArrangement(initialPlan(),"missing")'));
+const normalized=calc('normalizeStudio({units:"ft",north:98,cutHeight:1.2,favorites:["sofa","sofa","invalid"],annotations:[{id:"a",x:1,z:1,text:"test"}],measurements:[{id:"b",a:[0,0],b:[3,4],label:"x"}]})');
+assert.equal(normalized.units,'ft');assert.equal(normalized.north,98);assert.equal(normalized.favorites.length,1);assert.equal(normalized.annotations.length,1);assert.equal(normalized.measurements.length,1);
+const hazardous=calc('normalizeStudio({cutHeight:999,budget:-3,labels:false,favorites:["NOPE"],annotations:[{x:NaN,z:Infinity}],bookmarks:[{yaw:Infinity}]})');
+assert.equal(hazardous.cutHeight,3);assert.equal(hazardous.budget,0);assert.equal(hazardous.labels,false);assert.equal(hazardous.favorites.length,0);assert.equal(hazardous.annotations.length,0);assert.equal(hazardous.bookmarks.length,0);
+// Custom scene metadata survives a JSON import. Existing historical data are migrated.
+vm.runInContext('var custom=initialPlan();custom.studio.palette="warm";custom.studio.bookmarks=[{id:"cam1",name:"Doorway",yaw:.78,pitch:.9,dist:12,target:[1,0,2]}];custom.items[0].locked=true;custom.items[0].group="seating";custom.items[0].price=126;custom.items[0].color="#112233";custom.items[0].label="Our sofa";',ctx);
+const roundTrip=calc('parsePlan(JSON.parse(JSON.stringify(custom)))');assert.equal(roundTrip.studio.palette,'warm');assert.equal(roundTrip.studio.bookmarks.length,1);assert.equal(roundTrip.items[0].locked,true);assert.equal(roundTrip.items[0].price,126);assert.equal(roundTrip.items[0].label,'Our sofa');
+vm.runInContext('var old=initialPlan();delete old.studio;old.schema=3;',ctx);const migrated=calc('parsePlan(old)');assert.equal(migrated.schema,4);assert.equal(migrated.studio.units,'m');
+// Adversarial arrangement: locked furniture must never move, and candidates cannot overlap it.
+vm.runInContext('var test=initialPlan();test.items=test.items.filter(i=>["i1","i6"].includes(i.id));test.items[0].locked=true;test.items[0].x=1.418;test.items[0].z=1.165;test.items[1].x=4;test.items[1].z=3.5;',ctx);
+const proposal=calc('proposeSmartArrangement(test,"living")');assert.equal(proposal.length,1);assert.equal(proposal[0].id,'i6');
+vm.runInContext('var changed=Object.assign({},test.items[1],proposeSmartArrangement(test,"living")[0]);',ctx);
+assert.equal(calc('satCollision(test.items[0],changed)'),false,'smart placement must avoid locked furniture');
+// Geometry is data, not a physical building certification.
+console.log('PASS studio model: metrics, notes, tape, annotations, pathfinding, warnings, smart placement, CSV safety, palettes, save/import, locks and price persistence');
