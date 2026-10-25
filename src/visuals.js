@@ -333,7 +333,7 @@ window.HomePlanVisuals = (() => {
       ctx.fillStyle=light==='night'?'#f5bc75':'#c36f29';ctx.font='900 11px system-ui';ctx.fillText('⇥ ENTRY',p.x,p.y-20);
     }ctx.restore();
   }
-  function fixtures(ctx, engine, plan, light, quality) {
+  function fixtures(ctx, engine, plan, light, quality, app) {
     if (plan.studio?.fixtureMarkers === false || !plan.view.walls) return;
     ctx.save();
     for(const f of plan.fixtures){
@@ -476,7 +476,7 @@ function annotations(ctx, engine, app) {
         }
       }
       wallTrim(ctx,engine,plan,light);
-      fixtures(ctx,engine,plan,light,quality);
+      fixtures(ctx,engine,plan,light,quality,app);
       fountainMarker(ctx,engine,app,light);
       roomLabels(ctx,engine,plan,light);
       entranceLabel(ctx,engine,plan,light);
