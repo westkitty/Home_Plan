@@ -37,7 +37,7 @@ window.HomePlanVisuals = (() => {
   function lightFactor(light) { return light === 'night' ? .71 : light === 'evening' ? .94 : 1; }
   function roomBounds(plan) {
     const r = plan.rooms;
-    if (!r.length) return { minX: -1, maxX: 10, minZ: -1, maxZ: 10 };
+    if (!r.length) { const points=[...plan.walls.flatMap(w=>[w.a,w.b]),...plan.items.map(it=>[it.x,it.z])];return points.length?{minX:Math.min(...points.map(p=>p[0]))-2,maxX:Math.max(...points.map(p=>p[0]))+2,minZ:Math.min(...points.map(p=>p[1]))-2,maxZ:Math.max(...points.map(p=>p[1]))+2}:{minX:-6,maxX:6,minZ:-6,maxZ:6}; }
     return {
       minX: Math.min(...r.map(x => x.x)) - .5,
       maxX: Math.max(...r.map(x => x.x + x.w)) + .5,
@@ -45,15 +45,16 @@ window.HomePlanVisuals = (() => {
       maxZ: Math.max(...r.map(x => x.z + x.d)) + .5
     };
   }
-  function background(ctx, w, h, light, colors) {
+  function background(ctx, w, h, light, colors, studio={}) {
     // The color behind the model is a personal workspace setting, not a plan material.
     const chosen = window.HomePlanAppearance?.getColor?.() || '#C9E9FF';
     const tint = light === 'night' ? '#1B2C45' : light === 'evening' ? '#FFF0DE' : '#FFFFFF';
     const strength = light === 'night' ? .20 : light === 'evening' ? .12 : .17;
+    const dayColor=light==='night'?blend(chosen,'#0a1427',(studio.outdoorDim??85)/100*.97):light==='evening'?blend(chosen,'#c48c82',.30):chosen;
     const backdrop = ctx.createLinearGradient(0, 0, w * .8, h);
-    backdrop.addColorStop(0, chosen);
-    backdrop.addColorStop(.68, blend(chosen, tint, strength));
-    backdrop.addColorStop(1, blend(chosen, tint, strength * 1.35));
+    backdrop.addColorStop(0, dayColor);
+    backdrop.addColorStop(.68, blend(dayColor, tint, strength));
+    backdrop.addColorStop(1, blend(dayColor, tint, strength * 1.35));
     ctx.fillStyle = backdrop; ctx.fillRect(0, 0, w, h);
     const glow = ctx.createRadialGradient(w * .74, h * .13, 5, w * .74, h * .13, Math.max(w, h) * .75);
     glow.addColorStop(0, light === 'night' ? 'rgba(186,200,211,.12)' : 'rgba(255,255,255,.22)');
@@ -109,7 +110,10 @@ window.HomePlanVisuals = (() => {
   }
   function faceGradient(ctx, f, quality, light) {
     const b = f.box, p = f.poly, k = f.face;
-    const mult = [0.56, 1.10, .78, .85, .75, .94][k] * lightFactor(light);
+    const studio=window.homePlanStudioBridge?.getPlan?.()?.studio||{};
+    const nightAmount=(studio.outdoorDim??85)/100,glow=(studio.indoorGlow??75)/100;
+    const lighting=light==='night'?(b.indoor===false?.42*(1-nightAmount*.65):.59+glow*.59):light==='evening'?(b.indoor===false?.78:.93):1;
+    const mult = [0.56, 1.10, .78, .85, .75, .94][k] * lighting;
     if (quality === 'eco' || f.pixelArea < (quality === 'high' ? 480 : 1850) || (b.kind === 'item' && f.pixelArea < 4500) || b.kind === 'selection') return tone(b.color, mult, k === 1 ? 9 : 0);
     const top = Math.min(...p.map(a => a.y)), bottom = Math.max(...p.map(a => a.y));
     const g = ctx.createLinearGradient(p[0].x, top, p[2].x + .01, Math.max(top + 1, bottom));
@@ -136,13 +140,20 @@ window.HomePlanVisuals = (() => {
   function drawFloorPattern(ctx, engine, f, plan, quality, light) {
     const room = plan.rooms.find(r => r.id === f.box.id); if (!room) return;
     if (f.pixelArea < 700 || quality === 'eco') return;
-    const kind = /bath|kitchen|lavatory/i.test(room.id + ' ' + room.name) ? 'tile' : /hall|entrance|workshop/i.test(room.id + ' ' + room.name) ? 'stone' : 'wood';
+    if(f.box.customFloor)return;
+    const kind = FLOOR_MATERIALS[room.flooring]?.pattern || (/bath|kitchen|lavatory/i.test(room.id + ' ' + room.name) ? 'tile' : /hall|entrance|workshop/i.test(room.id + ' ' + room.name) ? 'stone' : 'wood');
     const y = -.0185, bright = light === 'night' ? .56 : 1;
     ctx.save(); trace(ctx, f.poly); ctx.clip();
     ctx.lineWidth = kind === 'wood' ? .76 : .95;
     const ink = light === 'night' ? 'rgba(28,49,49,.30)' : 'rgba(68,77,60,.27)';
-    if (kind === 'wood') {
-      const step = quality === 'high' ? .22 : .33;
+    if(kind==='carpet'){
+      // Soft short woven flecks, screen-space consistent and not image-backed.
+      const density=quality==='high'?.20:.36;
+      for(let z=room.z+density;z<room.z+room.d;z+=density)for(let x=room.x+density;x<room.x+room.w;x+=density){
+       const p=engine.project(x,y,z);if(!p)continue;ctx.fillStyle='rgba(255,255,255,.14)';ctx.fillRect(p.x,p.y,1.1,1.1);
+      }
+    }else if (kind === 'wood'||kind==='deck') {
+      const step = kind==='deck'?.48:quality === 'high' ? .22 : .33;
       ctx.strokeStyle = ink;
       let row = 0;
       for (let z = room.z + step; z < room.z + room.d - .01; z += step, row++) {
@@ -152,7 +163,7 @@ window.HomePlanVisuals = (() => {
           line(ctx, engine.project(x, y, z), engine.project(x, y, Math.min(z + step, room.z + room.d)), ink, .68);
         }
       }
-      if (quality === 'high') {
+      if (quality === 'high' && kind==='wood') {
         const grain = 'rgba(255,255,240,.11)';
         for (let z = room.z + .09; z < room.z + room.d; z += .65)
           line(ctx, engine.project(room.x + .15, y, z), engine.project(room.x + room.w - .2, y, z + .015), grain, .58);
@@ -252,12 +263,19 @@ window.HomePlanVisuals = (() => {
       const title = room.name.toUpperCase();
       ctx.font = `800 ${size}px system-ui`;
       const ww = Math.max(70,ctx.measureText(title).width+21);
-      ctx.fillStyle = dark ? 'rgba(18,39,44,.77)' : 'rgba(255,252,239,.79)';
+      ctx.fillStyle = dark && room.zone==='outdoor' ? 'rgba(12,28,40,.92)' : dark ? 'rgba(46,36,29,.90)' : 'rgba(255,252,239,.79)';
       ctx.strokeStyle = dark ? 'rgba(192,223,209,.28)' : 'rgba(59,91,76,.21)';
       ctx.lineWidth=.85;ctx.beginPath();ctx.roundRect(p.x-ww/2,p.y-12,ww,24,7);ctx.fill();ctx.stroke();
-      ctx.fillStyle= dark ? '#dceee8' : '#315c4d';ctx.fillText(title,p.x,p.y+1);
+      ctx.fillStyle= dark ? '#f8e7ca' : '#315c4d';ctx.fillText(title,p.x,p.y+1);
     }
     ctx.restore();
+  }
+  function entranceLabel(ctx,engine,plan,light){
+    const entrances=plan.fixtures.filter(f=>f.type==='entry');
+    ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';
+    for(const f of entrances){const wall=plan.walls.find(w=>w.id===f.wall);if(!wall)continue;const pt=wallPoint(wall,f.at),p=engine.project(pt[0],.42,pt[1]);if(!p)continue;
+      ctx.fillStyle=light==='night'?'#f5bc75':'#c36f29';ctx.font='900 11px system-ui';ctx.fillText('⇥ ENTRY',p.x,p.y-20);
+    }ctx.restore();
   }
   function fixtures(ctx, engine, plan, light, quality) {
     if (plan.studio?.fixtureMarkers === false || !plan.view.walls) return;
@@ -345,7 +363,7 @@ function annotations(ctx, engine, app) {
     const w=engine.w,h=engine.h;
     ctx.save(); engine.C=engine.camera(); engine._showGrid=plan.view.grid;
     try{
-      background(ctx,w,h,light,c);
+      background(ctx,w,h,light,c,plan.studio);
       stageSlab(ctx,engine,roomBounds(plan),c,light,quality);
       const faceIndices=[[0,1,3,2],[4,6,7,5],[0,4,5,1],[2,3,7,6],[0,2,6,4],[1,5,7,3]];
       const faces=[],itemById=new Map(plan.items.map(it=>[it.id,it]));
@@ -383,14 +401,14 @@ function annotations(ctx, engine, app) {
           ctx.globalAlpha=box.kind==='wall'&&plan.view.style==='dollhouse'?.33:box.kind==='selection'?.44:1;
           trace(ctx,face.poly);
           ctx.fillStyle=faceGradient(ctx,face,quality,light);ctx.fill();
-          if(face.pixelArea>70 || box.kind==='selection')faceOutline(ctx,face,light);
+          if(!box.customFloor&&(face.pixelArea>70 || box.kind==='selection'))faceOutline(ctx,face,light);
           ctx.globalAlpha=1;
         } else {
           ctx.save();
           ctx.globalAlpha=box.kind==='wall'&&plan.view.style==='dollhouse'?.33:box.kind==='selection'?.44:1;
           trace(ctx,face.poly);
           ctx.fillStyle=faceGradient(ctx,face,quality,light);ctx.fill();
-          faceOutline(ctx,face,light);
+          if(!box.customFloor)faceOutline(ctx,face,light);
           if(box.kind==='room'&&face.face===1)drawFloorPattern(ctx,engine,face,plan,quality,light);
           else if(box.kind==='item'&&face.face===1)drawFurnitureDetail(ctx,engine,face,itemById,quality);
           ctx.restore();
@@ -400,6 +418,7 @@ function annotations(ctx, engine, app) {
       fixtures(ctx,engine,plan,light,quality);
       fountainMarker(ctx,engine,app,light);
       roomLabels(ctx,engine,plan,light);
+      entranceLabel(ctx,engine,plan,light);
       annotations(ctx,engine,app);
       selectedHighlight(ctx,engine,app,quality);
       if(app.tool==='build'){
@@ -411,6 +430,7 @@ function annotations(ctx, engine, app) {
       }
       if(window.homePlanStudioDrawPerspective) window.homePlanStudioDrawPerspective(ctx,engine);
       vignette(ctx,w,h,light);
+      window.homePlanDrawShapePreview?.(engine,app);
       return true;
     }finally{engine.C=null;ctx.restore();}
   }

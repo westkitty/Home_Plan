@@ -89,3 +89,11 @@
 .hp-appearance-controls button .hp-icon{width:17px;height:17px}
 .hp-appearance-controls input:focus-visible,.hp-appearance-controls button:focus-visible{outline:3px solid #f0cb91;outline-offset:2px}
 .hp-appearance-note{margin:9px 0 0;font-size:11px;line-height:1.5;color:#c0d6c7}
+
+/* More build categories without obstructing the scene; touch targets are at least 48px. */
+.architecture-palette{width:min(440px,calc(100vw - 18px));grid-template-columns:repeat(5,minmax(0,1fr));max-height:min(62dvh,440px);padding:10px;gap:6px;overscroll-behavior:contain;touch-action:pan-y}
+.hp-architecture-tool{min-height:56px;touch-action:manipulation}
+.architecture-palette .hp-help-trigger{min-height:56px;height:56px}
+.hp-context-dialog button{min-width:44px;min-height:44px;touch-action:manipulation}
+.hp-help-trigger{min-width:44px;min-height:44px;touch-action:manipulation}
+@media(max-width:480px){.architecture-palette{grid-template-columns:repeat(4,minmax(0,1fr));max-height:min(58dvh,420px);width:calc(100vw - 14px);gap:6px}.hp-architecture-tool{min-height:52px;padding:7px}.hp-architecture-tool .hp-icon{width:26px;height:26px}}

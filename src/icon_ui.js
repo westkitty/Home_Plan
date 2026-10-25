@@ -41,7 +41,16 @@
   zoom:'<circle cx="10" cy="10" r="6"/><path d="M10 7v6m-3-3h6m2 5 6 6"/>',
   info:'<circle cx="12" cy="12" r="9"/><path d="M12 10v7M12 7h.01"/>',
   hand:'<path d="M6 12V8a2 2 0 0 1 4 0V5a2 2 0 0 1 4 0v2a2 2 0 0 1 4 0v7a4 4 0 0 1-4 7h-3a6 6 0 0 1-5-3l-3-4a2 2 0 0 1 3-2Z"/>',
-  grid:'<rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>'
+  grid:'<rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>',
+  rectangle:'<rect x="4" y="6" width="16" height="12" rx=".5"/><path d="m4 6-2 2M20 18l2-2"/>',
+  circle:'<circle cx="12" cy="12" r="9"/>',
+  ellipse:'<ellipse cx="12" cy="12" rx="10" ry="6"/>',
+  triangle:'<path d="M12 3 22 21H2L12 3Z"/>',
+  lshape:'<path d="M4 4h16v8H12v8H4V4Z"/>',
+  porch:'<path d="M3 21V8l9-5 9 5v13M3 14h18m-15 4h12M8 21v-7M16 21v-7"/>',
+  balcony:'<path d="M2 13h20v8H2zM6 13V4m6 9V4m6 9V4M2 17h20"/>',
+  moon:'<path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5Z"/>',
+  broom:'<path d="M4 21h16l-3-7H7l-3 7Zm8-18v11"/>'
  };
  const svg=name=>`<svg class="hp-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[name]||shapes.info}</svg>`;
  const definitions={
@@ -49,7 +58,7 @@
   focusViews:['view','Camera views','Switch between dollhouse, orbit and floor plan; adjust the visible guides.'],
   focusMove:['select','Move · V','Select an object in the model and drag to reposition it.'],
   focusAdd:['add','Add · A','Browse furniture by category and place it in the apartment.'],
-  focusBuild:['wall','Build · B','Select a wall, adjust its endpoints, or draw new walls.'],
+  focusBuild:['wall','Build · B','Select walls, draw draggable room shapes, and edit indoor/outdoor zones.'],
   focusTools:['tools','More tools','Measure, annotate, add openings, navigate and access advanced workspaces.'],
   focusEdit:['sliders','Edit selected object','Open the inspector for measurements, placement and properties.'],
   focusDeselect:['select','Deselect','Clear the active selection.'],
@@ -74,7 +83,7 @@
   sceneBackgroundReset:['undo','Reset background','Restore the default baby-blue scene color.']
  };
  const toolDefs={furnish:['sofa','Furniture','Select, move and arrange furniture.'],build:['wall','Walls','Edit or draw walls; change their endpoints.'],navigate:['orbit','Explore','Drag empty space to orbit; pan and zoom.'],measure:['ruler','Measure','Tap two model positions to measure their distance.'],annotate:['note','Notes','Tap the floor to leave a note.'],opening:['door','Openings','Choose a door, window, outlet or passage, then tap a wall.']};
- const categoryDefs={All:['grid','All furniture'],Favorites:['star','Favorite furniture'],Living:['sofa','Living room'],Storage:['storage','Storage'],Bedroom:['bed','Bedroom'],Kitchen:['kitchen','Kitchen'],Bathroom:['bath','Bathroom'],Markers:['marker','Markers and fixtures']};
+ const categoryDefs={All:['grid','All furniture'],Favorites:['star','Favorite furniture'],Living:['sofa','Living room'],Storage:['storage','Storage'],Bedroom:['bed','Bedroom'],Office:['sliders','Desks and office'],Kitchen:['kitchen','Kitchen'],Appliances:['kitchen','Major appliances'],Bathroom:['bath','Bathroom'],Plumbing:['outlet','Plumbing and vents'],Laundry:['circle','Laundry machines'],Outdoor:['porch','Patio and balcony'],Markers:['marker','Markers and fixtures']};
  const viewDefs={dollhouse:['house','Dollhouse view'],orbit:['orbit','3D orbit view'],top:['plan','Top floor plan']};
  function decorate(el,entry,kind){if(!el||!entry)return;const [ico,label,detail]=entry;el.setAttribute('aria-label',label);el.dataset.tooltip=detail?`${label} — ${detail}`:label;el.removeAttribute('title');el.dataset.iconName=ico;const existing=el.querySelector('.focus-icon,.symbol');if(existing){existing.innerHTML=svg(ico);}else if(kind==='compact'){
    if(!el.dataset.originalLabel)el.dataset.originalLabel=el.textContent.trim();
@@ -102,20 +111,39 @@
  const categories=$('categories');if(categories){observer.observe(categories,{childList:true,subtree:false});d.querySelectorAll('#categories [data-category]').forEach(el=>decorate(el,categoryDefs[el.dataset.category],'compact'));}
  decorateStatic();
  // Sims-style two-level architecture palette; the model remains visible underneath.
- const architecture=[['walls','wall','Walls','Select a wall and drag its endpoints or body.'],['draw','draw','Draw wall','Tap two floor points to create a wall.'],['door','door','Door','Place a provisional door on a wall.'],['window','window','Window','Place a provisional window on a wall.'],['outlet','outlet','Outlet','Mark a provisional electrical outlet.'],['opening','passage','Open passage','Make an open passage through a wall.'],['entry','house','Entry door','Mark the entrance doorway.'],['finishes','paint','Finishes','Open finishes and materials in Design Lab.']];
+ const architecture=[
+ ['walls','wall','Select walls','Select a wall and move its ends.'],['draw','draw','Single wall','Tap two positions to draw a wall segment.'],
+ ['rectangle','rectangle','Rectangle walls','Drag an enclosed rectangular room. Tap two corners instead on touch.'],
+ ['circle','circle','Circular walls','Drag a circle as a perimeter of editable wall segments.'],
+ ['ellipse','ellipse','Oval walls','Drag an oval room. Each segment remains editable.'],
+ ['triangle','triangle','Triangle walls','Drag a triangular room outline.'],
+ ['l-shape','lshape','L-shaped walls','Drag an L-shaped room outline.'],
+ ['rooms','plan','Edit rooms','Rename, add, remove rooms and set indoor/outdoor zones.'],
+ ['porch','porch','Add porch','Add an outdoor floor zone for a porch.'],
+ ['balcony','balcony','Add balcony','Add a balcony study zone outside the unit.'],
+ ['door','door','Door','Place a provisional door on a wall.'],['window','window','Window','Place a provisional window on a wall.'],
+ ['outlet','outlet','Outlet','Mark a provisional electrical outlet.'],['opening','passage','Passage','Make an open passage through a wall.'],
+ ['entry','house','Main entry','Place the entrance doorway on an architectural wall.'],
+ ['lighting','moon','Lighting','Choose night, exterior dimming, and indoor glow.'],
+ ['finishes','paint','Floor finishes','Choose carpet, hardwood, and tile material styles in the room editor.'],
+ ['blank','broom','Blank plan','Start from empty space; requires confirmation.']
+ ];
  const arch=$('architecturePalette');
  if(arch){for(const [id,ico,label,detail] of architecture){const b=d.createElement('button');b.type='button';b.dataset.buildAction=id;b.className='hp-architecture-tool';b.setAttribute('aria-label',label);b.dataset.tooltip=label+' — '+detail;b.innerHTML=svg(ico);arch.append(b);}
  arch.addEventListener('click',e=>{const b=e.target.closest('[data-build-action]');if(!b)return;const action=b.dataset.buildAction,bridge=window.homePlanStudioBridge;
   window.HomePlanFocus?.closeFloating?.(true);
-  if(action==='walls')bridge.setTool('build');else if(action==='draw')bridge.startWall?.();else if(action==='finishes'){$('launchStudio')?.click();d.querySelector('[data-studio-tab=finishes]')?.click();}
-  else bridge.setFixtureKind?.(action);
+  if(action==='walls')bridge.setTool('build');else if(action==='draw')bridge.startWall?.();
+  else if(['rectangle','circle','ellipse','triangle','l-shape'].includes(action))bridge.startShape?.(action);
+  else if(action==='rooms')bridge.openRooms?.();else if(action==='finishes'){document.getElementById('launchStudio')?.click();document.querySelector('[data-studio-tab="finishes"]')?.click();}else if(action==='lighting')bridge.openLighting?.();
+  else if(action==='porch'||action==='balcony')bridge.addRoomZone?.(action==='porch'?'Porch':'Balcony',true);
+  else if(action==='blank')bridge.newBlank?.();else bridge.setFixtureKind?.(action);
   window.HomePlanFocus?.sync?.();
  });}
  // Feature descriptions are available without mouse hover, and do not interrupt work automatically.
  const help={
   project:['Project & files','Save keeps this layout on this device. Export creates files you can keep elsewhere. Undo and Redo step through editing changes. Settings lets you choose the background color behind the model. Design Lab contains measurements and finishes; Survey Studio guides evidence capture.','Your project is local-first. Export a JSON backup before changing devices; evidence photos and videos are not included in a public project export.'],
   appearance:['Appearance settings','Choose any scene background color with the color picker. The change appears immediately and is remembered on this device. Reset returns to the default baby blue.','This changes only the space behind the model, not furniture, floors, wall finishes, measurements, or exported project geometry.'],
-  architecture:['Build architecture','Walls lets you edit and move existing wall segments. Draw Wall adds a new segment using two floor taps. Door, Window, Outlet, Passage, and Entry prepare the matching opening tool; tap a wall to place it. Finishes opens Design Lab materials.','Geometry is provisional. Doors, windows and outlets are not considered physically confirmed until measured or surveyed.'],
+  architecture:['Build architecture','Walls edits segments; Single Wall uses two taps. Rectangle, Circle, Oval, Triangle and L-shape draw enclosed wall outlines by dragging on the model (or two taps). Rooms edits labels, indoor/outdoor and floors. Porch and Balcony add outdoor zones. Main Entry attaches the entry marker to a wall. Lighting controls day/night and interior glow. Blank Plan requires confirmation.','Outlines are made of editable wall segments. Room floor zones are independent study guides; geometry, outlets and door positions remain provisional until surveyed.'],
   tools:['Editing tools','Move furniture to rearrange rooms. Build edits structural wall lines. Explore rotates the camera. Tape measures two points. Notes adds floor annotations. Openings places wall-attached doors, windows, outlets or passages.','Select the icon for a tool, then interact directly with the model. Keyboard: V moves, B builds, A opens the catalog. Esc dismisses a menu.'],
   views:['View the apartment','Dollhouse shows the interior in perspective. Orbit is for exploring from other angles. Top Plan is best for alignment and positioning. Fit centers the apartment; Map and Zoom are optional overlays.','Switching views does not change furniture positions or wall geometry.'],
   catalog:['Furniture catalog','Choose a room category by icon, then select an object card to add that item. The star saves a favorite. The magnifying-glass search narrows results.','Objects are added to the editable plan. Select the new object to adjust position, rotation, dimensions or room assignment.'],

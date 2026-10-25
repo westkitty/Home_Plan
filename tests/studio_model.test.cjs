@@ -3,7 +3,7 @@ const ctx=vm.createContext({Math,Number,JSON,Array,Map,Set,console,Date,Uint8Arr
 for(const file of ['model.js','studio_model.js'])vm.runInContext(fs.readFileSync(__dirname+'/../src/'+file,'utf8'),ctx);
 const calc=expr=>vm.runInContext(expr,ctx);
 const plan=calc('initialPlan()');
-assert.equal(plan.schema,4);
+assert.equal(plan.schema,5);
 assert.equal(plan.studio.units,'m');
 assert.ok(calc('totalZoneArea(initialPlan())')>0);
 assert.equal(calc('roomSquareMeters({w:2.5,d:3})'),7.5);
@@ -31,7 +31,7 @@ assert.equal(hazardous.cutHeight,3);assert.equal(hazardous.budget,0);assert.equa
 // Custom scene metadata survives a JSON import. Existing historical data are migrated.
 vm.runInContext('var custom=initialPlan();custom.studio.palette="warm";custom.studio.bookmarks=[{id:"cam1",name:"Doorway",yaw:.78,pitch:.9,dist:12,target:[1,0,2]}];custom.items[0].locked=true;custom.items[0].group="seating";custom.items[0].price=126;custom.items[0].color="#112233";custom.items[0].label="Our sofa";',ctx);
 const roundTrip=calc('parsePlan(JSON.parse(JSON.stringify(custom)))');assert.equal(roundTrip.studio.palette,'warm');assert.equal(roundTrip.studio.bookmarks.length,1);assert.equal(roundTrip.items[0].locked,true);assert.equal(roundTrip.items[0].price,126);assert.equal(roundTrip.items[0].label,'Our sofa');
-vm.runInContext('var old=initialPlan();delete old.studio;old.schema=3;',ctx);const migrated=calc('parsePlan(old)');assert.equal(migrated.schema,4);assert.equal(migrated.studio.units,'m');
+vm.runInContext('var old=initialPlan();delete old.studio;old.schema=3;',ctx);const migrated=calc('parsePlan(old)');assert.equal(migrated.schema,5);assert.equal(migrated.studio.units,'m');
 // Adversarial arrangement: locked furniture must never move, and candidates cannot overlap it.
 vm.runInContext('var test=initialPlan();test.items=test.items.filter(i=>["i1","i6"].includes(i.id));test.items[0].locked=true;test.items[0].x=1.418;test.items[0].z=1.165;test.items[1].x=4;test.items[1].z=3.5;',ctx);
 const proposal=calc('proposeSmartArrangement(test,"living")');assert.equal(proposal.length,1);assert.equal(proposal[0].id,'i6');

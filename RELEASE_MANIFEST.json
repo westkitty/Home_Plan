@@ -1,6 +1,6 @@
 {
-  "artifact": "Home Plan — Baby-blue configurable background source-only release",
-  "version": "0.8.0",
+  "artifact": "Home Plan — Room, architecture and lighting source-only release",
+  "version": "0.9.0",
   "date": "2026-10-25",
   "scope": "Public code only. No original apartment videos, photographs, captured survey assets or private user layouts.",
   "files": [
@@ -16,13 +16,13 @@
     },
     {
       "path": "index.html",
-      "size": 333442,
-      "sha256": "46d23c987afc2ac7a34753af92569a064b69f73c6b3852dbe80fac53004dbae1"
+      "size": 362205,
+      "sha256": "53db766293d1704c196e75694a1062c1c120410e0044b20db704d4ef22755089"
     },
     {
       "path": "README.md",
-      "size": 18155,
-      "sha256": "11e86c6ce81b1306792e1a3d0b3fdaff6c9e284624e09083960e6184c1859db8"
+      "size": 20740,
+      "sha256": "ba622ed68ce57c54ae8a713e8cd3f2ac1337fcec5b4bda953142add330a1ea98"
     },
     {
       "path": "FEATURE_RECON.md",
@@ -41,18 +41,18 @@
     },
     {
       "path": "QA_REPORT.md",
-      "size": 19438,
-      "sha256": "63cbcfb69dd10c03a2ebb1caa3c0982b0eefeeb270ea587e48618d304b0e54af"
+      "size": 21194,
+      "sha256": "f667d7760a13457c1c77e6f47d5d2c07bf318df093626dd50bf415171bf320fe"
     },
     {
       "path": "OPERATIONAL_STATE.md",
-      "size": 20982,
-      "sha256": "261f61dae5b2895b85565368ff392ee7dd7e334842903ccd53589554e2339ded"
+      "size": 23557,
+      "sha256": "f3a94bfc728bf7bdf8500c41ac7275ba9afdf6e5cf160cae6a19003b4b72f84a"
     },
     {
       "path": "package.json",
-      "size": 1122,
-      "sha256": "628a56a988a77a3d0a805be3d496652bb34fc87734dc97028417bbda505b678e"
+      "size": 1199,
+      "sha256": "6bbdcfc18f11416f067259b0d27505c7fb1ce2e5dc340b1d0288370b5065de7f"
     },
     {
       "path": "build.py",
@@ -61,28 +61,28 @@
     },
     {
       "path": "release_build.py",
-      "size": 3081,
-      "sha256": "33b3274a23bed215a425d866bae12a6513669cff69458203651de7d62a6d0a9b"
+      "size": 3141,
+      "sha256": "f3c9f1fc22cabd93affb8ef68cab12c2ef0c27d3f2ec6796ae213e2a63d5ebff"
     },
     {
       "path": "src/app.js",
-      "size": 65461,
-      "sha256": "27a4d49d1c2e6acd2bb3328cedbaabcd242f817feb3ec0ecf86776832c7ad7f1"
+      "size": 81095,
+      "sha256": "5739c616ebe552af46626c956d620c20ac5d25b92cfd4ed3d23c4a3cfd2d7c4a"
     },
     {
       "path": "src/model.js",
-      "size": 23266,
-      "sha256": "cc9a484092609a4bd8fbc9735f99c3eed95adc813dc27a00bbdf6a8f535bb485"
+      "size": 28584,
+      "sha256": "83eaaf08eb3fc234ce1d2e27645b827c52aa8477a3871b56af8919dfa119a3a1"
     },
     {
       "path": "src/studio.js",
-      "size": 41389,
-      "sha256": "8db1df5bed8c1ba66f2bc374224a6cabe5b7bf440e7fa1016c52901e732282ad"
+      "size": 43074,
+      "sha256": "8023c8897b33958fa7653b9829672391ed98f8aa0ae796fce273b420238c048e"
     },
     {
       "path": "src/studio_model.js",
-      "size": 14041,
-      "sha256": "4132a5e93ad0a87d81223d2fd1561eaf3371e67782a11e88c386a87e7956370b"
+      "size": 14434,
+      "sha256": "2d4e5eb5b786ad52b45050e7d2e253b327ffa6e8c300c35391e188b62a38b624"
     },
     {
       "path": "src/studio.css",
@@ -106,8 +106,8 @@
     },
     {
       "path": "src/focus.css",
-      "size": 14516,
-      "sha256": "5a719067e72976d8931c8d4b377f13f2ff28f474b06c569b09e57d390c168fa0"
+      "size": 15199,
+      "sha256": "75d9ee3a6e4c16ac29e6890f2feb2a6114ef8c39efb254959199113c75a97c86"
     },
     {
       "path": "src/focus.js",
@@ -116,13 +116,13 @@
     },
     {
       "path": "src/icon_ui.css",
-      "size": 9639,
-      "sha256": "9398a73f67c6e257c78e6686b95b3169da12f62c103649e000988599907fd049"
+      "size": 10484,
+      "sha256": "0c04e5fb4946a2ffaeadfa5febc401112838a51ab84b96adbd38759542ca47de"
     },
     {
       "path": "src/icon_ui.js",
-      "size": 18668,
-      "sha256": "4145ef450571c3f948475a36d73a56c515d649c525e144158f65d67ebce8d391"
+      "size": 20944,
+      "sha256": "7e92d9a02a6fa5c3efb60f0d8f1f0ba3dc06c1bca3d736992522e40e0777491e"
     },
     {
       "path": "src/survey.css",
@@ -136,8 +136,8 @@
     },
     {
       "path": "src/visuals.js",
-      "size": 24972,
-      "sha256": "ea52d5c38d2f3697a78238c5d2c12441056152cd556ca180382675f18c7a6b62"
+      "size": 26901,
+      "sha256": "8cd36c3ef275517251a29be65911e028e48bc6c2a904c61efb4ae15959fdbdb6"
     },
     {
       "path": "src/polish.css",
@@ -150,19 +150,24 @@
       "sha256": "e4820c1b222736b71397eb5a576e538fbd610bb6e36f86dff2daec57dc1d1b80"
     },
     {
+      "path": "tests/architecture.test.cjs",
+      "size": 2737,
+      "sha256": "dac94c6cfb725f2fea4582a19e86dcae45bcacdb0e4c1e2fd09f5378ec7668a4"
+    },
+    {
       "path": "tests/model.test.cjs",
       "size": 2527,
-      "sha256": "e7246373953469efc46115970a07dc8fb5664c4a678d8a76b72a82ff4dbac151"
+      "sha256": "dde10cbf3c52cd3be2ea0376fb2156c459f7fa229cfbbc7fa6d2e164526222a0"
     },
     {
       "path": "tests/survey_model.test.cjs",
       "size": 4221,
-      "sha256": "1986cf3e0625b75f25b606e0a2866094b79640e6a7a2d38c5b390d32afbc0940"
+      "sha256": "1868205f5b3ee5a535babab01baf722efb5491e305ab1e207e39feba8c873a34"
     },
     {
       "path": "tests/studio_model.test.cjs",
       "size": 4513,
-      "sha256": "88a7092577da13ff70b4590a89c36d0688a208b983638d2b5cd467549b1ee262"
+      "sha256": "37a70b1e3f1d8faa102fbbe7c5112cfb9b8ff2f695a122e6dceeb03efc0b5d49"
     },
     {
       "path": "tests/runtime.test.cjs",
@@ -175,6 +180,11 @@
       "sha256": "1444361e361bf06edcf4bc60465da237b2001cd1160dbd55b0be3f2ddad0b2b5"
     },
     {
+      "path": "tests/architecture_browser.py",
+      "size": 6700,
+      "sha256": "cf8c987bacc8404a250cb9c79c08293e904145e08c40127c600597e85b80b585"
+    },
+    {
       "path": "tests/performance.cjs",
       "size": 1759,
       "sha256": "3c393fc8f7999f197cd7ed75d01821df920e8fdd5132cea4f78fed0fafee03d7"
@@ -182,7 +192,7 @@
     {
       "path": "tests/studio_browser.py",
       "size": 10892,
-      "sha256": "c5628719a9c3cf3da5c40e82b0b68baa34c1eafc141fe670962fc1be25615f90"
+      "sha256": "71d48072c985c02382e6aa2b217fa9216d6fb8fe393e2f2ef685dcc09fc8145d"
     },
     {
       "path": "tests/survey_browser.py",

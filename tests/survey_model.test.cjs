@@ -2,9 +2,9 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map});vm.runInContext(src+'\nthis.surveyTest={initialPlan,parsePlan,surveyStepsForRoom,surveyCoverage,resizeWallWithJunctions,collisions,satCollision,FURNITURE};',ctx);
 const {initialPlan,parsePlan,surveyStepsForRoom,surveyCoverage,resizeWallWithJunctions,collisions,satCollision,FURNITURE}=ctx.surveyTest;
-const p=initialPlan();assert.equal(p.schema,4);assert.equal(p.survey.activeRoom,'hall');assert.equal(surveyStepsForRoom('hall').length,14);assert.equal(surveyStepsForRoom('living').length,13);assert.equal(surveyStepsForRoom('hall','quick').length,6);assert.equal(surveyStepsForRoom('living','quick').length,5);
+const p=initialPlan();assert.equal(p.schema,5);assert.equal(p.survey.activeRoom,'hall');assert.equal(surveyStepsForRoom('hall').length,14);assert.equal(surveyStepsForRoom('living').length,13);assert.equal(surveyStepsForRoom('hall','quick').length,6);assert.equal(surveyStepsForRoom('living','quick').length,5);
 const roundtrip=parsePlan(JSON.parse(JSON.stringify(p)));assert.equal(roundtrip.survey.mode,'detailed');assert.equal(roundtrip.rooms.length,p.rooms.length);
-const old=JSON.parse(JSON.stringify(p));old.schema=2;delete old.survey;const migrated=parsePlan(old);assert.equal(migrated.schema,4);assert.ok(migrated.survey);
+const old=JSON.parse(JSON.stringify(p));old.schema=2;delete old.survey;const migrated=parsePlan(old);assert.equal(migrated.schema,5);assert.ok(migrated.survey);
 assert.equal(surveyCoverage(p,'hall').ready,false);
 p.survey.steps.hall={anchor:{status:'captured',assets:[{id:'shot-demo-1234',mime:'image/png',name:'shot.png',size:20,ts:'2026-10-25'}],note:'Angle looks good',reason:''}};
 let available=new Set(['shot-demo-1234']);assert.equal(surveyCoverage(p,'hall',available).done,1);assert.equal(surveyCoverage(p,'hall',new Set()).done,0);

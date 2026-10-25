@@ -150,7 +150,7 @@ async def main():
   export=await d.value
   json_path=ROOT/'tests'/'studio_layout.json';await export.save_as(json_path)
   data=json.loads(json_path.read_text())
-  assert data['schema']==4 and data['studio']['palette']=='warm'
+  assert data['schema']==5 and data['studio']['palette']=='warm'
   assert any(r['name']=='Workshop annex' for r in data['rooms'])
   assert data['studio']['annotations'] and data['studio']['measurements']
   assert data['studio']['bookmarks']

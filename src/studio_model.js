@@ -11,7 +11,7 @@ const STUDIO_DEFAULTS={
  units:'m',north:0,cutHeight:3,wallLengths:false,labels:true,doorArcs:false,
  furnishings:true,openings:true,rooms:true,fixtureMarkers:true,grid:true,
  favorites:[],bookmarks:[],annotations:[],measurements:[],budget:0,
- light:'day',notes:'',palette:'sage',lastReport:'',hideRoom:'',clearance:.75
+ light:'day',indoorGlow:75,outdoorDim:85,notes:'',palette:'sage',lastReport:'',hideRoom:'',clearance:.75
 };
 const HP_COLOR=s=>typeof s==='string'&&/^#[\da-fA-F]{6}$/.test(s);
 const HP_TEXT=(s,n=120)=>String(s??'').slice(0,n);
@@ -23,11 +23,11 @@ function normalizeStudio(raw){
  const pins=Array.isArray(x.annotations)?x.annotations.slice(0,100).filter(a=>a&&HP_NUM(a.x,-100,100,null)!==null&&HP_NUM(a.z,-100,100,null)!==null).map(a=>({id:safeId(a.id,'note'),x:a.x,z:a.z,text:HP_TEXT(a.text,250),room:safeId(a.room||'','room')})):[];
  const tapes=Array.isArray(x.measurements)?x.measurements.slice(0,100).filter(a=>a&&Array.isArray(a.a)&&Array.isArray(a.b)&&a.a.length===2&&a.b.length===2&&[...a.a,...a.b].every(Number.isFinite)).map(a=>({id:safeId(a.id,'tape'),a:a.a.map(n=>HP_NUM(n,-100,100,0)),b:a.b.map(n=>HP_NUM(n,-100,100,0)),label:HP_TEXT(a.label,60)})):[];
  const keys=['wallLengths','labels','doorArcs','furnishings','openings','rooms','fixtureMarkers','grid'];
- const result={...STUDIO_DEFAULTS,units:x.units==='ft'?'ft':'m',north:HP_NUM(x.north,0,359.999,0),cutHeight:HP_NUM(x.cutHeight,.25,5,3),favorites:[...new Set(fav)],bookmarks:marks,annotations:pins,measurements:tapes,budget:HP_NUM(x.budget,0,1000000,0),clearance:HP_NUM(x.clearance,.35,1.5,.75),light:['day','evening','night'].includes(x.light)?x.light:'day',notes:HP_TEXT(x.notes,600),palette:STUDIO_PALETTES[x.palette]?x.palette:'sage',hideRoom:HP_TEXT(x.hideRoom,60)};
+ const result={...STUDIO_DEFAULTS,units:x.units==='ft'?'ft':'m',north:HP_NUM(x.north,0,359.999,0),cutHeight:HP_NUM(x.cutHeight,.25,5,3),favorites:[...new Set(fav)],bookmarks:marks,annotations:pins,measurements:tapes,budget:HP_NUM(x.budget,0,1000000,0),clearance:HP_NUM(x.clearance,.35,1.5,.75),light:['day','evening','night'].includes(x.light)?x.light:'day',indoorGlow:HP_NUM(x.indoorGlow,0,100,75),outdoorDim:HP_NUM(x.outdoorDim,0,100,85),notes:HP_TEXT(x.notes,600),palette:STUDIO_PALETTES[x.palette]?x.palette:'sage',hideRoom:HP_TEXT(x.hideRoom,60)};
  keys.forEach(k=>result[k]=x[k]===undefined?STUDIO_DEFAULTS[k]:x[k]!==false);
  return result;
 }
-function roomSquareMeters(room){return round(room.w*room.d,2);}
+function roomSquareMeters(room){return roomArea(room);}
 function totalZoneArea(plan){return round(plan.rooms.reduce((v,r)=>v+roomSquareMeters(r),0),2);}
 function measuredToUnits(m,units='m',precision=2){return units==='ft'?round(m*3.280839895,precision):round(m,precision);}
 function areaToUnits(m2,units='m'){return units==='ft'?round(m2*10.7639104167,1):round(m2,1);}
@@ -47,7 +47,13 @@ function proposeSmartArrangement(plan,roomId){const room=plan.rooms.find(r=>r.id
  const fixed=plan.items.filter(x=>!its.some(y=>y.id===x.id)&&FURNITURE[x.type]&&!['rug','fountain'].includes(x.type));for(let idx=0;idx<its.length;idx++){const it=its[idx],sp=FURNITURE[it.type],w=it.w||sp.w,d=it.d||sp.d;let found=null;for(const [u,v] of candidates){const x=round(room.x+padding+(room.w-2*padding)*u,3),z=round(room.z+padding+(room.d-2*padding)*v,3);const tryIt={...it,x,z,r:it.r||0};const bounds=aabbBounds(tryIt);if(x-bounds.hw<room.x+padding||x+bounds.hw>room.x+room.w-padding||z-bounds.hd<room.z+padding||z+bounds.hd>room.z+room.d-padding)continue;if([...fixed,...positions].some(o=>satCollision(o,tryIt)))continue;found=tryIt;break;}if(found){positions.push(found);}else positions.push({...it});}
  return positions.map(it=>({id:it.id,x:it.x,z:it.z,r:it.r}));
 }
-function roomByPoint(plan,x,z){return plan.rooms.find(r=>x>=r.x&&x<=r.x+r.w&&z>=r.z&&z<=r.z+r.d)||null;}
+function roomByPoint(plan,x,z){return plan.rooms.find(r=>{if(x<r.x||x>r.x+r.w||z<r.z||z>r.z+r.d)return false;
+ if(!r.shape||r.shape==='rectangle')return true;
+ const u=(x-r.x)/r.w,v=(z-r.z)/r.d;
+ if(r.shape==='circle'||r.shape==='ellipse')return(2*u-1)**2+(2*v-1)**2<=1;
+ if(r.shape==='triangle')return Math.abs(u-.5)<=v*.5;
+ if(r.shape==='l-shape')return v<=.45||u<=.52;
+ return true;})||null;}
 function studioSafeCSV(value){let s=String(value??'');if(/^\s*[=+@\-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
 function shoppingCSV(plan){const rows=[['Name','Room','Width (m)','Depth (m)','Price (USD)','Notes'],...shoppingList(plan).items.map(it=>[it.name,it.room,it.w,it.d,it.price??'',plan.items.find(x=>x.id===it.id)?.note||''])];return rows.map(row=>row.map(studioSafeCSV).join(',')).join('\r\n')+'\r\n';}
 /** Advisory grid route through the sketch, not a building-code egress test. */

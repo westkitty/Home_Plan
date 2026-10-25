@@ -1,13 +1,13 @@
 {
   "name": "home-plan",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "description": "Offline model-first apartment workshop with progressive controls, 3D perspective editor, Survey Studio and Design Lab",
   "scripts": {
     "build": "python3 build.py",
-    "test": "node tests/model.test.cjs && node tests/survey_model.test.cjs && node tests/studio_model.test.cjs && node tests/runtime.test.cjs && node tests/appearance.test.cjs",
+    "test": "node tests/architecture.test.cjs && node tests/model.test.cjs && node tests/survey_model.test.cjs && node tests/studio_model.test.cjs && node tests/runtime.test.cjs && node tests/appearance.test.cjs",
     "check": "node --check src/model.js && node --check src/studio_model.js && node --check src/appearance.js && node --check src/visuals.js && node --check src/chrome.js && node --check src/focus.js && node --check src/icon_ui.js && node --check src/app.js && node --check src/studio.js && node --check src/survey.js && npm test",
-    "test:browser": "python3 tests/survey_browser.py && python3 tests/studio_browser.py && python3 tests/visual_browser.py && python3 tests/focus_browser.py && python3 tests/icon_ui_browser.py && python3 tests/appearance_browser.py",
+    "test:browser": "python3 tests/architecture_browser.py && python3 tests/survey_browser.py && python3 tests/studio_browser.py && python3 tests/visual_browser.py && python3 tests/focus_browser.py && python3 tests/icon_ui_browser.py && python3 tests/appearance_browser.py",
     "benchmark:cpu": "node tests/performance.cjs",
     "release": "python3 release_build.py"
   },

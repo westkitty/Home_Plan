@@ -1,5 +1,23 @@
 'use strict';
-const MODEL_VERSION=4;
+const MODEL_VERSION=5;
+// Design materials are visual study options, not construction specifications.
+const FLOOR_MATERIALS={
+ 'carpet-cream':{label:'Cream carpet',color:'#e4d9c7',pattern:'carpet'},
+ 'carpet-slate':{label:'Slate carpet',color:'#9eafb7',pattern:'carpet'},
+ 'carpet-sage':{label:'Sage carpet',color:'#aabb9e',pattern:'carpet'},
+ 'carpet-rose':{label:'Rose carpet',color:'#d8b9b2',pattern:'carpet'},
+ 'wood-oak':{label:'Natural oak',color:'#d6b48b',pattern:'wood'},
+ 'wood-walnut':{label:'Dark walnut',color:'#917154',pattern:'wood'},
+ 'wood-ash':{label:'Light ash',color:'#e2d4bd',pattern:'wood'},
+ 'tile-ivory':{label:'Ivory tile',color:'#e0ded5',pattern:'tile'},
+ 'tile-slate':{label:'Slate tile',color:'#acb9bd',pattern:'tile'},
+ 'tile-terracotta':{label:'Terracotta tile',color:'#d8a48d',pattern:'tile'},
+ 'deck-wood':{label:'Porch decking',color:'#b59c7c',pattern:'deck'},
+ 'stone-paver':{label:'Outdoor stone',color:'#afb4a8',pattern:'tile'}
+};
+const ROOM_ZONES=['indoor','outdoor'];
+const SHAPE_KINDS=['rectangle','circle','ellipse','triangle','l-shape'];
+
 const FURNITURE={
  sofa:{label:'Three-seat sofa',w:2.1,d:.92,h:.86,color:'#788995',room:'living',category:'Living'},
  loveseat:{label:'Loveseat',w:1.5,d:.86,h:.82,color:'#b6a28e',room:'living',category:'Living'},
@@ -19,7 +37,26 @@ const FURNITURE={
  toilet:{label:'Toilet',w:.52,d:.72,h:.75,color:'#e1e7df',room:'bath',category:'Bathroom'},
  fountain:{label:'Entry fountain marker',w:.55,d:.55,h:.5,color:'#65b1b7',room:'hall',category:'Markers'},
  rug:{label:'Area rug',w:2.25,d:1.55,h:.03,color:'#b8a17e',room:'living',category:'Living'},
- storage:{label:'Storage bins',w:.85,d:.6,h:.72,color:'#8f9b88',room:'living',category:'Storage'}
+ storage:{label:'Storage bins',w:.85,d:.6,h:.72,color:'#8f9b88',room:'living',category:'Storage'},
+ desk:{label:'Office desk',w:1.45,d:.72,h:.76,color:'#af8b67',room:'living',category:'Office'},
+ officechair:{label:'Swivel office chair',w:.64,d:.64,h:1.05,color:'#7e98a5',room:'living',category:'Office'},
+ workstation:{label:'Computer workstation',w:1.22,d:.68,h:1.34,color:'#65767b',room:'living',category:'Office'},
+ bathtub:{label:'Bathtub',w:1.65,d:.75,h:.6,color:'#e6e8e4',room:'bath',category:'Bathroom'},
+ shower:{label:'Shower enclosure',w:.98,d:.98,h:2.08,color:'#94bec3',room:'bath',category:'Bathroom'},
+ bathroom_sink:{label:'Wall-mounted sink',w:.56,d:.49,h:.86,color:'#e0e5df',room:'bath',category:'Bathroom'},
+ kitchen_sink:{label:'Kitchen sink',w:.82,d:.6,h:.92,color:'#b8b8b2',room:'kitchen',category:'Kitchen'},
+ water_heater:{label:'Water heater',w:.62,d:.62,h:1.55,color:'#ced1cb',room:'kitchen',category:'Plumbing'},
+ pipe:{label:'Plumbing point',w:.2,d:.2,h:.15,color:'#6594a2',room:'bath',category:'Plumbing'},
+ vent:{label:'Air vent',w:.42,d:.21,h:.12,color:'#9aaab2',room:'kitchen',category:'Plumbing'},
+ oven:{label:'Oven & range',w:.78,d:.67,h:.94,color:'#666e75',room:'kitchen',category:'Appliances'},
+ stovetop:{label:'Cooktop',w:.7,d:.55,h:.15,color:'#444f55',room:'kitchen',category:'Appliances'},
+ microwave:{label:'Microwave',w:.52,d:.44,h:.34,color:'#78848b',room:'kitchen',category:'Appliances'},
+ dishwasher:{label:'Dishwasher',w:.62,d:.62,h:.87,color:'#c5cacb',room:'kitchen',category:'Appliances'},
+ washer:{label:'Washing machine',w:.67,d:.66,h:.9,color:'#d1d8da',room:'bath',category:'Laundry'},
+ dryer:{label:'Clothes dryer',w:.67,d:.68,h:.9,color:'#becbd0',room:'bath',category:'Laundry'},
+ washer_dryer:{label:'Washer/dryer combo',w:.69,d:.68,h:.92,color:'#b6c8d1',room:'bath',category:'Laundry'},
+ balcony_chair:{label:'Balcony chair',w:.67,d:.69,h:.8,color:'#7f9890',room:'living',category:'Outdoor'},
+ patio_table:{label:'Patio table',w:.84,d:.84,h:.74,color:'#a4ad9d',room:'living',category:'Outdoor'}
 };
 function initialPlan(){return{
  schema:MODEL_VERSION,name:'Walkthrough study',units:'meters',measured:false,
@@ -69,6 +106,29 @@ function initialPlan(){return{
  survey:createEmptySurvey(),
  view:{yaw:.78,pitch:.89,dist:16,target:[4.3,0,4.0],style:'dollhouse',room:'all',snap:.1,walls:true,grid:true}
 };}
+/** Return a new, truly empty study: no inferred rooms, fixtures, walls, or furniture. */
+function blankPlan(){const p=initialPlan();p.name='Untitled blank plan';p.notes='Blank conceptual plan. Every new measurement and architectural marker requires user verification.';p.rooms=[];p.walls=[];p.fixtures=[];p.items=[];p.survey=createEmptySurvey();p.view={...p.view,target:[0,0,0],dist:14,style:'top',yaw:0,pitch:1.565};return p;}
+function polygonForShape(kind,x1,z1,x2,z2){
+ const cx=(x1+x2)/2,cz=(z1+z2)/2,rx=(x2-x1)/2,rz=(z2-z1)/2;
+ if(kind==='rectangle')return [[x1,z1],[x2,z1],[x2,z2],[x1,z2]];
+ if(kind==='triangle')return [[cx,z1],[x2,z2],[x1,z2]];
+ if(kind==='l-shape')return [[x1,z1],[x2,z1],[x2,z1+(z2-z1)*.45],[x1+(x2-x1)*.52,z1+(z2-z1)*.45],[x1+(x2-x1)*.52,z2],[x1,z2]];
+ const count=kind==='circle'?32:32;
+ return Array.from({length:count},(_,i)=>{const a=2*Math.PI*i/count;return [round(cx+Math.cos(a)*rx,3),round(cz+Math.sin(a)*rz,3)];});
+}
+function makeShape(kind,from,to){
+ if(!SHAPE_KINDS.includes(kind))throw Error('Unknown wall outline');
+ if(!Array.isArray(from)||!Array.isArray(to)||![...from,...to].every(Number.isFinite))throw Error('Invalid shape position');
+ let x1=Math.min(from[0],to[0]),x2=Math.max(from[0],to[0]),z1=Math.min(from[1],to[1]),z2=Math.max(from[1],to[1]);
+ if(kind==='circle'){const side=Math.max(x2-x1,z2-z1);x2=x1+side;z2=z1+side;}
+ const w=round(x2-x1,3),d=round(z2-z1,3);
+ if(w<.9||d<.9||w>35||d>35)throw Error('Drag a shape from 0.9 m to 35 m across');
+ const points=polygonForShape(kind,x1,z1,x2,z2);
+ if(points.some((p,i)=>Math.hypot(p[0]-points[(i+1)%points.length][0],p[1]-points[(i+1)%points.length][1])<.08))throw Error('Shape is too small for wall segments');
+ return {kind,x:round(x1,3),z:round(z1,3),w,d,points};
+}
+function shapeWalls(shape,makeId){return shape.points.map((a,i)=>({id:makeId('w'),a,b:shape.points[(i+1)%shape.points.length],height:2.55,thick:.12,confidence:'estimated'}));}
+function roomArea(room){const a=room.w*room.d;return round(room.shape==='circle'||room.shape==='ellipse'?a*Math.PI/4:room.shape==='triangle'?a/2:room.shape==='l-shape'?a*(.45+.55*.52):a,2);}
 const deepClone=x=>JSON.parse(JSON.stringify(x));
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 const round=(n,p=2)=>Math.round(n*10**p)/10**p;
@@ -158,10 +218,10 @@ function migrateLegacy(v){
 }
 function safeId(x,prefix){return String(x??prefix).replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)||prefix;}
 function finiteBound(n,min,max){return Number.isFinite(n)&&n>=min&&n<=max;}
-function parsePlan(x){if(x?.schema===1)x=migrateLegacy(x);if(!x||typeof x!=='object'||!Array.isArray(x.walls)||!Array.isArray(x.items)||!Array.isArray(x.rooms)||!Array.isArray(x.fixtures))throw Error('Not a Home Plan layout');if(x.schema!==2&&x.schema!==3&&x.schema!==4)throw Error('Unsupported layout version.');if(x.walls.length>250||x.items.length>300||x.rooms.length>100||x.fixtures.length>300)throw Error('Layout exceeds safety limits');for(const w of x.walls){if(!Array.isArray(w.a)||!Array.isArray(w.b)||!w.a.every(Number.isFinite)||!w.b.every(Number.isFinite)||length(w.a,w.b)<.05)throw Error('Invalid wall coordinates');if(!Number.isFinite(w.height)||w.height<.5||w.height>10)throw Error('Invalid wall height');}for(const f of x.items){if(!FURNITURE[f.type]||![f.x,f.z,f.r].every(n=>finiteBound(n,-100,1000)))throw Error('Invalid furniture type or coordinates');if(['w','d','h'].some(k=>f[k]!==undefined&&!finiteBound(f[k],.12,12)))throw Error('Invalid custom furniture size');}
-const rooms=x.rooms.map((r,i)=>{if(!r||![r.x,r.z,r.w,r.d].every(Number.isFinite)||r.w<=0||r.d<=0||r.w>100||r.d>100)throw Error('Invalid room geometry');return{id:safeId(r.id,'room'+i),name:String(r.name||'Room').slice(0,60),x:r.x,z:r.z,w:r.w,d:r.d,color:/^#[0-9a-fA-F]{6}$/.test(r.color)?r.color:'#dce5e2',confidence:String(r.confidence||'unverified').slice(0,30),note:String(r.note||'').slice(0,250)};});
+function parsePlan(x){if(x?.schema===1)x=migrateLegacy(x);if(!x||typeof x!=='object'||!Array.isArray(x.walls)||!Array.isArray(x.items)||!Array.isArray(x.rooms)||!Array.isArray(x.fixtures))throw Error('Not a Home Plan layout');if(x.schema!==2&&x.schema!==3&&x.schema!==4&&x.schema!==5)throw Error('Unsupported layout version.');if(x.walls.length>250||x.items.length>300||x.rooms.length>100||x.fixtures.length>300)throw Error('Layout exceeds safety limits');for(const w of x.walls){if(!Array.isArray(w.a)||!Array.isArray(w.b)||!w.a.every(Number.isFinite)||!w.b.every(Number.isFinite)||length(w.a,w.b)<.05)throw Error('Invalid wall coordinates');if(!Number.isFinite(w.height)||w.height<.5||w.height>10)throw Error('Invalid wall height');}for(const f of x.items){if(!FURNITURE[f.type]||![f.x,f.z,f.r].every(n=>finiteBound(n,-100,1000)))throw Error('Invalid furniture type or coordinates');if(['w','d','h'].some(k=>f[k]!==undefined&&!finiteBound(f[k],.12,12)))throw Error('Invalid custom furniture size');}
+const rooms=x.rooms.map((r,i)=>{if(!r||![r.x,r.z,r.w,r.d].every(Number.isFinite)||r.w<=0||r.d<=0||r.w>100||r.d>100)throw Error('Invalid room geometry');return{id:safeId(r.id,'room'+i),name:String(r.name||'Room').slice(0,60),x:r.x,z:r.z,w:r.w,d:r.d,color:/^#[0-9a-fA-F]{6}$/.test(r.color)?r.color:'#dce5e2',zone:ROOM_ZONES.includes(r.zone)?r.zone:'indoor',flooring:FLOOR_MATERIALS[r.flooring]?r.flooring:'',shape:SHAPE_KINDS.includes(r.shape)?r.shape:'rectangle',confidence:String(r.confidence||'unverified').slice(0,30),note:String(r.note||'').slice(0,250)};});
 const walls=x.walls.map((w,i)=>({id:safeId(w.id,'wall'+i),a:w.a.map(n=>round(n,3)),b:w.b.map(n=>round(n,3)),height:clamp(w.height,.5,5),thick:clamp(Number(w.thick)||.12,.06,.8),confidence:w.confidence==='measured'?'measured':'estimated',color:typeof HP_COLOR==='function'&&HP_COLOR(w.color)?w.color:undefined}));const wallIds=new Set(walls.map(w=>w.id));
 const fixtures=x.fixtures.map((f,i)=>{if(!wallIds.has(safeId(f.wall,''))||!['door','window','opening','outlet','entry'].includes(f.type)||!finiteBound(f.at,0,1)||!finiteBound(f.width,.05,5))throw Error('Invalid fixture reference');return{id:safeId(f.id,'fixture'+i),wall:safeId(f.wall,''),type:f.type,at:clamp(f.at,.03,.97),width:clamp(f.width,.08,5),confidence:String(f.confidence||'unverified').slice(0,30),swing:f.swing==='right'?'right':'left'};});
-const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:safeId(f.room,'living'),...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
+const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:f.room?safeId(f.room,''):'',...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
 const v=x.view||{},start=initialPlan().view;
 return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};}

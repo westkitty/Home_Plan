@@ -4,11 +4,23 @@ A single-file, offline architectural-diorama apartment workshop with a guided, p
 
 **Start:** Open `index.html` in a browser. No installation, account, package manager, or internet is required for the editor or Survey Studio.
 
+## Draw spaces and furnish the home (0.9.0)
+
+- **Blank workspace:** Home icon → Project → Open Project controls → **New blank workspace**. Confirm to start with **zero rooms, walls, fixtures or furniture**. Named saves and exported files are retained; Undo remains available.
+- **Shape-first building:** Choose **Build (wall icon)** → Rectangle, Circle, Oval, Triangle or L-shape. Drag across the stage with a mouse; on a touchscreen, **tap the first corner and then the opposite corner**. The outline becomes independent editable wall segments and a named floor zone. The first shape gets a provisional marked **ENTRY** doorway. Build → Single wall remains available.
+- **Rooms and outdoor zones:** Build → Rooms opens the room list. Use Add Room, Add Porch or Add Balcony; tap Edit to rename a zone, change Indoor / Outdoor, choose a floor material, move/resize the zone, or remove its label/zone without erasing walls or furniture. Room zones are planning overlays, not automatically joined architectural polygons.
+- **Floor finishes:** Room editor → Floor material, or Design Lab → Finishes. Twelve visual study materials: cream/slate/sage/rose carpets, oak/walnut/ash woods, ivory/slate/terracotta tiles, porch decking and outdoor stone. Custom per-zone color remains available.
+- **Lighting:** Home → Project → Project controls → Light & Atmosphere, or Build → Lighting. Day, evening and night modes, with independently adjustable interior glow and outdoor darkness from 0–100. In Night, the exterior dims while indoor model surfaces remain warm; this is a stylized visual study, not simulated real-world lumens.
+- **Furniture and utilities:** Add (+) → categories Office, Appliances, Plumbing, Bathroom, Kitchen, Laundry and Outdoor for desks, workstations, seating, oven, stove, microwave, dishwasher, sinks, toilet, shower, bathtub, water heater, vents and pipes, refrigerator, washing machine, dryer, combination washer-dryer, and porch/balcony furniture.
+- **Touch accessibility:** Icon menus and contextual `?` explanations are tappable, blank/room-delete actions use in-app confirmation dialogs (not browser `confirm`), and the mobile inspector closes when a blank workspace is created so it cannot block the Project menu. Two-tap shape creation is an alternative to pointer dragging.
+
+Open plan JSON from v1–v4 is migrated to schema 5; source-only publication excludes private room captures and real apartment footage. Physical-device validation is still recommended; automated touch emulation is not a substitute for testing on the phone.
+
 ## Background color settings (0.8.0)
 
 The scene behind the apartment opens in **baby blue (`#C9E9FF`)**. To choose any other color, open the **house icon → Settings → Scene background** and use the native full-spectrum color picker. Changes update the live model backdrop immediately; **Reset** restores baby blue. The adjacent `?` explains the setting without leaving the workspace.
 
-The choice is a **device-local appearance preference** (`homeplan-scene-background-v1` in browser storage), separate from version-4 apartment geometry, furniture colors, room finishes and project exports. It persists on the same origin when browser storage is available. In storage-restricted contexts the current session still updates; export your project JSON to back up the *layout*, not the appearance preference. The color applies to the offline Canvas painter and the optional WebGL fallback.
+The choice is a **device-local appearance preference** (`homeplan-scene-background-v1` in browser storage), separate from version-5 apartment geometry, furniture colors, room finishes and project exports. It persists on the same origin when browser storage is available. In storage-restricted contexts the current session still updates; export your project JSON to back up the *layout*, not the appearance preference. The color applies to the offline Canvas painter and the optional WebGL fallback.
 
 
 ## Model-first interface (0.6.0)
