@@ -35,6 +35,8 @@ vm.runInContext('var old=initialPlan();delete old.studio;old.schema=3;',ctx);con
 // Adversarial arrangement: locked furniture must never move, and candidates cannot overlap it.
 vm.runInContext('var test=initialPlan();test.items=test.items.filter(i=>["i1","i6"].includes(i.id));test.items[0].locked=true;test.items[0].x=1.418;test.items[0].z=1.165;test.items[1].x=4;test.items[1].z=3.5;',ctx);
 const proposal=calc('proposeSmartArrangement(test,"living")');assert.equal(proposal.length,1);assert.equal(proposal[0].id,'i6');
+const sq=calc('triangulateCorner([0,3],[0,0],[4,0])');assert.equal(sq.angle,90);assert.equal(sq.diffFrom90,0);assert.equal(sq.isSquare,true);assert.equal(sq.diagonal,5);
+const nonSq=calc('triangulateCorner([0,3],[0,0],[3,3])');assert.equal(nonSq.isSquare,false);
 vm.runInContext('var changed=Object.assign({},test.items[1],proposeSmartArrangement(test,"living")[0]);',ctx);
 assert.equal(calc('satCollision(test.items[0],changed)'),false,'smart placement must avoid locked furniture');
 // Geometry is data, not a physical building certification.

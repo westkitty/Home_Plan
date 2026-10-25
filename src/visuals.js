@@ -315,16 +315,25 @@ window.HomePlanVisuals = (() => {
   }
   function faceGradient(ctx, f, quality, light) {
     const b = f.box, p = f.poly, k = f.face;
+    const isHeat = window.app?.heatmapMode;
+    let baseColor = b.color;
+    if(isHeat && b.kind === 'wall'){
+      const w = window.homePlanStudioBridge?.getPlan?.()?.walls?.find(x => x.id === b.id);
+      baseColor = w?.confidence === 'measured' ? '#3cb371' : w?.confidence === 'video_verified' ? '#3a9fd8' : '#e6993a';
+    } else if(isHeat && b.kind === 'room'){
+      const r = window.homePlanStudioBridge?.getPlan?.()?.rooms?.find(x => x.id === b.id);
+      baseColor = r?.confidence === 'measured' ? '#2e6b52' : '#334e44';
+    }
     const studio=window.homePlanStudioBridge?.getPlan?.()?.studio||{};
     const nightAmount=(studio.outdoorDim??85)/100,glow=(studio.indoorGlow??75)/100;
     const lighting=light==='night'?(b.indoor===false?.42*(1-nightAmount*.65):.59+glow*.59):light==='evening'?(b.indoor===false?.78:.93):1;
     const mult = [0.56, 1.10, .78, .85, .75, .94][k] * lighting;
-    if (quality === 'eco' || f.pixelArea < (quality === 'high' ? 480 : 1850) || (b.kind === 'item' && f.pixelArea < 4500) || b.kind === 'selection') return tone(b.color, mult, k === 1 ? 9 : 0);
+    if (quality === 'eco' || f.pixelArea < (quality === 'high' ? 480 : 1850) || (b.kind === 'item' && f.pixelArea < 4500) || b.kind === 'selection') return tone(baseColor, mult, k === 1 ? 9 : 0);
     const top = Math.min(...p.map(a => a.y)), bottom = Math.max(...p.map(a => a.y));
     const g = ctx.createLinearGradient(p[0].x, top, p[2].x + .01, Math.max(top + 1, bottom));
-    g.addColorStop(0, tone(b.color, mult * 1.10, 12));
-    g.addColorStop(.57, tone(b.color, mult, k === 1 ? 9 : 1));
-    g.addColorStop(1, tone(b.color, mult * .88));
+    g.addColorStop(0, tone(baseColor, mult * 1.10, 12));
+    g.addColorStop(.57, tone(baseColor, mult, k === 1 ? 9 : 1));
+    g.addColorStop(1, tone(baseColor, mult * .88));
     return g;
   }
   function faceOutline(ctx, f, light) {
@@ -505,9 +514,41 @@ window.HomePlanVisuals = (() => {
         }
       }else if (f.type === 'door' || f.type === 'entry' || f.type === 'opening'){
         line(ctx,a,b,light==='night'?'rgba(235,197,140,.95)':'rgba(157,121,75,.88)',3.2);
-        if (quality !== 'eco' && (plan.studio?.doorArcs || app.selected?.id === f.id || app.tool === 'opening') && f.type !== 'opening') {
-          const v=engine.project(pt[0]+(f.swing==='right'?-dir[1]:dir[1])*half, .03,pt[1]+(f.swing==='right'?dir[0]:-dir[0])*half);
-          if(v){ctx.strokeStyle=light==='night'?'rgba(238,208,154,.55)':'rgba(195,111,41,.48)';ctx.lineWidth=1.2;ctx.setLineDash([3,3]);line(ctx,a,v,ctx.strokeStyle,1.2,[3,3]);}
+        if (f.type !== 'opening') {
+          const isBlocked = typeof doorObstructions === 'function' && doorObstructions(plan).some(o => o.doorId === f.id);
+          const hingePt = f.swing === 'right' ? endpoints[0] : endpoints[1];
+          const swingSign = f.swing === 'right' ? 1 : -1;
+          const arcPts = [];
+          for(let st = 0; st <= 6; st++){
+            const th = (st / 6) * (Math.PI / 2) * swingSign;
+            const rc = Math.cos(th), rs = Math.sin(th);
+            const vx = dir[0] * rc - dir[1] * rs;
+            const vz = dir[0] * rs + dir[1] * rc;
+            const pr = engine.project(hingePt[0] + vx * (f.width || .86), .03, hingePt[1] + vz * (f.width || .86));
+            if(pr) arcPts.push(pr);
+          }
+          const hp = engine.project(hingePt[0], .03, hingePt[1]);
+          if(hp && arcPts.length > 2){
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(hp.x, hp.y);
+            arcPts.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.closePath();
+            ctx.fillStyle = isBlocked ? 'rgba(235,70,55,.26)' : (light === 'night' ? 'rgba(238,208,154,.13)' : 'rgba(230,170,80,.15)');
+            ctx.fill();
+            ctx.strokeStyle = isBlocked ? '#e54d3e' : (light === 'night' ? 'rgba(238,208,154,.55)' : 'rgba(195,111,41,.52)');
+            ctx.lineWidth = 1.2;
+            if(ctx.setLineDash) ctx.setLineDash([3, 3]);
+            ctx.stroke();
+            if(ctx.setLineDash) ctx.setLineDash([]);
+            if(isBlocked && arcPts[3]){
+              ctx.fillStyle = '#ff6b5a';
+              ctx.font = '700 9px system-ui';
+              ctx.textAlign = 'center';
+              ctx.fillText('⚠️ BLOCKED', arcPts[3].x, arcPts[3].y - 4);
+            }
+            ctx.restore();
+          }
         }
       }else if(f.type==='outlet'){
         const q=engine.project(pt[0],.37,pt[1]);if(q){ctx.fillStyle='#ffefcb';ctx.strokeStyle='#a4844f';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(q.x-4,q.y-5,8,10,2);ctx.fill();ctx.stroke();}

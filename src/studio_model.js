@@ -82,3 +82,11 @@ function studioInlineItem(it){return `<section class="ins-section"><p class="sec
 function studioInlineRoom(r){return `<section class="ins-section"><p class="section-title">ROOM IDENTITY · FINISH</p><div class="field"><label for="hp-name">Room name</label><input id="hp-name" data-hp-field="name" maxlength="60" value="${studioEsc(r.name)}"></div><div class="field"><label for="hp-color">Floor finish</label><input id="hp-color" type="color" data-hp-field="color" value="${HP_COLOR(r.color)?r.color:'#dce5e2'}"></div><div class="field"><label for="hp-note">Room note</label><textarea id="hp-note" data-hp-field="note" maxlength="250">${studioEsc(r.note||'')}</textarea></div><div class="statusline">Estimated area: ${roomSquareMeters(r)} m² · not a surveyed footprint</div></section>`;}
 function studioInlineWall(w){return `<section class="ins-section"><p class="section-title">WALL FINISH</p><div class="field"><label for="hp-color">Paint color</label><input id="hp-color" type="color" data-hp-field="color" value="${HP_COLOR(w.color)?w.color:'#a1aaa1'}"></div><p class="note">Finish color is a visual planning aid; wall geometry remains editable above.</p></section>`;}
 function studioInlineFixture(f){return ['door','entry'].includes(f.type)?`<section class="ins-section"><p class="section-title">DOOR SWING · APPROXIMATE</p><div class="field"><label for="hp-swing">Opening side</label><select id="hp-swing" data-hp-field="swing"><option value="left" ${f.swing!=='right'?'selected':''}>Left hinge</option><option value="right" ${f.swing==='right'?'selected':''}>Right hinge</option></select></div><p class="note">The arc is illustrative. Verify actual hinge, swing direction and clearance on site.</p></section>`:'';}
+function triangulateCorner(p1,vertex,p2){
+ const a=studioDistance(vertex,p1),b=studioDistance(vertex,p2),c=studioDistance(p1,p2);
+ if(a<=.001||b<=.001)return null;
+ const cosTheta=clamp((a*a+b*b-c*c)/(2*a*b),-1,1);
+ const degrees=round(Math.acos(cosTheta)*(180/Math.PI),1);
+ const diffFrom90=round(degrees-90,1);
+ return{angle:degrees,diffFrom90,isSquare:Math.abs(diffFrom90)<=.8,sideA:a,sideB:b,diagonal:c};
+}
