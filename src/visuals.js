@@ -96,6 +96,62 @@ window.HomePlanVisuals = (() => {
       ctx.font = '700 9px system-ui'; ctx.fillStyle = light === 'night' ? '#d2ddddaa' : '#35534d99';
       ctx.fillText('CONCEPT MODEL  /  NOT YET SURVEYED', pin.x + 6, pin.y - 5);
     }
+    // Delight: Architectural scale ruler on the physical model slab
+    const sX = b.minX + r + 3.4;
+    const s0 = engine.project(sX, -.195, b.maxZ - r);
+    const s1 = engine.project(sX + 1, -.195, b.maxZ - r);
+    const s2 = engine.project(sX + 2, -.195, b.maxZ - r);
+    if (s0 && s1 && s2 && s0.x > 0 && s2.x < engine.w && s0.y > 0 && s0.y < engine.h) {
+      const dark = light === 'night';
+      const brass = dark ? '#efc789' : '#1c382f';
+      const muted = dark ? '#8faea3' : '#7b968a';
+      line(ctx, s0, s1, brass, 2.2);
+      line(ctx, s1, s2, muted, 2.2);
+      line(ctx, {x: s0.x, y: s0.y - 3}, {x: s0.x, y: s0.y + 3}, brass, 1.4);
+      line(ctx, {x: s1.x, y: s1.y - 3}, {x: s1.x, y: s1.y + 3}, brass, 1.4);
+      line(ctx, {x: s2.x, y: s2.y - 3}, {x: s2.x, y: s2.y + 3}, muted, 1.4);
+      ctx.font = '700 8px system-ui';
+      ctx.fillStyle = dark ? '#e5d9bf' : '#31544a';
+      ctx.textAlign = 'center';
+      ctx.fillText('0', s0.x, s0.y - 5);
+      ctx.fillText('1m', s1.x, s1.y - 5);
+      ctx.fillText('2m', s2.x, s2.y - 5);
+    }
+    // Delight: Dynamic drafting compass rose indicating True North on the diorama slab
+    const nX = b.maxX - r - 1.2, nZ = b.maxZ - r - 0.2;
+    const cC = engine.project(nX, -.195, nZ);
+    const cN = engine.project(nX, -.195, nZ - 0.7);
+    const cE = engine.project(nX + 0.35, -.195, nZ);
+    if (cC && cN && cE && cC.x > 0 && cC.x < engine.w && cC.y > 0 && cC.y < engine.h) {
+      const dark = light === 'night';
+      const radius = Math.hypot(cE.x - cC.x, cE.y - cC.y);
+      ctx.save();
+      ctx.strokeStyle = dark ? 'rgba(238,208,154,.38)' : 'rgba(40,70,58,.28)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(cC.x, cC.y, radius, radius * 0.52, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cN.x, cN.y);
+      ctx.lineTo(cC.x + (cE.x - cC.x)*0.3, cC.y + (cE.y - cC.y)*0.3);
+      ctx.lineTo(cC.x, cC.y);
+      ctx.closePath();
+      ctx.fillStyle = dark ? '#efc789' : '#c36f29';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(cN.x, cN.y);
+      ctx.lineTo(cC.x - (cE.x - cC.x)*0.3, cC.y - (cE.y - cC.y)*0.3);
+      ctx.lineTo(cC.x, cC.y);
+      ctx.closePath();
+      ctx.fillStyle = dark ? '#69887e' : '#456557';
+      ctx.fill();
+      ctx.font = '800 8px system-ui';
+      ctx.fillStyle = dark ? '#eed09a' : '#2b4f42';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('N', cN.x, cN.y - 2);
+      ctx.restore();
+    }
   }
   function backfaceVisible(box, faceIndex, cameraPos) {
     if (faceIndex === 0) return false;
@@ -300,9 +356,9 @@ window.HomePlanVisuals = (() => {
         }
       }else if (f.type === 'door' || f.type === 'entry' || f.type === 'opening'){
         line(ctx,a,b,light==='night'?'rgba(235,197,140,.95)':'rgba(157,121,75,.88)',3.2);
-        if (quality !== 'eco' && plan.studio?.doorArcs && f.type !== 'opening') {
+        if (quality !== 'eco' && (plan.studio?.doorArcs || app.selected?.id === f.id || app.tool === 'opening') && f.type !== 'opening') {
           const v=engine.project(pt[0]+(f.swing==='right'?-dir[1]:dir[1])*half, .03,pt[1]+(f.swing==='right'?dir[0]:-dir[0])*half);
-          if(v){ctx.strokeStyle='rgba(218,170,106,.48)';ctx.lineWidth=1.1;ctx.setLineDash([3,3]);line(ctx,a,v,ctx.strokeStyle,1.1,[3,3]);}
+          if(v){ctx.strokeStyle=light==='night'?'rgba(238,208,154,.55)':'rgba(195,111,41,.48)';ctx.lineWidth=1.2;ctx.setLineDash([3,3]);line(ctx,a,v,ctx.strokeStyle,1.2,[3,3]);}
         }
       }else if(f.type==='outlet'){
         const q=engine.project(pt[0],.37,pt[1]);if(q){ctx.fillStyle='#ffefcb';ctx.strokeStyle='#a4844f';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(q.x-4,q.y-5,8,10,2);ctx.fill();ctx.stroke();}
@@ -324,19 +380,24 @@ window.HomePlanVisuals = (() => {
     ctx.restore();
   }
   function fountainMarker(ctx,engine,app,light){
-  const f=app.plan.items.find(item=>item.type==='fountain'&&!item.hidden);
-  if(!f||app.plan.studio?.furnishings===false)return;
-  const center=engine.project(f.x,.44,f.z);if(!center)return;
-  ctx.save();ctx.strokeStyle=light==='night'?'rgba(159,224,235,.62)':'rgba(51,156,168,.46)';
-  const breath=app.visualPulse||0;
-  for(let i=0;i<2;i++){
-    const r=4.5+i*4+breath*5,rx=r,ry=r*.51;
-    ctx.globalAlpha=(.57-i*.18)*(1-breath*.28);
-    ctx.lineWidth=i===0?1.5:1;
-    ctx.beginPath();ctx.ellipse(center.x,center.y,rx,ry,0,0,Math.PI*2);ctx.stroke();
+    const f=app.plan.items.find(item=>item.type==='fountain'&&!item.hidden);
+    if(!f||app.plan.studio?.furnishings===false)return;
+    const center=engine.project(f.x,.44,f.z);if(!center)return;
+    ctx.save();
+    const dark=light==='night';
+    ctx.strokeStyle=dark?'rgba(159,224,235,.68)':'rgba(45,152,165,.55)';
+    const breath=app.visualPulse||0;
+    for(let i=0;i<3;i++){
+      const r=4.2+i*3.6+breath*6,rx=r,ry=r*.51;
+      ctx.globalAlpha=Math.max(0,(.68-i*.18)*(1-breath*.25));
+      ctx.lineWidth=i===0?1.6:1;
+      ctx.beginPath();ctx.ellipse(center.x,center.y,rx,ry,0,0,Math.PI*2);ctx.stroke();
+    }
+    ctx.globalAlpha=.95;
+    ctx.fillStyle=dark?'#d5f6e8':'#eefbf6';
+    ctx.beginPath();ctx.arc(center.x-1.5,center.y-3.5,1.5,0,Math.PI*2);ctx.fill();
+    ctx.restore();
   }
-  ctx.globalAlpha=.9;ctx.fillStyle='#d5f6e8';ctx.beginPath();ctx.arc(center.x-2,center.y-4,1.3,0,Math.PI*2);ctx.fill();ctx.restore();
-}
 function annotations(ctx, engine, app) {
     const items=app.plan.studio?.annotations||[];
     if(!items.length)return;
