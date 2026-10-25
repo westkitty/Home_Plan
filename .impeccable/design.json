@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-25T17:56:30Z",
+  "title": "Design System: Home Plan — Apartment Workshop",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Warm Ochre",
+        "canonical": "#f0c78a",
+        "tonalRamp": ["#3d2b14", "#61441d", "#8c6229", "#b98338", "#dfa44e", "#f0c78a", "#f7dcab", "#fdf4e3"]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Sage Teal",
+        "canonical": "#93d2c2",
+        "tonalRamp": ["#142b25", "#21443b", "#326356", "#488977", "#6bb19d", "#93d2c2", "#c1e7dc", "#ecf8f4"]
+      },
+      "surface-focus": {
+        "role": "neutral",
+        "displayName": "Studio Evergreen",
+        "canonical": "#152b23",
+        "tonalRamp": ["#08120e", "#0e1e18", "#152b23", "#224136", "#325c4d", "#4b7f6b", "#7ba898", "#b8d4c9"]
+      },
+      "scene-sky": {
+        "role": "neutral",
+        "displayName": "Blueprint Sky",
+        "canonical": "#C9E9FF",
+        "tonalRamp": ["#162838", "#24425d", "#366087", "#4d84b7", "#84b5e2", "#C9E9FF", "#e5f4ff", "#f5fbff"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero narrative headers and modal welcome banners." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings and survey phase anchors." },
+      "title": { "displayName": "Title", "purpose": "Card titles, drawer categories, and modal titles." },
+      "body": { "displayName": "Body", "purpose": "Instructions, room context, and field explanations." },
+      "label": { "displayName": "Label", "purpose": "Tool buttons, badges, and keyboard shortcuts." }
+    },
+    "shadows": [
+      {
+        "name": "control-ambient",
+        "value": "0 6px 25px rgba(17,37,26,0.22)",
+        "purpose": "Grounding shadow for floating dock pills and view toggles."
+      },
+      {
+        "name": "drawer-glow",
+        "value": "0 14px 46px rgba(7,25,17,0.22)",
+        "purpose": "Atmospheric elevation for drawers and palettes."
+      },
+      {
+        "name": "modal-silhouette",
+        "value": "0 26px 85px rgba(7,20,15,0.60)",
+        "purpose": "Deep modal separation over dimmed backdrops."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default drawer and popover transition easing."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Button hover, active state, and chip display."
+      },
+      {
+        "name": "duration-drawer",
+        "value": "170ms",
+        "purpose": "Slide-in drawer and palette opening."
+      }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "480px" },
+      { "name": "tablet", "value": "760px" },
+      { "name": "desktop", "value": "1050px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action and confirmation trigger",
+      "html": "<button class=\"ds-btn-primary\">SAVE CHANGES</button>",
+      "css": ".ds-btn-primary { background: #f0c78a; color: #152b23; border: 1px solid #e5bb7d; border-radius: 10px; padding: 9px 14px; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 750; cursor: pointer; transition: background 0.15s, transform 0.15s; } .ds-btn-primary:hover { background: #ffd395; transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 3px solid #edc280; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Subtle secondary control",
+      "html": "<button class=\"ds-btn-ghost\">UNDO</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #f1f1e8; border: 1px solid rgba(182,212,183,0.30); border-radius: 10px; padding: 9px 12px; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 650; cursor: pointer; transition: background 0.15s, border-color 0.15s; } .ds-btn-ghost:hover { background: rgba(38,70,55,0.48); border-color: #a4b9ac; } .ds-btn-ghost:focus-visible { outline: 3px solid #edc280; outline-offset: 2px; }"
+    },
+    {
+      "name": "Dock Control Item",
+      "kind": "nav",
+      "refersTo": "dock-item",
+      "description": "Model-first bottom editing tool item",
+      "html": "<button class=\"ds-dock-item is-active\"><span class=\"ds-dock-icon\">↖</span><span>Move</span></button>",
+      "css": ".ds-dock-item { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 43px; padding: 9px 14px; border: 0; border-radius: 13px; background: transparent; color: #f0f3e8; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 750; cursor: pointer; transition: background 0.15s, color 0.15s; } .ds-dock-item.is-active { background: #efc789; color: #1a382d; } .ds-dock-item:hover:not(.is-active) { background: rgba(32,66,49,0.97); } .ds-dock-item:focus-visible { outline: 3px solid #edc280; outline-offset: 2px; } .ds-dock-icon { font-size: 16px; }"
+    },
+    {
+      "name": "Context Selection Chip",
+      "kind": "chip",
+      "refersTo": "custom",
+      "description": "Ephemeral floating object control surface",
+      "html": "<div class=\"ds-selection-chip\"><span class=\"ds-selection-name\">Writing Desk</span><button class=\"ds-chip-action\">Edit</button><button class=\"ds-chip-close\">×</button></div>",
+      "css": ".ds-selection-chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 6px 5px 13px; border-radius: 14px; background: rgba(20,52,41,0.94); border: 1px solid rgba(185,218,190,0.48); box-shadow: 0 10px 30px rgba(4,21,14,0.28); font-family: Inter, system-ui, sans-serif; } .ds-selection-name { font-size: 12px; font-weight: 700; color: #eff4e8; } .ds-chip-action { border-radius: 9px; background: #e9c58b; border: 1px solid #e9c58b; color: #1b392c; font-size: 11px; font-weight: 750; padding: 6px 10px; cursor: pointer; } .ds-chip-close { background: transparent; border: 0; color: #dae8d9; font-size: 16px; cursor: pointer; padding: 2px 6px; }"
+    },
+    {
+      "name": "Catalog Tile Card",
+      "kind": "card",
+      "refersTo": "custom",
+      "description": "Furniture library item card",
+      "html": "<div class=\"ds-catalog-card\"><div class=\"ds-catalog-icon\">🪑</div><div class=\"ds-catalog-copy\"><strong>Armchair</strong><small>0.8m × 0.8m</small></div></div>",
+      "css": ".ds-catalog-card { display: flex; align-items: center; gap: 9px; padding: 9px; border: 1px solid #41564a; background: #25362d; color: #f1eae0; border-radius: 9px; font-family: Inter, system-ui, sans-serif; cursor: pointer; width: 145px; transition: border-color 0.15s, background 0.15s; } .ds-catalog-card:hover { border-color: #cda773; background: #33493c; } .ds-catalog-icon { width: 33px; height: 33px; border-radius: 8px; display: grid; place-items: center; background: #384940; color: #f4c88a; font-size: 18px; } .ds-catalog-copy strong { display: block; font-size: 11px; font-weight: 700; } .ds-catalog-copy small { font-size: 10px; color: #a5b8a8; }"
+    },
+    {
+      "name": "Status Pill Tag",
+      "kind": "chip",
+      "refersTo": "custom",
+      "description": "Honest geometric confidence indicator",
+      "html": "<span class=\"ds-tag verified\">VERIFIED MEASUREMENT</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; gap: 5px; border-radius: 50px; padding: 5px 8px; font-family: Inter, system-ui, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; border: 1px solid #586553; color: #eec285; background: #333c2d; } .ds-tag.verified { color: #b8dac6; border-color: #5c816c; background: #253d34; } .ds-tag.alert { color: #ffb5a0; border-color: #8f5b55; background: #49302f; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Architectural Diorama Workshop",
+    "overview": "Home Plan presents the user's home as a handcrafted physical scale model placed on an architect's drafting desk. Rather than an intimidating, wireframe-heavy CAD suite or a garish gamified app, the environment feels tactile, focused, and calm. Translucent evergreen work surfaces overlay an illustrative perspective diorama, allowing spatial geometry to command total attention while controls remain immediately reachable on demand.\n\nThe interface adheres to an uncompromising model-first discipline: the apartment is the canvas and fills the full viewport. Interactive chrome is condensed into three compact control islands occupying under 2% to 8% of the viewport area at rest. Palettes, inspectors, and tools deploy as ephemeral floating glass lenses (backdrop-filter: blur(18px)) that dismiss cleanly on outside taps or Escape, restoring unbroken contact with the space.",
+    "keyCharacteristics": [
+      "Model-First Primacy: The 3D perspective apartment diorama owns the screen; UI elements are lightweight contextual overlays, never permanent layout-stealing sidebars.",
+      "Architectural Workshop Tactility: Deep studio evergreen panels, warm ochre brass indicators, and blueprint sky backdrops evoke classic physical modeling craft.",
+      "Honest Visual Calibration: Unmeasured provisional assumptions and tape-verified geometric facts use distinctly separated visual weights so estimates are never mistaken for surveyed truth.",
+      "Progressive Disclosure: Tools surface contextually when an object or space is active without cluttering exploratory navigation."
+    ],
+    "rules": [
+      {
+        "name": "The Warm Brass Accent Rule",
+        "body": "The primary ochre accent (#f0c78a) is strictly reserved for user focus, active tool states, and primary execution triggers. It must never coat static decorative backgrounds or secondary passive tiles.",
+        "section": "colors"
+      },
+      {
+        "name": "The Backdrop Independence Rule",
+        "body": "The scene background color (#C9E9FF) is an appearance preference that tints only the outdoor diorama atmosphere. It must never bleed into or alter UI panel tokens, furniture materials, or exported apartment schema data.",
+        "section": "colors"
+      },
+      {
+        "name": "The Editorial Heading Rule",
+        "body": "Serif type (Georgia) belongs exclusively to top-level narrative milestones and modal introductions. All tool labels, numerical data, and inspector inputs must use sans-serif or monospace to preserve drafting precision.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Metrics Rule",
+        "body": "All physical dimensions, tape readings, coordinates, and budget totals must use tabular numbers (font-variant-numeric: tabular-nums) or monospace fonts to prevent layout jitter during live edits.",
+        "section": "typography"
+      },
+      {
+        "name": "The Model-First Rule",
+        "body": "Interactive UI controls must occupy no more than 10% of total viewport surface area at rest. Any secondary panel or drawer opened by the user must float over the canvas rather than resizing or letterboxing the camera viewport.",
+        "section": "layout"
+      },
+      {
+        "name": "The Translucent Lens Rule",
+        "body": "Elevated drawers and panels must maintain partial optical transmission (backdrop-filter: blur(18px), alpha 0.94). They must never use 100% opaque black, preserving the feeling that the user is working directly over the apartment model.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do maintain the 3D perspective diorama as the dominant element on all viewports, ensuring floating chrome occupies <10% of screen area at rest.",
+      "Do use Georgia exclusively for top-level narrative titles and modal welcome headers, while keeping all numerical measurements and technical controls in Inter or monospace.",
+      "Do clearly differentiate between unverified visual estimates and tape-verified measurements using explicit tags (AMBER = provisional, GREEN = verified).",
+      "Do apply backdrop-filter: blur(18px) and thin perimeter strokes (1px solid var(--focus-line)) to all floating drawers and sheets.",
+      "Do enforce a high-visibility 3px solid #edc280 focus outline on every interactive element under keyboard navigation."
+    ],
+    "donts": [
+      "Don't add permanent left or right sidebars that pin to the edge and permanently narrow the camera viewport.",
+      "Don't use cold, stark wireframe aesthetics, cyan sci-fi HUDs, or neon gamified badges that break the handcrafted architectural diorama atmosphere.",
+      "Don't auto-apply room or wall dimensions without explicit confirmation from the user.",
+      "Don't use browser-native confirm() or alert() dialogues; always use self-contained, keyboard-trapped in-app dialogs.",
+      "Don't couple the user's personal scene background color preference to exported apartment JSON geometry."
+    ]
+  }
+}
