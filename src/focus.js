@@ -143,10 +143,63 @@
    if(shell.classList.contains('map-open')||shell.classList.contains('zoom-open')||shell.classList.contains('info-open')){e.preventDefault();for(const c of ['map-open','zoom-open','info-open'])shell.classList.remove(c);sync();return;}
    return;
   }
-  if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select,button,[contenteditable]'))return;
-  const key=e.key.toLowerCase();if(key==='v'||key==='b'||key==='a'){
+  if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select,[contenteditable]'))return;
+  const key=e.key.toLowerCase();
+  if(key==='f'||e.key==='F11'){
+   e.preventDefault();
+   toggleFullscreen();
+   return;
+  }
+  if(key==='v'||key==='b'||key==='a'){
    e.preventDefault();if(key==='v')mode('furnish');if(key==='b')mode('build');if(key==='a'){if(!shell.classList.contains('catalog-open')){bridge.setTool('furnish');toggle('catalog');sync();}}}
  },true);
+ // Fullscreen mode coordination
+ function isFullscreen(){
+  return Boolean(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement||document.body.classList.contains('hp-fullscreen-fallback'));
+ }
+ async function toggleFullscreen(){
+  try{
+   if(!isFullscreen()){
+    const el=document.documentElement;
+    if(el.requestFullscreen){await el.requestFullscreen();}
+    else if(el.webkitRequestFullscreen){await el.webkitRequestFullscreen();}
+    else if(el.msRequestFullscreen){await el.msRequestFullscreen();}
+    else{document.body.classList.add('hp-fullscreen-fallback');}
+   }else{
+    if(document.exitFullscreen&&(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement)){await document.exitFullscreen();}
+    else if(document.webkitExitFullscreen&&document.webkitFullscreenElement){await document.webkitExitFullscreen();}
+    else if(document.msExitFullscreen&&document.msFullscreenElement){await document.msExitFullscreen();}
+    document.body.classList.remove('hp-fullscreen-fallback');
+   }
+  }catch(err){
+   document.body.classList.toggle('hp-fullscreen-fallback');
+  }
+  syncFullscreenUI();
+ }
+ function syncFullscreenUI(){
+  const active=isFullscreen();
+  const btns=[byId('quickFullscreen'),byId('focusFullscreen'),byId('fullscreenBtn')].filter(Boolean);
+  btns.forEach(b=>{
+   b.setAttribute('aria-pressed',String(active));
+   const tip=active?'Exit full screen · F or Esc':'Full screen · F';
+   b.dataset.tooltip=tip;
+   b.setAttribute('title',tip);
+   const textSpan=b.querySelector('.hp-fs-label');
+   if(textSpan)textSpan.textContent=active?'Exit full screen':'Full screen';
+   if(window.HomePlanIconUI?.updateFullscreenIcon){
+    window.HomePlanIconUI.updateFullscreenIcon(b,active);
+   }
+  });
+  window.dispatchEvent(new Event('resize'));
+  if(window.app?.engine?.resize)window.app.engine.resize();
+ }
+ ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(ev=>{
+  document.addEventListener(ev,syncFullscreenUI);
+ });
+ if(byId('quickFullscreen'))byId('quickFullscreen').addEventListener('click',toggleFullscreen);
+ if(byId('focusFullscreen'))byId('focusFullscreen').addEventListener('click',()=>{toggleFullscreen();closeFloating(true);});
+ if(byId('fullscreenBtn'))byId('fullscreenBtn').addEventListener('click',toggleFullscreen);
+
  // Prevent stale focus pointing to a hidden dismissable drawer.
  byId('closeInspector').addEventListener('click',()=>{if(document.activeElement===byId('closeInspector'))byId('focusTools').focus({preventScroll:true});sync();});
  for(const id of ['toolsPanel','architecturePalette','projectPanel','viewControls','catalogShelf','inspector']){
@@ -156,6 +209,6 @@
   for(const p of Object.values(panels)){applySavedPosition(byId(p.surface));}
   applySavedPosition(byId('inspector'));
  },{passive:true});
- window.HomePlanFocus={sync,closeFloating,makeDraggable,applySavedPosition};
+ window.HomePlanFocus={sync,closeFloating,makeDraggable,applySavedPosition,toggleFullscreen,isFullscreen};
  sync();
 })();

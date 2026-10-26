@@ -50,11 +50,16 @@
   porch:'<path d="M3 21V8l9-5 9 5v13M3 14h18m-15 4h12M8 21v-7M16 21v-7"/>',
   balcony:'<path d="M2 13h20v8H2zM6 13V4m6 9V4m6 9V4M2 17h20"/>',
   moon:'<path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5Z"/>',
-  broom:'<path d="M4 21h16l-3-7H7l-3 7Zm8-18v11"/>'
+  broom:'<path d="M4 21h16l-3-7H7l-3 7Zm8-18v11"/>',
+  fullscreen:'<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>',
+  fullscreenExit:'<path d="M4 14h6m0 0v6m0-6-7 7m17-11h-6m0 0V4m0 6 7-7"/>'
  };
  const svg=name=>`<svg class="hp-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[name]||shapes.info}</svg>`;
  const definitions={
   focusProject:['house','Project','Save, export, undo, survey or open Design Lab.'],
+  quickFullscreen:['fullscreen','Full screen · F','Expand model to full screen (F).'],
+  focusFullscreen:['fullscreen','Full screen','Expand model to full screen (F).'],
+  fullscreenBtn:['fullscreen','Full screen · F','Expand model to full screen (F).'],
   focusViews:['view','Camera views','Switch between dollhouse, orbit and floor plan; adjust the visible guides.'],
   focusMove:['select','Move · V','Select an object in the model and drag to reposition it.'],
   focusAdd:['add','Add · A','Browse furniture by category and place it in the apartment.'],
@@ -104,7 +109,7 @@
  function decorateStatic(){
   for(const [id,entry] of Object.entries(definitions)){
    const el=$(id);if(!el)continue;
-   const kind=['focusProject','focusViews','focusMove','focusAdd','focusBuild','focusTools','focusEdit','focusDeselect','undoBtn','redoBtn','saveBtn','openExport','launchStudio','launchSurvey','catalogFavorites'].includes(id)?'compact':id==='focusFit'||id==='focusMap'||id==='focusZoom'||id==='focusInfo'?'prepend':null;
+   const kind=['focusProject','focusViews','quickFullscreen','fullscreenBtn','focusMove','focusAdd','focusBuild','focusTools','focusEdit','focusDeselect','undoBtn','redoBtn','saveBtn','openExport','launchStudio','launchSurvey','catalogFavorites'].includes(id)?'compact':id==='focusFit'||id==='focusMap'||id==='focusZoom'||id==='focusInfo'||id==='focusFullscreen'?'prepend':null;
    decorate(el,entry,kind);
   }
   decorate($('appearanceToggle'),['sliders','Appearance settings','Choose the color behind the apartment model.'],'prepend');
@@ -216,5 +221,12 @@
  d.addEventListener('focusout',e=>{if(reason==='focus'&&hovered?.contains(e.target))hideTip();});
  d.addEventListener('pointerdown',()=>{pointerSuppressFocus=true;hideTip();},true);d.addEventListener('scroll',hideTip,true);d.addEventListener('keydown',e=>{pointerSuppressFocus=false;if(e.key==='Escape')hideTip();},true);
  addEventListener('resize',hideTip,{passive:true});
- window.HomePlanIconUI={decorateStatic,showHelp:key=>{const b=d.querySelector(`[data-help="${key}"]`);b?.click()},helpCategories:Object.keys(help)};
+ function updateFullscreenIcon(el,active){
+  if(!el)return;
+  const ico=active?'fullscreenExit':'fullscreen';
+  el.dataset.iconName=ico;
+  const sym=el.querySelector('.hp-command-icon,.hp-icon,.symbol,.hp-icon-wrap');
+  if(sym){sym.innerHTML=svg(ico);}
+ }
+ window.HomePlanIconUI={decorateStatic,showHelp:key=>{const b=d.querySelector(`[data-help="${key}"]`);b?.click()},helpCategories:Object.keys(help),updateFullscreenIcon,svg};
 })();

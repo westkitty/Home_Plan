@@ -474,11 +474,11 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .shelf .catalog-tile{width:100%;min-height:56px;flex:none}
 .shelf .catalog-card{height:100%;width:100%}
 /* Model-first controls: only three small islands are visible by default. */
-.focus-project,.focus-view-toggle,.focus-dock,.focus-selection{position:absolute;z-index:30}
-.focus-project,.focus-view-toggle,.focus-dock button,.focus-selection button{appearance:none;-webkit-appearance:none;border:1px solid var(--focus-line);color:var(--focus-text);background:var(--focus-surface-grad);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 6px 25px rgba(2,12,16,.4);font-weight:750;line-height:1.1;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease,color .14s ease}
-.focus-project:hover,.focus-view-toggle:hover,.focus-dock button:hover:not(.is-active),.focus-selection button:hover{background:var(--focus-card-hover);border-color:var(--focus-card-hover-border);transform:translateY(-1px);box-shadow:0 8px 28px rgba(2,12,16,.5),0 0 16px rgba(78,205,196,.25)}
-.focus-project:active,.focus-view-toggle:active,.focus-dock button:active,.focus-selection button:active{transform:translateY(1.5px) scale(0.96);box-shadow:0 3px 12px rgba(2,12,16,.3)}
-.focus-project:focus-visible,.focus-view-toggle:focus-visible,.focus-dock button:focus-visible,.focus-selection button:focus-visible{outline:3px solid #5ce1d6;outline-offset:3px}
+.focus-project,.focus-view-toggle,.focus-fullscreen-btn,.focus-dock,.focus-selection{position:absolute;z-index:30}
+.focus-project,.focus-view-toggle,.focus-fullscreen-btn,.focus-dock button,.focus-selection button{appearance:none;-webkit-appearance:none;border:1px solid var(--focus-line);color:var(--focus-text);background:var(--focus-surface-grad);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 6px 25px rgba(2,12,16,.4);font-weight:750;line-height:1.1;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease,color .14s ease}
+.focus-project:hover,.focus-view-toggle:hover,.focus-fullscreen-btn:hover,.focus-dock button:hover:not(.is-active),.focus-selection button:hover{background:var(--focus-card-hover);border-color:var(--focus-card-hover-border);transform:translateY(-1px);box-shadow:0 8px 28px rgba(2,12,16,.5),0 0 16px rgba(78,205,196,.25)}
+.focus-project:active,.focus-view-toggle:active,.focus-fullscreen-btn:active,.focus-dock button:active,.focus-selection button:active{transform:translateY(1.5px) scale(0.96);box-shadow:0 3px 12px rgba(2,12,16,.3)}
+.focus-project:focus-visible,.focus-view-toggle:focus-visible,.focus-fullscreen-btn:focus-visible,.focus-dock button:focus-visible,.focus-selection button:focus-visible{outline:3px solid #5ce1d6;outline-offset:3px}
 .focus-project{top:13px;left:14px;display:flex;align-items:center;gap:8px;min-height:43px;padding:5px 12px 5px 6px;border-radius:15px;font-size:12px;letter-spacing:.025em;white-space:nowrap;box-shadow:0 8px 26px rgba(2,12,16,.5),0 0 18px rgba(78,205,196,.18),inset 0 1px 0 rgba(190,245,240,.2)}
 .focus-project .focus-monogram{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:linear-gradient(135deg,#3bb8ac,#268d83);color:#08201d;font:900 18px Georgia,serif}
 .focus-view-toggle{top:13px;right:14px;display:flex;align-items:center;gap:7px;justify-content:center;min-height:43px;min-width:128px;padding:9px 12px;border-radius:15px;font-size:12px;box-shadow:0 8px 26px rgba(2,12,16,.5),0 0 18px rgba(78,205,196,.18),inset 0 1px 0 rgba(190,245,240,.2)}
@@ -572,6 +572,9 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .focus-view-toggle{width:47px!important;min-width:47px!important;min-height:47px;justify-content:center!important;padding:6px!important}
 .focus-view-toggle #focusViewName,.focus-view-toggle .focus-chevron{display:none!important}
 .focus-view-toggle .hp-icon{width:25px;height:25px}
+.focus-fullscreen-btn{width:47px!important;min-width:47px!important;min-height:47px;height:47px;justify-content:center!important;padding:6px!important;top:13px;right:68px;border-radius:15px}
+.focus-fullscreen-btn .hp-icon{width:25px;height:25px}
+body.hp-fullscreen-fallback .shell{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:999999!important}
 .header .header-end{grid-template-columns:repeat(4,minmax(0,1fr));}
 .header .header-end .btn{min-width:0;min-height:47px;padding:9px 5px;font-size:0!important;display:flex;align-items:center;justify-content:center}
 .header .header-end .btn.hp-iconified{font-size:0!important}
@@ -583,7 +586,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .hp-tools-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(82,196,190,.20);flex-shrink:0}
 .hp-tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(52dvh,400px);scrollbar-width:thin;scrollbar-color:rgba(78,205,196,.4) transparent;touch-action:pan-y}
 .rail .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
-.view-controls [data-view],.view-controls #focusFit,.view-controls #focusMap,.view-controls #focusZoom,.view-controls #focusInfo{display:flex;align-items:center;gap:10px;text-align:left;}
+.view-controls [data-view],.view-controls #focusFit,.view-controls #focusMap,.view-controls #focusZoom,.view-controls #focusInfo,.view-controls #focusFullscreen{display:flex;align-items:center;gap:10px;text-align:left;}
 .view-controls .hp-icon{width:19px;height:19px}
 .view-controls .hp-help-trigger{width:100%;margin-top:6px}
 .shelf .shelf-top{gap:6px}
@@ -617,7 +620,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .hp-help-actions{display:flex;justify-content:flex-end;margin-top:15px}
 .hp-context-dialog #hpContextDone{background:linear-gradient(135deg,#3bb8ac,#268d83);color:#08201d;font-weight:750;border-color:#5ce1d6}
 .hp-context-dialog button:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
-@media(max-width:480px){.rail{width:min(316px,calc(100vw - 22px))}.focus-dock button{width:45px;height:45px;padding:7px!important}.focus-project,.focus-view-toggle{width:45px!important;min-width:45px!important;min-height:45px}.shelf .shelf-top{align-items:center}.shelf .shelf-categories [data-category]{width:38px;min-width:38px;height:38px}.hp-context-dialog{padding:19px}}
+@media(max-width:480px){.rail{width:min(316px,calc(100vw - 22px))}.focus-dock button{width:45px;height:45px;padding:7px!important}.focus-project,.focus-view-toggle,.focus-fullscreen-btn{width:45px!important;min-width:45px!important;min-height:45px}.focus-fullscreen-btn{right:58px}.shelf .shelf-top{align-items:center}.shelf .shelf-categories [data-category]{width:38px;min-width:38px;height:38px}.hp-context-dialog{padding:19px}}
 @media(prefers-reduced-motion:reduce){.hp-context-dialog::backdrop{backdrop-filter:none}}
 
 /* Drag handle affordance for all floating menus */
@@ -713,10 +716,11 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 <nav class="rail" id="toolsPanel" aria-label="All editing tools"><div class="hp-tools-header"><span class="hp-menu-title">MORE TOOLS</span></div><div class="hp-tools-grid" id="toolsGrid"><button type="button" class="rail-button active" data-tool="furnish" title="Select and move furniture"><span class="symbol">▦</span>Furnish</button><button type="button" class="rail-button" data-tool="build" title="Select or edit walls"><span class="symbol">◫</span>Build</button><button type="button" class="rail-button" data-tool="navigate" title="Orbit and explore the apartment"><span class="symbol">◎</span>Explore</button><button type="button" class="rail-button studio-rail" id="railStudio" title="Open design tools and diagnostics"><span class="symbol">✦</span>Studio</button><button type="button" class="rail-button" data-tool="measure" title="Two taps measure distance"><span class="symbol">↔</span>Tape</button><button type="button" class="rail-button" data-tool="annotate" title="Tap floor to place a note"><span class="symbol">✎</span>Notes</button><button type="button" class="rail-button scan-rail" id="railSurvey" title="Capture a guided apartment survey"><span class="symbol">◉</span>Scan</button><button type="button" class="rail-button" data-tool="opening" title="Place doors, windows, or outlets"><span class="symbol">▥</span>Openings</button><button id="focusDetails" class="rail-button" type="button" title="Show the selection inspector"><span class="symbol">☷</span>Inspector</button><button id="helpBtn" class="rail-button help-only" title="Controls & help"><span class="symbol">?</span>Help</button></div></nav>
 <main class="stage" id="stageMain" aria-label="Interactive apartment scene"><div id="stage" role="application" aria-label="3D apartment model; drag items to move them, drag empty space to orbit, wheel to zoom" tabindex="0"></div>
  <button type="button" id="focusProject" class="focus-project" aria-expanded="false" aria-controls="projectPanel" aria-label="Project, save and export"><span class="focus-monogram" aria-hidden="true">H.</span><span class="focus-project-label">Home Plan</span></button>
+ <button type="button" id="quickFullscreen" class="focus-fullscreen-btn" aria-pressed="false" title="Full screen · F" aria-label="Toggle full screen mode"><span class="hp-icon-wrap" aria-hidden="true"></span></button>
  <button type="button" id="focusViews" class="focus-view-toggle" aria-expanded="false" aria-controls="viewControls" aria-label="Choose camera view"><span id="focusViewName">Dollhouse</span><span class="focus-chevron" aria-hidden="true">⌄</span></button>
  <nav class="focus-dock" aria-label="Quick editing tools"><button type="button" id="focusMove" class="is-active" aria-pressed="true" title="Select and move furniture (V)"><span class="focus-icon" aria-hidden="true">↖</span>Move</button><button type="button" id="focusAdd" aria-expanded="false" aria-controls="catalogShelf" title="Add furniture (A)"><span class="focus-icon" aria-hidden="true">＋</span>Add</button><button type="button" id="focusBuild" aria-pressed="false" title="Edit walls (B)"><span class="focus-icon" aria-hidden="true">▱</span>Build</button><button type="button" id="focusTools" aria-expanded="false" aria-controls="toolsPanel" title="All tools and help"><span class="focus-icon" aria-hidden="true">☷</span><span id="focusToolsLabel">Tools</span></button></nav>
  <section id="architecturePalette" class="architecture-palette" aria-label="Architectural build tools"></section><div id="focusSelection" class="focus-selection" hidden aria-live="polite"><span class="focus-selection-name" id="focusSelectionName"></span><button type="button" id="focusRotateLeft" class="focus-quick-btn" title="Rotate counter-clockwise (Q)" aria-label="Rotate counter-clockwise">↺</button><button type="button" id="focusRotateRight" class="focus-quick-btn" title="Rotate clockwise (E)" aria-label="Rotate clockwise">↻</button><button type="button" id="focusEdit" aria-controls="inspector" aria-expanded="false">Edit</button><button type="button" id="focusDeselect" class="focus-deselect" title="Deselect" aria-label="Deselect">×</button></div>
- <div class="viewport-hud"><span class="eyebrow" id="sceneModeLabel">01 / Dollhouse workshop</span><h2 id="sceneTitle">Your apartment, from above.</h2><p id="sceneSubtitle">Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.</p></div><div class="view-controls" id="viewControls" role="group" aria-label="Camera views"><button data-view="dollhouse" class="active">Dollhouse</button><button data-view="orbit">3D orbit</button><button data-view="top">Top plan</button><button type="button" id="btnExperimental" class="experimental-gate-btn" title="Experimental Features Gate — access real-world 3D, acoustic map, truck simulator, AR export, and advanced tools">🧪 Experimental</button><button data-view="walk" id="viewWalk" title="Eye-level first-person walkthrough: WASD / Arrow keys move, drag looks around">Walkthrough</button><button data-view="truck" id="viewTruck" title="Pack the Moving Truck: 3D cargo simulator with 10ft, 15ft, 20ft truck boxes" hidden>Moving truck</button><div class="focus-view-divider"></div><button type="button" id="focusHeatmap" aria-pressed="false" title="Toggle provisional vs tape-certified verification heatmap" hidden>▦ Verification heatmap</button><button type="button" id="focusAcoustic" aria-pressed="false" title="Toggle multi-unit acoustic &amp; shared-wall insulation mapping" hidden>🔊 Acoustic map</button><button type="button" id="focusBlueprint" aria-pressed="false" title="Generate printable 1/4\" architectural blueprint sheet" hidden>🖶 Print blueprint sheet</button><button type="button" id="focusShare" aria-pressed="false" title="Share floor plan via offline URL and QR code">⎘ Share via link &amp; QR</button><button type="button" id="focusFit">⌖ Fit entire apartment</button><button type="button" id="focusMap" aria-pressed="false">▦ Show floor map</button><button type="button" id="focusZoom" aria-pressed="false">＋ Show zoom controls</button><button type="button" id="focusInfo" aria-pressed="false">ⓘ About this model</button></div><div class="map-card" aria-label="2D apartment minimap"><div class="map-title">FLOOR INDEX <span id="roomBadge">ALL ROOMS</span></div><canvas id="minimap" width="348" height="312" aria-label="Overhead mini-map; tap a room to focus on it"></canvas><p class="legend">AMBER = provisional openings · BLUE = selected</p></div><div class="floating-actions"><button class="round-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button><button class="round-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button class="round-btn" id="fitBtn" title="Fit whole apartment" aria-label="Fit model">⌖</button><button class="round-btn" id="mobileInspectorBtn" title="Show editor controls" aria-label="Show editor controls">≡</button></div><div id="selectionLabel" class="selection-label"></div><div id="walkReticle" class="walk-reticle" hidden aria-hidden="true"></div><div id="walkControls" class="walk-controls" hidden aria-label="First-person walking controls"><button type="button" id="walkFwd" class="walk-btn" aria-label="Step forward">▲</button><div class="walk-row"><button type="button" id="walkLeft" class="walk-btn" aria-label="Step left">◀</button><button type="button" id="walkBack" class="walk-btn" aria-label="Step back">▼</button><button type="button" id="walkRight" class="walk-btn" aria-label="Step right">▶</button></div></div><div class="time-timeline" id="timeTimeline" hidden aria-label="Day in the life solar timeline"><div class="time-header"><span id="timeIcon">☀️</span> <span id="timeDisplay">12:00 PM</span><span class="time-sub">Niles, MI</span><button type="button" id="soundToggle" class="sound-toggle-btn" title="Toggle procedural soundscape (St. Joseph River &amp; courtyard breeze)">🔇 Audio</button></div><div class="season-row"><button type="button" class="season-btn active" data-season="summer">Summer</button><button type="button" class="season-btn" data-season="equinox">Equinox</button><button type="button" class="season-btn" data-season="winter">Winter</button></div><input type="range" id="timeSlider" min="0" max="1440" step="15" value="720" aria-label="Time of day in Niles MI"></div><div id="toast" role="status" aria-live="polite" class="toast"></div></main>
+ <div class="viewport-hud"><span class="eyebrow" id="sceneModeLabel">01 / Dollhouse workshop</span><h2 id="sceneTitle">Your apartment, from above.</h2><p id="sceneSubtitle">Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.</p></div><div class="view-controls" id="viewControls" role="group" aria-label="Camera views"><button data-view="dollhouse" class="active">Dollhouse</button><button data-view="orbit">3D orbit</button><button data-view="top">Top plan</button><button type="button" id="btnExperimental" class="experimental-gate-btn" title="Experimental Features Gate — access real-world 3D, acoustic map, truck simulator, AR export, and advanced tools">🧪 Experimental</button><button data-view="walk" id="viewWalk" title="Eye-level first-person walkthrough: WASD / Arrow keys move, drag looks around">Walkthrough</button><button data-view="truck" id="viewTruck" title="Pack the Moving Truck: 3D cargo simulator with 10ft, 15ft, 20ft truck boxes" hidden>Moving truck</button><div class="focus-view-divider"></div><button type="button" id="focusFullscreen" aria-pressed="false" title="Toggle full screen mode (F)"><span class="hp-fs-label">Full screen</span></button><button type="button" id="focusHeatmap" aria-pressed="false" title="Toggle provisional vs tape-certified verification heatmap" hidden>▦ Verification heatmap</button><button type="button" id="focusAcoustic" aria-pressed="false" title="Toggle multi-unit acoustic &amp; shared-wall insulation mapping" hidden>🔊 Acoustic map</button><button type="button" id="focusBlueprint" aria-pressed="false" title="Generate printable 1/4\" architectural blueprint sheet" hidden>🖶 Print blueprint sheet</button><button type="button" id="focusShare" aria-pressed="false" title="Share floor plan via offline URL and QR code">⎘ Share via link &amp; QR</button><button type="button" id="focusFit">⌖ Fit entire apartment</button><button type="button" id="focusMap" aria-pressed="false">▦ Show floor map</button><button type="button" id="focusZoom" aria-pressed="false">＋ Show zoom controls</button><button type="button" id="focusInfo" aria-pressed="false">ⓘ About this model</button></div><div class="map-card" aria-label="2D apartment minimap"><div class="map-title">FLOOR INDEX <span id="roomBadge">ALL ROOMS</span></div><canvas id="minimap" width="348" height="312" aria-label="Overhead mini-map; tap a room to focus on it"></canvas><p class="legend">AMBER = provisional openings · BLUE = selected</p></div><div class="floating-actions"><button class="round-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button><button class="round-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button class="round-btn" id="fitBtn" title="Fit whole apartment" aria-label="Fit model">⌖</button><button class="round-btn" id="fullscreenBtn" title="Toggle full screen mode (F)" aria-label="Toggle full screen mode">⛶</button><button class="round-btn" id="mobileInspectorBtn" title="Show editor controls" aria-label="Show editor controls">≡</button></div><div id="selectionLabel" class="selection-label"></div><div id="walkReticle" class="walk-reticle" hidden aria-hidden="true"></div><div id="walkControls" class="walk-controls" hidden aria-label="First-person walking controls"><button type="button" id="walkFwd" class="walk-btn" aria-label="Step forward">▲</button><div class="walk-row"><button type="button" id="walkLeft" class="walk-btn" aria-label="Step left">◀</button><button type="button" id="walkBack" class="walk-btn" aria-label="Step back">▼</button><button type="button" id="walkRight" class="walk-btn" aria-label="Step right">▶</button></div></div><div class="time-timeline" id="timeTimeline" hidden aria-label="Day in the life solar timeline"><div class="time-header"><span id="timeIcon">☀️</span> <span id="timeDisplay">12:00 PM</span><span class="time-sub">Niles, MI</span><button type="button" id="soundToggle" class="sound-toggle-btn" title="Toggle procedural soundscape (St. Joseph River &amp; courtyard breeze)">🔇 Audio</button></div><div class="season-row"><button type="button" class="season-btn active" data-season="summer">Summer</button><button type="button" class="season-btn" data-season="equinox">Equinox</button><button type="button" class="season-btn" data-season="winter">Winter</button></div><input type="range" id="timeSlider" min="0" max="1440" step="15" value="720" aria-label="Time of day in Niles MI"></div><div id="toast" role="status" aria-live="polite" class="toast"></div></main>
 <aside class="inspector" id="inspector"><div class="ins-head"><span class="eyebrow">DESIGN INSPECTOR</span><h3 id="panelHeading">Edit your space</h3><p id="panelSubtitle">Select furniture or a wall to make changes.</p></div><div class="ins-tabs" role="tablist" aria-label="Inspector panels"><button class="active" data-tab="edit" role="tab" aria-selected="true">EDIT</button><button data-tab="space" role="tab" aria-selected="false">SPACE</button><button data-tab="project" role="tab" aria-selected="false">PROJECT</button><button id="closeInspector" class="hidden" aria-label="Close inspector">✕</button></div><div class="ins-body" id="inspectorBody"></div></aside>
 <section class="shelf" id="catalogShelf" aria-label="Furniture and fixture catalog"><div class="shelf-top"><span class="shelf-title">OBJECT LIBRARY</span><div class="shelf-categories" id="categories"></div><div class="catalog-search"><label for="catalogSearch" class="sr-only">Search furniture</label><input id="catalogSearch" type="search" placeholder="Search furniture…" autocomplete="off"><button type="button" id="catalogFavorites" aria-pressed="false" title="Show favorite items">☆ Favorites</button><button type="button" id="catalogCustom" class="btn small-button" title="Create custom 3D furniture piece">+ Custom</button></div></div><div class="shelf-items" id="catalog"></div></section>
 </div>
@@ -3202,10 +3206,63 @@ install();
    if(shell.classList.contains('map-open')||shell.classList.contains('zoom-open')||shell.classList.contains('info-open')){e.preventDefault();for(const c of ['map-open','zoom-open','info-open'])shell.classList.remove(c);sync();return;}
    return;
   }
-  if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select,button,[contenteditable]'))return;
-  const key=e.key.toLowerCase();if(key==='v'||key==='b'||key==='a'){
+  if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select,[contenteditable]'))return;
+  const key=e.key.toLowerCase();
+  if(key==='f'||e.key==='F11'){
+   e.preventDefault();
+   toggleFullscreen();
+   return;
+  }
+  if(key==='v'||key==='b'||key==='a'){
    e.preventDefault();if(key==='v')mode('furnish');if(key==='b')mode('build');if(key==='a'){if(!shell.classList.contains('catalog-open')){bridge.setTool('furnish');toggle('catalog');sync();}}}
  },true);
+ // Fullscreen mode coordination
+ function isFullscreen(){
+  return Boolean(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement||document.body.classList.contains('hp-fullscreen-fallback'));
+ }
+ async function toggleFullscreen(){
+  try{
+   if(!isFullscreen()){
+    const el=document.documentElement;
+    if(el.requestFullscreen){await el.requestFullscreen();}
+    else if(el.webkitRequestFullscreen){await el.webkitRequestFullscreen();}
+    else if(el.msRequestFullscreen){await el.msRequestFullscreen();}
+    else{document.body.classList.add('hp-fullscreen-fallback');}
+   }else{
+    if(document.exitFullscreen&&(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement)){await document.exitFullscreen();}
+    else if(document.webkitExitFullscreen&&document.webkitFullscreenElement){await document.webkitExitFullscreen();}
+    else if(document.msExitFullscreen&&document.msFullscreenElement){await document.msExitFullscreen();}
+    document.body.classList.remove('hp-fullscreen-fallback');
+   }
+  }catch(err){
+   document.body.classList.toggle('hp-fullscreen-fallback');
+  }
+  syncFullscreenUI();
+ }
+ function syncFullscreenUI(){
+  const active=isFullscreen();
+  const btns=[byId('quickFullscreen'),byId('focusFullscreen'),byId('fullscreenBtn')].filter(Boolean);
+  btns.forEach(b=>{
+   b.setAttribute('aria-pressed',String(active));
+   const tip=active?'Exit full screen · F or Esc':'Full screen · F';
+   b.dataset.tooltip=tip;
+   b.setAttribute('title',tip);
+   const textSpan=b.querySelector('.hp-fs-label');
+   if(textSpan)textSpan.textContent=active?'Exit full screen':'Full screen';
+   if(window.HomePlanIconUI?.updateFullscreenIcon){
+    window.HomePlanIconUI.updateFullscreenIcon(b,active);
+   }
+  });
+  window.dispatchEvent(new Event('resize'));
+  if(window.app?.engine?.resize)window.app.engine.resize();
+ }
+ ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(ev=>{
+  document.addEventListener(ev,syncFullscreenUI);
+ });
+ if(byId('quickFullscreen'))byId('quickFullscreen').addEventListener('click',toggleFullscreen);
+ if(byId('focusFullscreen'))byId('focusFullscreen').addEventListener('click',()=>{toggleFullscreen();closeFloating(true);});
+ if(byId('fullscreenBtn'))byId('fullscreenBtn').addEventListener('click',toggleFullscreen);
+
  // Prevent stale focus pointing to a hidden dismissable drawer.
  byId('closeInspector').addEventListener('click',()=>{if(document.activeElement===byId('closeInspector'))byId('focusTools').focus({preventScroll:true});sync();});
  for(const id of ['toolsPanel','architecturePalette','projectPanel','viewControls','catalogShelf','inspector']){
@@ -3215,7 +3272,7 @@ install();
   for(const p of Object.values(panels)){applySavedPosition(byId(p.surface));}
   applySavedPosition(byId('inspector'));
  },{passive:true});
- window.HomePlanFocus={sync,closeFloating,makeDraggable,applySavedPosition};
+ window.HomePlanFocus={sync,closeFloating,makeDraggable,applySavedPosition,toggleFullscreen,isFullscreen};
  sync();
 })();
 </script><script>'use strict';
@@ -3270,11 +3327,16 @@ install();
   porch:'<path d="M3 21V8l9-5 9 5v13M3 14h18m-15 4h12M8 21v-7M16 21v-7"/>',
   balcony:'<path d="M2 13h20v8H2zM6 13V4m6 9V4m6 9V4M2 17h20"/>',
   moon:'<path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5Z"/>',
-  broom:'<path d="M4 21h16l-3-7H7l-3 7Zm8-18v11"/>'
+  broom:'<path d="M4 21h16l-3-7H7l-3 7Zm8-18v11"/>',
+  fullscreen:'<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>',
+  fullscreenExit:'<path d="M4 14h6m0 0v6m0-6-7 7m17-11h-6m0 0V4m0 6 7-7"/>'
  };
  const svg=name=>`<svg class="hp-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[name]||shapes.info}</svg>`;
  const definitions={
   focusProject:['house','Project','Save, export, undo, survey or open Design Lab.'],
+  quickFullscreen:['fullscreen','Full screen · F','Expand model to full screen (F).'],
+  focusFullscreen:['fullscreen','Full screen','Expand model to full screen (F).'],
+  fullscreenBtn:['fullscreen','Full screen · F','Expand model to full screen (F).'],
   focusViews:['view','Camera views','Switch between dollhouse, orbit and floor plan; adjust the visible guides.'],
   focusMove:['select','Move · V','Select an object in the model and drag to reposition it.'],
   focusAdd:['add','Add · A','Browse furniture by category and place it in the apartment.'],
@@ -3324,7 +3386,7 @@ install();
  function decorateStatic(){
   for(const [id,entry] of Object.entries(definitions)){
    const el=$(id);if(!el)continue;
-   const kind=['focusProject','focusViews','focusMove','focusAdd','focusBuild','focusTools','focusEdit','focusDeselect','undoBtn','redoBtn','saveBtn','openExport','launchStudio','launchSurvey','catalogFavorites'].includes(id)?'compact':id==='focusFit'||id==='focusMap'||id==='focusZoom'||id==='focusInfo'?'prepend':null;
+   const kind=['focusProject','focusViews','quickFullscreen','fullscreenBtn','focusMove','focusAdd','focusBuild','focusTools','focusEdit','focusDeselect','undoBtn','redoBtn','saveBtn','openExport','launchStudio','launchSurvey','catalogFavorites'].includes(id)?'compact':id==='focusFit'||id==='focusMap'||id==='focusZoom'||id==='focusInfo'||id==='focusFullscreen'?'prepend':null;
    decorate(el,entry,kind);
   }
   decorate($('appearanceToggle'),['sliders','Appearance settings','Choose the color behind the apartment model.'],'prepend');
@@ -3436,7 +3498,14 @@ install();
  d.addEventListener('focusout',e=>{if(reason==='focus'&&hovered?.contains(e.target))hideTip();});
  d.addEventListener('pointerdown',()=>{pointerSuppressFocus=true;hideTip();},true);d.addEventListener('scroll',hideTip,true);d.addEventListener('keydown',e=>{pointerSuppressFocus=false;if(e.key==='Escape')hideTip();},true);
  addEventListener('resize',hideTip,{passive:true});
- window.HomePlanIconUI={decorateStatic,showHelp:key=>{const b=d.querySelector(`[data-help="${key}"]`);b?.click()},helpCategories:Object.keys(help)};
+ function updateFullscreenIcon(el,active){
+  if(!el)return;
+  const ico=active?'fullscreenExit':'fullscreen';
+  el.dataset.iconName=ico;
+  const sym=el.querySelector('.hp-command-icon,.hp-icon,.symbol,.hp-icon-wrap');
+  if(sym){sym.innerHTML=svg(ico);}
+ }
+ window.HomePlanIconUI={decorateStatic,showHelp:key=>{const b=d.querySelector(`[data-help="${key}"]`);b?.click()},helpCategories:Object.keys(help),updateFullscreenIcon,svg};
 })();
 </script>
 </body></html>

@@ -11,6 +11,9 @@
 .focus-view-toggle{width:47px!important;min-width:47px!important;min-height:47px;justify-content:center!important;padding:6px!important}
 .focus-view-toggle #focusViewName,.focus-view-toggle .focus-chevron{display:none!important}
 .focus-view-toggle .hp-icon{width:25px;height:25px}
+.focus-fullscreen-btn{width:47px!important;min-width:47px!important;min-height:47px;height:47px;justify-content:center!important;padding:6px!important;top:13px;right:68px;border-radius:15px}
+.focus-fullscreen-btn .hp-icon{width:25px;height:25px}
+body.hp-fullscreen-fallback .shell{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:999999!important}
 .header .header-end{grid-template-columns:repeat(4,minmax(0,1fr));}
 .header .header-end .btn{min-width:0;min-height:47px;padding:9px 5px;font-size:0!important;display:flex;align-items:center;justify-content:center}
 .header .header-end .btn.hp-iconified{font-size:0!important}
@@ -22,7 +25,7 @@
 .hp-tools-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(82,196,190,.20);flex-shrink:0}
 .hp-tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(52dvh,400px);scrollbar-width:thin;scrollbar-color:rgba(78,205,196,.4) transparent;touch-action:pan-y}
 .rail .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
-.view-controls [data-view],.view-controls #focusFit,.view-controls #focusMap,.view-controls #focusZoom,.view-controls #focusInfo{display:flex;align-items:center;gap:10px;text-align:left;}
+.view-controls [data-view],.view-controls #focusFit,.view-controls #focusMap,.view-controls #focusZoom,.view-controls #focusInfo,.view-controls #focusFullscreen{display:flex;align-items:center;gap:10px;text-align:left;}
 .view-controls .hp-icon{width:19px;height:19px}
 .view-controls .hp-help-trigger{width:100%;margin-top:6px}
 .shelf .shelf-top{gap:6px}
@@ -56,7 +59,7 @@
 .hp-help-actions{display:flex;justify-content:flex-end;margin-top:15px}
 .hp-context-dialog #hpContextDone{background:linear-gradient(135deg,#3bb8ac,#268d83);color:#08201d;font-weight:750;border-color:#5ce1d6}
 .hp-context-dialog button:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
-@media(max-width:480px){.rail{width:min(316px,calc(100vw - 22px))}.focus-dock button{width:45px;height:45px;padding:7px!important}.focus-project,.focus-view-toggle{width:45px!important;min-width:45px!important;min-height:45px}.shelf .shelf-top{align-items:center}.shelf .shelf-categories [data-category]{width:38px;min-width:38px;height:38px}.hp-context-dialog{padding:19px}}
+@media(max-width:480px){.rail{width:min(316px,calc(100vw - 22px))}.focus-dock button{width:45px;height:45px;padding:7px!important}.focus-project,.focus-view-toggle,.focus-fullscreen-btn{width:45px!important;min-width:45px!important;min-height:45px}.focus-fullscreen-btn{right:58px}.shelf .shelf-top{align-items:center}.shelf .shelf-categories [data-category]{width:38px;min-width:38px;height:38px}.hp-context-dialog{padding:19px}}
 @media(prefers-reduced-motion:reduce){.hp-context-dialog::backdrop{backdrop-filter:none}}
 
 /* Drag handle affordance for all floating menus */
