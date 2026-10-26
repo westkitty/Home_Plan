@@ -27,6 +27,21 @@ def test_upgrade_features():
         page.goto(f"file://{HTML_PATH}")
         page.wait_for_timeout(1000)
 
+        # Enable Experimental Gate for upgrade suite testing
+        page.evaluate("""() => {
+            const bridge = window.homePlanStudioBridge;
+            const p = bridge.getPlan();
+            if (!p.studio) p.studio = {};
+            p.studio.experimental = {
+                enabled: true, realWorld: true, pagoda: true, solar: true,
+                transitPath: true, acoustics: true, truck: true, procurement: true,
+                cartons: true, heatmap: true, wallElevation: true, blueprint: true,
+                doorSwings: true, triangulation: true, videoTracking: true, webxr: true
+            };
+            window.syncExperimentalUI();
+        }""")
+        page.wait_for_timeout(300)
+
         # 1. Feature #5: First-Person Walkthrough Mode
         print("Testing #5: First-person walkthrough...")
         ensure_views_open(page)

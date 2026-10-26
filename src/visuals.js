@@ -137,7 +137,7 @@ window.HomePlanVisuals = (() => {
       ctx.restore();
     }
   }
-  function drawRealWorldLandmarks(ctx, engine, light) {
+  function drawRealWorldLandmarks(ctx, engine, light, plan) {
     const dark = light === 'night';
     const treeCoords = [
       [-7.5, 11.2, 1.8], [0.6, 11.5, 1.5], [16.5, 11.2, 1.9],
@@ -188,71 +188,75 @@ window.HomePlanVisuals = (() => {
       ctx.fillText(sub, aptCenter.x, by + 27);
       ctx.restore();
     }
-    const pagCenter = engine.project(11.2, 4.4, 8.8);
-    const pagDeck = engine.project(11.2, 0.4, 8.8);
-    if (pagCenter && pagDeck) {
-      ctx.save();
-      line(ctx, pagDeck, pagCenter, dark ? '#85b99e' : '#316954', 1.2, [3, 3]);
-      ctx.font = '700 10px system-ui';
-      const pText = '⛩ GARDEN PAGODA';
-      const ptw = ctx.measureText(pText).width + 16;
-      const pby = pagCenter.y - 18;
-      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(pagCenter.x - ptw/2, pby, ptw, 20, 6); ctx.fill(); ctx.stroke(); }
-      else { ctx.fillRect(pagCenter.x - ptw/2, pby, ptw, 20); ctx.strokeRect(pagCenter.x - ptw/2, pby, ptw, 20); }
-      ctx.textAlign = 'center';
-      ctx.fillStyle = dark ? '#d4efe1' : '#234a3b';
-      ctx.fillText(pText, pagCenter.x, pby + 14);
-      ctx.restore();
+    if (typeof isExperimentalActive !== 'function' || isExperimentalActive(plan, 'pagoda')) {
+      const pagCenter = engine.project(11.2, 4.4, 8.8);
+      const pagDeck = engine.project(11.2, 0.4, 8.8);
+      if (pagCenter && pagDeck) {
+        ctx.save();
+        line(ctx, pagDeck, pagCenter, dark ? '#85b99e' : '#316954', 1.2, [3, 3]);
+        ctx.font = '700 10px system-ui';
+        const pText = '⛩ GARDEN PAGODA';
+        const ptw = ctx.measureText(pText).width + 16;
+        const pby = pagCenter.y - 18;
+        if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(pagCenter.x - ptw/2, pby, ptw, 20, 6); ctx.fill(); ctx.stroke(); }
+        else { ctx.fillRect(pagCenter.x - ptw/2, pby, ptw, 20); ctx.strokeRect(pagCenter.x - ptw/2, pby, ptw, 20); }
+        ctx.textAlign = 'center';
+        ctx.fillStyle = dark ? '#d4efe1' : '#234a3b';
+        ctx.fillText(pText, pagCenter.x, pby + 14);
+        ctx.restore();
+      }
     }
     // Street-to-Door Moving Pathway & Clearance Analyzer (Feature #3)
-    const transitPoints = [
-      [0.0, 0.08, 12.0],
-      [2.2, 0.08, 10.5],
-      [4.35, 0.08, 9.6],
-      [4.35, 0.08, 8.8],
-      [3.1, 1.45, 9.2],
-      [3.1, 2.82, 9.2],
-      [4.35, 2.82, 8.8]
-    ];
-    ctx.save();
-    ctx.strokeStyle = '#39d0b8';
-    ctx.lineWidth = 2.5;
-    if (ctx.setLineDash) ctx.setLineDash([6, 4]);
-    ctx.beginPath();
-    let started = false;
-    for (const [px, py, pz] of transitPoints) {
-      const sp = engine.project(px, py, pz);
-      if (!sp) continue;
-      if (!started) { ctx.moveTo(sp.x, sp.y); started = true; }
-      else ctx.lineTo(sp.x, sp.y);
-    }
-    ctx.stroke();
-    if (ctx.setLineDash) ctx.setLineDash([]);
-    const chokes = [
-      { pt: [4.35, 0.08, 9.6], label: '1. Portico 34″ (0.86m)' },
-      { pt: [3.1, 1.45, 9.2], label: '2. Stairs 40″ (1.02m)' },
-      { pt: [3.1, 2.82, 9.2], label: '3. Landing Turn 45″ (1.15m)' },
-      { pt: [4.35, 2.82, 8.8], label: '4. Apt E Door 34″ (0.86m)' }
-    ];
-    for (const ch of chokes) {
-      const p = engine.project(...ch.pt);
-      if (!p) continue;
-      ctx.fillStyle = '#ffbe72';
+    if (typeof isExperimentalActive !== 'function' || isExperimentalActive(plan, 'transitPath')) {
+      const transitPoints = [
+        [0.0, 0.08, 12.0],
+        [2.2, 0.08, 10.5],
+        [4.35, 0.08, 9.6],
+        [4.35, 0.08, 8.8],
+        [3.1, 1.45, 9.2],
+        [3.1, 2.82, 9.2],
+        [4.35, 2.82, 8.8]
+      ];
+      ctx.save();
+      ctx.strokeStyle = '#39d0b8';
+      ctx.lineWidth = 2.5;
+      if (ctx.setLineDash) ctx.setLineDash([6, 4]);
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(17,29,24,0.92)';
-      ctx.strokeStyle = '#efc789';
-      ctx.lineWidth = 0.8;
-      const tw = ctx.measureText(ch.label).width + 10;
-      ctx.fillRect(p.x - tw / 2, p.y - 16, tw, 14);
-      ctx.strokeRect(p.x - tw / 2, p.y - 16, tw, 14);
-      ctx.fillStyle = '#eed09a';
-      ctx.font = '700 8.5px system-ui';
-      ctx.textAlign = 'center';
-      ctx.fillText(ch.label, p.x, p.y - 6);
+      let started = false;
+      for (const [px, py, pz] of transitPoints) {
+        const sp = engine.project(px, py, pz);
+        if (!sp) continue;
+        if (!started) { ctx.moveTo(sp.x, sp.y); started = true; }
+        else ctx.lineTo(sp.x, sp.y);
+      }
+      ctx.stroke();
+      if (ctx.setLineDash) ctx.setLineDash([]);
+      const chokes = [
+        { pt: [4.35, 0.08, 9.6], label: '1. Portico 34″ (0.86m)' },
+        { pt: [3.1, 1.45, 9.2], label: '2. Stairs 40″ (1.02m)' },
+        { pt: [3.1, 2.82, 9.2], label: '3. Landing Turn 45″ (1.15m)' },
+        { pt: [4.35, 2.82, 8.8], label: '4. Apt E Door 34″ (0.86m)' }
+      ];
+      for (const ch of chokes) {
+        const p = engine.project(...ch.pt);
+        if (!p) continue;
+        ctx.fillStyle = '#ffbe72';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(17,29,24,0.92)';
+        ctx.strokeStyle = '#efc789';
+        ctx.lineWidth = 0.8;
+        const tw = ctx.measureText(ch.label).width + 10;
+        ctx.fillRect(p.x - tw / 2, p.y - 16, tw, 14);
+        ctx.strokeRect(p.x - tw / 2, p.y - 16, tw, 14);
+        ctx.fillStyle = '#eed09a';
+        ctx.font = '700 8.5px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(ch.label, p.x, p.y - 6);
+      }
+      ctx.restore();
     }
-    ctx.restore();
     const roadPt = engine.project(4.35, 0.05, 18.2);
     if (roadPt) {
       ctx.save();
@@ -587,7 +591,7 @@ window.HomePlanVisuals = (() => {
         }
       }else if (f.type === 'door' || f.type === 'entry' || f.type === 'opening'){
         line(ctx,a,b,light==='night'?'rgba(235,197,140,.95)':'rgba(157,121,75,.88)',3.2);
-        if (f.type !== 'opening') {
+        if (f.type !== 'opening' && (typeof isExperimentalActive !== 'function' || isExperimentalActive(plan, 'doorSwings'))) {
           const isBlocked = typeof doorObstructions === 'function' && doorObstructions(plan).some(o => o.doorId === f.id);
           const hingePt = f.swing === 'right' ? endpoints[0] : endpoints[1];
           const swingSign = f.swing === 'right' ? 1 : -1;
@@ -811,10 +815,10 @@ function annotations(ctx, engine, app) {
       roomLabels(ctx,engine,plan,light);
       entranceLabel(ctx,engine,plan,light);
       annotations(ctx,engine,app);
-      if(plan.view?.style==='realworld') drawRealWorldLandmarks(ctx,engine,light);
+      if(plan.view?.style==='realworld' && (typeof isExperimentalActive !== 'function' || isExperimentalActive(plan, 'realWorld'))) drawRealWorldLandmarks(ctx,engine,light,plan);
       selectedHighlight(ctx,engine,app,quality);
-      drawSunlightIngress(ctx,engine,plan,app);
-      if(plan.view?.style==='truck') drawTruckHUD(ctx,engine,plan);
+      if(typeof isExperimentalActive !== 'function' || isExperimentalActive(plan, 'solar')) drawSunlightIngress(ctx,engine,plan,app);
+      if(plan.view?.style==='truck' && (typeof isExperimentalActive !== 'function' || isExperimentalActive(plan, 'truck'))) drawTruckHUD(ctx,engine,plan);
       if(app.tool==='build'){
         for(const wall of plan.walls)for(let k=0;k<2;k++){
           const point=wall[k?'b':'a'],p=engine.project(point[0],.08,point[1]);if(!p)continue;

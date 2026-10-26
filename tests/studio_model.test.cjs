@@ -37,6 +37,14 @@ vm.runInContext('var test=initialPlan();test.items=test.items.filter(i=>["i1","i
 const proposal=calc('proposeSmartArrangement(test,"living")');assert.equal(proposal.length,1);assert.equal(proposal[0].id,'i6');
 const sq=calc('triangulateCorner([0,3],[0,0],[4,0])');assert.equal(sq.angle,90);assert.equal(sq.diffFrom90,0);assert.equal(sq.isSquare,true);assert.equal(sq.diagonal,5);
 const nonSq=calc('triangulateCorner([0,3],[0,0],[3,3])');assert.equal(nonSq.isSquare,false);
+const expNorm=calc('normalizeStudio({experimental:{enabled:true,truck:true,cartons:false}}).experimental');
+assert.equal(expNorm.enabled,true);
+assert.equal(expNorm.truck,true);
+assert.equal(expNorm.cartons,false);
+assert.equal(expNorm.realWorld,false);
+const expDefault=calc('normalizeStudio({}).experimental');
+assert.equal(expDefault.enabled,false);
+assert.equal(expDefault.truck,false);
 vm.runInContext('var changed=Object.assign({},test.items[1],proposeSmartArrangement(test,"living")[0]);',ctx);
 assert.equal(calc('satCollision(test.items[0],changed)'),false,'smart placement must avoid locked furniture');
 // Geometry is data, not a physical building certification.

@@ -11,7 +11,13 @@ const STUDIO_DEFAULTS={
  units:'m',north:0,cutHeight:3,wallLengths:false,labels:true,doorArcs:false,
  furnishings:true,openings:true,rooms:true,fixtureMarkers:true,grid:true,
  favorites:[],bookmarks:[],annotations:[],measurements:[],budget:0,
- light:'day',indoorGlow:75,outdoorDim:85,notes:'',palette:'sage',lastReport:'',hideRoom:'',clearance:.75
+ light:'day',indoorGlow:75,outdoorDim:85,notes:'',palette:'sage',lastReport:'',hideRoom:'',clearance:.75,
+ experimental:{
+  enabled:false,realWorld:false,pagoda:true,solar:false,transitPath:false,
+  acoustics:false,truck:false,procurement:false,cartons:false,heatmap:false,
+  wallElevation:false,blueprint:false,doorSwings:false,triangulation:false,
+  videoTracking:false,webxr:false
+ }
 };
 const HP_COLOR=s=>typeof s==='string'&&/^#[\da-fA-F]{6}$/.test(s);
 const HP_TEXT=(s,n=120)=>String(s??'').slice(0,n);
@@ -25,6 +31,15 @@ function normalizeStudio(raw){
  const keys=['wallLengths','labels','doorArcs','furnishings','openings','rooms','fixtureMarkers','grid'];
  const result={...STUDIO_DEFAULTS,units:x.units==='ft'?'ft':'m',north:HP_NUM(x.north,0,359.999,0),cutHeight:HP_NUM(x.cutHeight,.25,5,3),favorites:[...new Set(fav)],bookmarks:marks,annotations:pins,measurements:tapes,budget:HP_NUM(x.budget,0,1000000,0),clearance:HP_NUM(x.clearance,.35,1.5,.75),light:['day','evening','night'].includes(x.light)?x.light:'day',indoorGlow:HP_NUM(x.indoorGlow,0,100,75),outdoorDim:HP_NUM(x.outdoorDim,0,100,85),notes:HP_TEXT(x.notes,600),palette:STUDIO_PALETTES[x.palette]?x.palette:'sage',hideRoom:HP_TEXT(x.hideRoom,60)};
  keys.forEach(k=>result[k]=x[k]===undefined?STUDIO_DEFAULTS[k]:x[k]!==false);
+ const exp=x.experimental&&typeof x.experimental==='object'?x.experimental:{};
+ result.experimental={
+  enabled:exp.enabled===true,realWorld:exp.realWorld===true,pagoda:exp.pagoda!==false,
+  solar:exp.solar===true,transitPath:exp.transitPath===true,acoustics:exp.acoustics===true,
+  truck:exp.truck===true,procurement:exp.procurement===true,cartons:exp.cartons===true,
+  heatmap:exp.heatmap===true,wallElevation:exp.wallElevation===true,blueprint:exp.blueprint===true,
+  doorSwings:exp.doorSwings===true,triangulation:exp.triangulation===true,
+  videoTracking:exp.videoTracking===true,webxr:exp.webxr===true
+ };
  return result;
 }
 function roomSquareMeters(room){return roomArea(room);}

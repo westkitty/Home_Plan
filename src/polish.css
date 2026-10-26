@@ -155,6 +155,54 @@ body{background:#10201c}
 .elevation-canvas-container{width:100%;height:220px;background:#182823;border:1px solid #41594c;border-radius:8px;margin:8px 0;overflow:hidden;position:relative}
 .elevation-canvas-container canvas{width:100%;height:100%}
 
+/* Experimental Gate Button & Modal */
+.experimental-gate-btn{background:linear-gradient(135deg,#231c36 0%,#31264c 100%)!important;border:1px solid #8e71c9!important;color:#dcc6ff!important;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.experimental-gate-btn:hover{background:linear-gradient(135deg,#362854 0%,#46356e 100%)!important;color:#fff!important;border-color:#bda2fa!important;box-shadow:0 0 12px rgba(157,117,247,0.35)!important}
+.experimental-gate-btn.active{background:linear-gradient(135deg,#805ad5 0%,#6b46c1 100%)!important;color:#ffffff!important;border-color:#d6bcfa!important;box-shadow:0 0 14px rgba(183,148,244,0.6)!important}
+
+.exp-modal-overlay{position:fixed;inset:0;background:rgba(8,16,13,0.85);backdrop-filter:blur(8px);z-index:9000;display:grid;place-items:center;padding:16px;overflow-y:auto}
+.exp-modal-dialog{background:linear-gradient(175deg,#192622 0%,#121c19 100%);border:1px solid #705cb8;border-radius:18px;max-width:880px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.6),0 0 24px rgba(128,90,213,0.25);overflow:hidden;color:#f1f1e8}
+.exp-modal-header{padding:20px 24px 16px;border-bottom:1px solid #2d3f38;display:flex;justify-content:space-between;align-items:flex-start;background:linear-gradient(90deg,#211d38 0%,#192622 100%)}
+.exp-modal-header h2{font-size:20px;font-weight:700;color:#f6f1ff;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.exp-modal-header p{font-size:12px;color:#a8b4cc;margin:0;line-height:1.4}
+.exp-close-btn{background:transparent;border:none;color:#9b8fc2;font-size:22px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .15s ease}
+.exp-close-btn:hover{color:#fff;background:rgba(255,255,255,0.1)}
+
+.exp-master-strip{padding:14px 24px;background:#151c24;border-bottom:1px solid #28373f;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.exp-master-toggle{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.exp-toggle-switch{position:relative;width:44px;height:24px;background:#35443d;border-radius:12px;transition:background .2s ease}
+.exp-toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#f1f1e8;border-radius:50%;transition:transform .2s ease;box-shadow:0 2px 4px rgba(0,0,0,0.3)}
+input[type="checkbox"]:checked + .exp-toggle-switch{background:#805ad5}
+input[type="checkbox"]:checked + .exp-toggle-switch::after{transform:translateX(20px);background:#fff}
+.exp-master-label{font-size:14px;font-weight:700;color:#fbf8e8}
+.exp-master-sub{font-size:11px;color:#9cb5a6;display:block}
+.exp-quick-actions{display:flex;gap:8px}
+.exp-quick-btn{background:#23352d;border:1px solid #436254;color:#cce3d5;font-size:11px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;transition:all .14s ease}
+.exp-quick-btn:hover{background:#304b3f;color:#fff;border-color:#659681}
+
+.exp-modal-body{padding:20px 24px;overflow-y:auto;flex:1}
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.exp-card{background:linear-gradient(145deg,#1b2b25 0%,#15231e 100%);border:1px solid #354e42;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;transition:all .16s ease;position:relative}
+.exp-card:hover{border-color:#7360a8;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.35)}
+.exp-card.is-active{border-color:#805ad5;background:linear-gradient(145deg,#20243a 0%,#17202b 100%)}
+.exp-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.exp-card-title{font-size:13px;font-weight:700;color:#f5f0e1;margin:0;line-height:1.3}
+.exp-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.exp-badge-site{background:#2d3748;color:#cbd5e0}
+.exp-badge-logistics{background:#744210;color:#fbd38d}
+.exp-badge-drafting{background:#234e52;color:#81e6d9}
+.exp-badge-science{background:#44337a;color:#d6bcfa}
+.exp-badge-verify{background:#22543d;color:#9ae6b4}
+.exp-card-desc{font-size:11px;color:#a0b8aa;line-height:1.45;margin:0;flex:1}
+.exp-card-actions{display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #2a3c34;margin-top:auto}
+.exp-launch-btn{background:#273b33;border:1px solid #436254;color:#ecdcb9;font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer;transition:all .14s ease}
+.exp-launch-btn:hover{background:#3b5c4f;color:#fff;border-color:#eed09a}
+
+.exp-modal-footer{padding:14px 24px;border-top:1px solid #283a32;background:#131c19;display:flex;justify-content:space-between;align-items:center}
+.exp-footer-note{font-size:11px;color:#859c8f;margin:0}
+.exp-apply-btn{background:linear-gradient(145deg,#805ad5 0%,#6b46c1 100%);border:1px solid #b794f4;color:#fff;font-weight:700;padding:8px 20px;border-radius:8px;cursor:pointer}
+.exp-apply-btn:hover{background:linear-gradient(145deg,#9068e6 0%,#7b52d4 100%)}
+
 @media print{
   body,html{overflow:visible!important;height:auto!important;background:#fff!important;color:#000!important}
   .shell{display:block!important;position:static!important;height:auto!important}

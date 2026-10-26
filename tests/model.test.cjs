@@ -1,5 +1,5 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map,Buffer,Float32Array,Uint8Array,Uint32Array});vm.runInContext(src+'\nthis.test={initialPlan,parsePlan,migrateLegacy,nearestWall,collisions,satCollision,FURNITURE,wallPoint,doorObstructions,calculateNilesSun,calculateTruckLoad,checkMovingClearance,itemCartonSpec,wallAcousticProfile,generateBoxGLTF};',ctx);const m=ctx.test;
+const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map,Buffer,Float32Array,Uint8Array,Uint32Array});vm.runInContext(src+'\nthis.test={initialPlan,parsePlan,migrateLegacy,nearestWall,collisions,satCollision,FURNITURE,wallPoint,doorObstructions,calculateNilesSun,calculateTruckLoad,checkMovingClearance,itemCartonSpec,wallAcousticProfile,generateBoxGLTF,isExperimentalActive};',ctx);const m=ctx.test;
 const p=m.initialPlan();assert.equal(p.schema,5);assert.equal(p.rooms.length,5);assert.equal(p.walls.length,12);assert.ok(p.items.length>=13);assert.ok(p.fixtures.some(f=>f.type==='entry'));
 const obs=m.doorObstructions(p);assert.ok(Array.isArray(obs));assert.ok(obs.length>=0);
 const sunNoon=m.calculateNilesSun(720,'summer');assert.ok(sunNoon.isDay);assert.ok(sunNoon.elevation>50);
@@ -21,4 +21,12 @@ const extWall=m.wallAcousticProfile({a:[8.6,0],b:[8.6,7.8]},p);assert.equal(extW
 const partyWall=m.wallAcousticProfile({a:[0,0],b:[8.6,0]},p);assert.equal(partyWall.type,'party');assert.equal(partyWall.stc,50);
 const intWall=m.wallAcousticProfile({a:[3.4,2.5],b:[3.4,5.2]},p);assert.equal(intWall.type,'interior');assert.equal(intWall.stc,38);
 const gltfJson=m.generateBoxGLTF([{x:0,y:1,z:0,sx:1,sy:1,sz:1,color:'#44aa88'}]);const gltf=JSON.parse(gltfJson);assert.equal(gltf.asset.version,'2.0');assert.equal(gltf.meshes.length,1);assert.ok(gltf.buffers[0].uri.startsWith('data:application/octet-stream;base64,'));
+const expKeys=['realWorld','pagoda','solar','transitPath','acoustics','truck','procurement','cartons','heatmap','wallElevation','blueprint','doorSwings','triangulation','videoTracking','webxr'];
+assert.equal(expKeys.length,15);
+const planGated={studio:{experimental:{enabled:false}}};
+expKeys.forEach(k=>assert.equal(m.isExperimentalActive(planGated,k),false,`Key ${k} must be false when gate is disabled`));
+const planOpen={studio:{experimental:{enabled:true,doorSwings:false}}};
+assert.equal(m.isExperimentalActive(planOpen,'realWorld'),true);
+assert.equal(m.isExperimentalActive(planOpen,'doorSwings'),false);
+assert.equal(m.isExperimentalActive(planOpen,'webxr'),true);
 let big=JSON.parse(JSON.stringify(p));big.items=[];for(let i=0;i<260;i++)big.items.push({id:'i'+i,type:'chair',x:i*.8,z:(i%7)*.9,r:0});const t=performance.now();for(let i=0;i<250;i++)m.collisions(big);const elapsed=performance.now()-t;console.log('PASS model, legacy migration, rotation, size overrides, sanitization and fixture placement');console.log('Collision benchmark 260 items, 250 passes:',elapsed.toFixed(1),'ms /', (elapsed/250).toFixed(2),'ms per pass');

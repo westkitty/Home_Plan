@@ -227,6 +227,13 @@ const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.
 const v=x.view||{},start=initialPlan().view;
 return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit','realworld','walk','truck'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};
 }
+function isExperimentalActive(plan, key){
+  const exp = plan?.studio?.experimental;
+  if (!exp) return false;
+  if (!exp.enabled) return false;
+  if (key) return exp[key] !== false;
+  return true;
+}
 function calculateNilesSun(timeMinutes, season='summer'){
   const lat=41.8298*Math.PI/180;
   const declMap={summer:23.45,equinox:0,winter:-23.45};
