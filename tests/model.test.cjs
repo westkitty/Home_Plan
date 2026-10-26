@@ -1,5 +1,5 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map});vm.runInContext(src+'\nthis.test={initialPlan,parsePlan,migrateLegacy,nearestWall,collisions,satCollision,FURNITURE,wallPoint,doorObstructions,calculateNilesSun,calculateTruckLoad};',ctx);const m=ctx.test;
+const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map,Buffer,Float32Array,Uint8Array,Uint32Array});vm.runInContext(src+'\nthis.test={initialPlan,parsePlan,migrateLegacy,nearestWall,collisions,satCollision,FURNITURE,wallPoint,doorObstructions,calculateNilesSun,calculateTruckLoad,checkMovingClearance,itemCartonSpec,wallAcousticProfile,generateBoxGLTF};',ctx);const m=ctx.test;
 const p=m.initialPlan();assert.equal(p.schema,5);assert.equal(p.rooms.length,5);assert.equal(p.walls.length,12);assert.ok(p.items.length>=13);assert.ok(p.fixtures.some(f=>f.type==='entry'));
 const obs=m.doorObstructions(p);assert.ok(Array.isArray(obs));assert.ok(obs.length>=0);
 const sunNoon=m.calculateNilesSun(720,'summer');assert.ok(sunNoon.isDay);assert.ok(sunNoon.elevation>50);
@@ -14,4 +14,11 @@ const wall=m.nearestWall(8.6,3.8,p.walls);assert.equal(wall.wall.id,'w2');assert
 const old={schema:1,rooms:[{id:'living',name:'Living',x:0,y:0,w:6,h:4}],openings:[{room:'living',side:'top',offset:2,width:1,type:'window'}],furniture:[{id:1,type:'sofa',x:1.2,y:2.4,w:1.8,h:.9,r:45}]};const mig=m.parsePlan(old);assert.equal(mig.schema,5);assert.equal(mig.items[0].d,.9);assert.equal(mig.items[0].w,1.8);assert.equal(mig.items[0].r,45);assert.equal(mig.rooms[0].d,4);
 const bad=JSON.parse(JSON.stringify(p));bad.items[0].w=-5;assert.throws(()=>m.parsePlan(bad));const bad2=JSON.parse(JSON.stringify(p));bad2.fixtures[0].wall='<script>';assert.throws(()=>m.parsePlan(bad2));
 const evil=JSON.parse(JSON.stringify(p));evil.rooms[0].name='<img src=x onerror=1>';evil.rooms[0].color='url(javascript:evil)';const sanitized=m.parsePlan(evil);assert.equal(sanitized.rooms[0].color,'#dce5e2');
+assert.ok(m.FURNITURE.custom);assert.equal(m.FURNITURE.custom.category,'Custom');
+const sofaClr=m.checkMovingClearance({type:'sofa'},false);assert.equal(sofaClr.chokePoints.length,4);
+const sofaCarton=m.itemCartonSpec({type:'sofa'});assert.ok(sofaCarton.w>0&&sofaCarton.d>0&&sofaCarton.h>0);
+const extWall=m.wallAcousticProfile({a:[8.6,0],b:[8.6,7.8]},p);assert.equal(extWall.type,'exterior');assert.equal(extWall.stc,32);
+const partyWall=m.wallAcousticProfile({a:[0,0],b:[8.6,0]},p);assert.equal(partyWall.type,'party');assert.equal(partyWall.stc,50);
+const intWall=m.wallAcousticProfile({a:[3.4,2.5],b:[3.4,5.2]},p);assert.equal(intWall.type,'interior');assert.equal(intWall.stc,38);
+const gltfJson=m.generateBoxGLTF([{x:0,y:1,z:0,sx:1,sy:1,sz:1,color:'#44aa88'}]);const gltf=JSON.parse(gltfJson);assert.equal(gltf.asset.version,'2.0');assert.equal(gltf.meshes.length,1);assert.ok(gltf.buffers[0].uri.startsWith('data:application/octet-stream;base64,'));
 let big=JSON.parse(JSON.stringify(p));big.items=[];for(let i=0;i<260;i++)big.items.push({id:'i'+i,type:'chair',x:i*.8,z:(i%7)*.9,r:0});const t=performance.now();for(let i=0;i<250;i++)m.collisions(big);const elapsed=performance.now()-t;console.log('PASS model, legacy migration, rotation, size overrides, sanitization and fixture placement');console.log('Collision benchmark 260 items, 250 passes:',elapsed.toFixed(1),'ms /', (elapsed/250).toFixed(2),'ms per pass');

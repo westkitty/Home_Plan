@@ -204,6 +204,55 @@ window.HomePlanVisuals = (() => {
       ctx.fillText(pText, pagCenter.x, pby + 14);
       ctx.restore();
     }
+    // Street-to-Door Moving Pathway & Clearance Analyzer (Feature #3)
+    const transitPoints = [
+      [0.0, 0.08, 12.0],
+      [2.2, 0.08, 10.5],
+      [4.35, 0.08, 9.6],
+      [4.35, 0.08, 8.8],
+      [3.1, 1.45, 9.2],
+      [3.1, 2.82, 9.2],
+      [4.35, 2.82, 8.8]
+    ];
+    ctx.save();
+    ctx.strokeStyle = '#39d0b8';
+    ctx.lineWidth = 2.5;
+    if (ctx.setLineDash) ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    let started = false;
+    for (const [px, py, pz] of transitPoints) {
+      const sp = engine.project(px, py, pz);
+      if (!sp) continue;
+      if (!started) { ctx.moveTo(sp.x, sp.y); started = true; }
+      else ctx.lineTo(sp.x, sp.y);
+    }
+    ctx.stroke();
+    if (ctx.setLineDash) ctx.setLineDash([]);
+    const chokes = [
+      { pt: [4.35, 0.08, 9.6], label: '1. Portico 34″ (0.86m)' },
+      { pt: [3.1, 1.45, 9.2], label: '2. Stairs 40″ (1.02m)' },
+      { pt: [3.1, 2.82, 9.2], label: '3. Landing Turn 45″ (1.15m)' },
+      { pt: [4.35, 2.82, 8.8], label: '4. Apt E Door 34″ (0.86m)' }
+    ];
+    for (const ch of chokes) {
+      const p = engine.project(...ch.pt);
+      if (!p) continue;
+      ctx.fillStyle = '#ffbe72';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(17,29,24,0.92)';
+      ctx.strokeStyle = '#efc789';
+      ctx.lineWidth = 0.8;
+      const tw = ctx.measureText(ch.label).width + 10;
+      ctx.fillRect(p.x - tw / 2, p.y - 16, tw, 14);
+      ctx.strokeRect(p.x - tw / 2, p.y - 16, tw, 14);
+      ctx.fillStyle = '#eed09a';
+      ctx.font = '700 8.5px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText(ch.label, p.x, p.y - 6);
+    }
+    ctx.restore();
     const roadPt = engine.project(4.35, 0.05, 18.2);
     if (roadPt) {
       ctx.save();
@@ -386,7 +435,12 @@ window.HomePlanVisuals = (() => {
       ctx.strokeStyle = ink;
       let row = 0;
       for (let z = room.z + step; z < room.z + room.d - .01; z += step, row++) {
-        line(ctx, engine.project(room.x, y, z), engine.project(room.x + room.w, y, z), ink, .75);
+        const p1 = engine.project(room.x, y, z - step), p2 = engine.project(room.x + room.w, y, z - step), p3 = engine.project(room.x + room.w, y, z), p4 = engine.project(room.x, y, z);
+        if (p1 && p2 && p3 && p4) {
+          ctx.fillStyle = (row % 2 === 0) ? 'rgba(255,255,255,.035)' : 'rgba(0,0,0,.03)';
+          ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.lineTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y); ctx.closePath(); ctx.fill();
+        }
+        line(ctx, engine.project(room.x, y, z), engine.project(room.x + room.w, y, z), ink, kind==='deck' ? 1.4 : .75);
         const seam = row % 3 * .48;
         for (let x = room.x + seam + 1.1; x < room.x + room.w - .01; x += 1.4) {
           line(ctx, engine.project(x, y, z), engine.project(x, y, Math.min(z + step, room.z + room.d)), ink, .68);
@@ -399,10 +453,14 @@ window.HomePlanVisuals = (() => {
       }
     } else {
       const step = kind === 'tile' ? .52 : .72;
-      for (let x = room.x + step; x < room.x + room.w; x += step)
+      for (let x = room.x + step; x < room.x + room.w; x += step) {
         line(ctx, engine.project(x, y, room.z), engine.project(x, y, room.z + room.d), ink, .9);
-      for (let z = room.z + step; z < room.z + room.d; z += step)
+        line(ctx, engine.project(x + .01, y, room.z), engine.project(x + .01, y, room.z + room.d), 'rgba(255,255,255,.12)', .5);
+      }
+      for (let z = room.z + step; z < room.z + room.d; z += step) {
         line(ctx, engine.project(room.x, y, z), engine.project(room.x + room.w, y, z), ink, .9);
+        line(ctx, engine.project(room.x, y, z + .01), engine.project(room.x + room.w, y, z + .01), 'rgba(255,255,255,.12)', .5);
+      }
     }
     ctx.restore();
     // Thin architectural perimeter to visually separate the room edge from the ground model.

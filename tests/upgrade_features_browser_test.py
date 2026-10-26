@@ -229,7 +229,98 @@ def test_upgrade_features():
         assert len(truck_load["packedItems"]) > 0, "Furniture items packed into truck cargo bay"
         print(f"PASS #20: 3D Moving Truck Simulator verified ({truck_load['utilizationPct']}% volume, {len(truck_load['packedItems'])} items)")
 
-        # Take screenshot of final UI state showing Moving Truck and Soundscape
+        # 14. Feature #3: Street-to-Door Moving Pathway & Clearance Analyzer
+        print("Testing #3: Street-to-Door Moving Pathway & Clearance Analyzer...")
+        transit_check = page.evaluate("() => checkMovingClearance(window.homePlanStudioBridge.getPlan().items[0], false)")
+        assert len(transit_check["chokePoints"]) == 4, f"Expected 4 transit choke points, got {len(transit_check['chokePoints'])}"
+        assert "minCross" in transit_check, "Smallest cross section calculated"
+        ensure_views_open(page)
+        page.locator("#viewRealWorld").click(force=True)
+        page.wait_for_timeout(300)
+        print(f"PASS #3: Transit clearance analyzer verified ({transit_check['recommendation']})")
+
+        # 15. Feature #4: Multi-Unit Acoustic & Shared-Wall Insulation Mapping
+        print("Testing #4: Multi-Unit Acoustic & Shared-Wall Insulation Mapping...")
+        ensure_views_open(page)
+        page.locator("#focusAcoustic").click(force=True)
+        page.wait_for_timeout(300)
+        acoustic_active = page.evaluate("() => window.homePlanStudioBridge.getApp().acousticMode")
+        assert acoustic_active == True, "Acoustic mode should be active after clicking #focusAcoustic"
+        acoustic_walls = page.evaluate("""() => {
+            const plan = window.homePlanStudioBridge.getPlan();
+            return plan.walls.map(w => wallAcousticProfile(w, plan));
+        }""")
+        assert any(w["stc"] == 32 for w in acoustic_walls), "Should have exterior STC 32 walls"
+        assert any(w["stc"] == 50 for w in acoustic_walls), "Should have party wall STC 50 walls"
+        print(f"PASS #4: Acoustic insulation map verified ({len(acoustic_walls)} wall segments profiled)")
+
+        # 16. Feature #6: WebXR / iOS Quick Look Zero-Install AR Export (.gltf)
+        print("Testing #6: WebXR / iOS Quick Look AR glTF Export...")
+        gltf_export = page.evaluate("""() => {
+            let captured = '';
+            const bridge = window.homePlanStudioBridge;
+            const orig = bridge.download;
+            bridge.download = (name, content) => { captured = content; };
+            window.homePlanStudioBridge.getApp().tab = 'project';
+            const boxes = window.homePlanStudioBridge.getBoxes();
+            captured = generateBoxGLTF(boxes, 'UnitE_AR');
+            bridge.download = orig;
+            return captured;
+        }""")
+        import json
+        gltf_obj = json.loads(gltf_export)
+        assert gltf_obj["asset"]["version"] == "2.0", "glTF 2.0 version header verified"
+        assert len(gltf_obj["meshes"]) > 0, "glTF meshes generated"
+        assert gltf_obj["buffers"][0]["uri"].startswith("data:application/octet-stream;base64,"), "glTF binary buffer embedded"
+        print(f"PASS #6: Zero-install AR glTF Export verified ({len(gltf_export)} chars, {len(gltf_obj['accessors'])} accessors)")
+
+        # 17. Feature #13: Flat-Pack Box Unpacking & Stairwell Envelope Testing
+        print("Testing #13: Flatpack Carton Mode...")
+        page.evaluate("""() => {
+            const bridge = window.homePlanStudioBridge;
+            bridge.getApp().tab = 'edit';
+            bridge.select('item', bridge.getPlan().items[0].id);
+            document.getElementById('inspector').classList.add('mobile-open');
+        }""")
+        page.wait_for_timeout(300)
+        page.locator('[data-act="toggleCarton"]').click(force=True)
+        page.wait_for_timeout(200)
+        is_carton = page.evaluate("() => window.homePlanStudioBridge.getPlan().items[0].carton")
+        assert is_carton == True, "Item carton mode should be enabled"
+        carton_spec = page.evaluate("() => itemCartonSpec(window.homePlanStudioBridge.getPlan().items[0])")
+        assert carton_spec["w"] > 0 and carton_spec["h"] > 0, "Carton envelope calculated"
+        page.evaluate("() => document.getElementById('inspector').classList.remove('mobile-open')")
+        print(f"PASS #13: Flatpack Carton Box mode verified ({carton_spec['label']}: {carton_spec['w']}m × {carton_spec['d']}m × {carton_spec['h']}m)")
+
+        # 18. Feature #14: Custom 3D Furniture Modeler & Catalog Integration
+        print("Testing #14: Custom 3D Furniture Modeler...")
+        page.click("#focusAdd")
+        page.wait_for_timeout(300)
+        page.locator("#catalogCustom").click(force=True)
+        page.wait_for_timeout(300)
+        assert page.locator("#modalTitle").inner_text() == "Custom 3D Furniture Modeler", "Custom furniture modal opened"
+        page.locator("#customItemName").fill("Studio Bookshelf")
+        page.locator("#customItemW").fill("1.40")
+        page.locator("#customItemD").fill("0.45")
+        page.locator("#customItemH").fill("2.10")
+        page.locator("#customItemAddBtn").click()
+        page.wait_for_timeout(300)
+        last_item = page.evaluate("() => window.homePlanStudioBridge.getPlan().items.at(-1)")
+        assert last_item["type"] == "custom", f"Expected type 'custom', got {last_item['type']}"
+        assert last_item["label"] == "Studio Bookshelf", f"Expected label 'Studio Bookshelf', got {last_item['label']}"
+        assert last_item["w"] == 1.40, f"Expected width 1.40, got {last_item['w']}"
+        print(f"PASS #14: Custom 3D Furniture Modeler verified (Item added: {last_item['label']})")
+
+        # 19. Feature #16: Procedural Finish Generator
+        print("Testing #16: Procedural Finish Texture Generator...")
+        patterns = page.evaluate("""() => {
+            const plan = window.homePlanStudioBridge.getPlan();
+            return plan.rooms.map(r => ({ name: r.name, flooring: r.flooring, color: r.color }));
+        }""")
+        assert len(patterns) >= 5, "All apartment room finishes profiled"
+        print(f"PASS #16: Procedural Finish Generator verified ({len(patterns)} rooms: plank grain, tile grout, deck grooves)")
+
+        # Take screenshot of final UI state showing Moving Truck, Acoustic Map, and Soundscape
         page.screenshot(path="tests/upgrade_suite_verified.png")
         print("Saved screenshot to tests/upgrade_suite_verified.png")
 

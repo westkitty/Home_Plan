@@ -56,7 +56,8 @@ const FURNITURE={
  dryer:{label:'Clothes dryer',w:.67,d:.68,h:.9,color:'#becbd0',room:'bath',category:'Laundry'},
  washer_dryer:{label:'Washer/dryer combo',w:.69,d:.68,h:.92,color:'#b6c8d1',room:'bath',category:'Laundry'},
  balcony_chair:{label:'Balcony chair',w:.67,d:.69,h:.8,color:'#7f9890',room:'living',category:'Outdoor'},
- patio_table:{label:'Patio table',w:.84,d:.84,h:.74,color:'#a4ad9d',room:'living',category:'Outdoor'}
+ patio_table:{label:'Patio table',w:.84,d:.84,h:.74,color:'#a4ad9d',room:'living',category:'Outdoor'},
+ custom:{label:'Custom furniture',w:1.0,d:.6,h:.8,color:'#829a91',room:'living',category:'Custom'}
 };
 function initialPlan(){return{
  schema:MODEL_VERSION,name:'Walkthrough study',units:'meters',measured:false,
@@ -222,7 +223,7 @@ function parsePlan(x){if(x?.schema===1)x=migrateLegacy(x);if(!x||typeof x!=='obj
 const rooms=x.rooms.map((r,i)=>{if(!r||![r.x,r.z,r.w,r.d].every(Number.isFinite)||r.w<=0||r.d<=0||r.w>100||r.d>100)throw Error('Invalid room geometry');return{id:safeId(r.id,'room'+i),name:String(r.name||'Room').slice(0,60),x:r.x,z:r.z,w:r.w,d:r.d,color:/^#[0-9a-fA-F]{6}$/.test(r.color)?r.color:'#dce5e2',zone:ROOM_ZONES.includes(r.zone)?r.zone:'indoor',flooring:FLOOR_MATERIALS[r.flooring]?r.flooring:'',shape:SHAPE_KINDS.includes(r.shape)?r.shape:'rectangle',confidence:String(r.confidence||'unverified').slice(0,30),note:String(r.note||'').slice(0,250)};});
 const walls=x.walls.map((w,i)=>({id:safeId(w.id,'wall'+i),a:w.a.map(n=>round(n,3)),b:w.b.map(n=>round(n,3)),height:clamp(w.height,.5,5),thick:clamp(Number(w.thick)||.12,.06,.8),confidence:w.confidence==='measured'?'measured':'estimated',color:typeof HP_COLOR==='function'&&HP_COLOR(w.color)?w.color:undefined}));const wallIds=new Set(walls.map(w=>w.id));
 const fixtures=x.fixtures.map((f,i)=>{if(!wallIds.has(safeId(f.wall,''))||!['door','window','opening','outlet','entry'].includes(f.type)||!finiteBound(f.at,0,1)||!finiteBound(f.width,.05,5))throw Error('Invalid fixture reference');return{id:safeId(f.id,'fixture'+i),wall:safeId(f.wall,''),type:f.type,at:clamp(f.at,.03,.97),width:clamp(f.width,.08,5),confidence:String(f.confidence||'unverified').slice(0,30),swing:f.swing==='right'?'right':'left'};});
-const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:f.room?safeId(f.room,''):'',...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,status:['owned','needed','ordered'].includes(f.status)?f.status:undefined,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
+const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:f.room?safeId(f.room,''):'',...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,status:['owned','needed','ordered'].includes(f.status)?f.status:undefined,carton:f.carton===true,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
 const v=x.view||{},start=initialPlan().view;
 return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit','realworld','walk','truck'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};
 }
@@ -300,4 +301,141 @@ function doorObstructions(plan){
     }
   }
   return obstructions;
+}
+function itemCartonSpec(item){
+  const sp=(typeof itemSpec==='function')?itemSpec(item):(FURNITURE[item.type]||{w:.8,d:.8,h:.8});
+  const w=item.w||sp.w,d=item.d||sp.d,h=item.h||sp.h;
+  if(['sofa','loveseat'].includes(item.type))return {w:round(w*1.02,2),d:round(Math.min(0.68,d*0.65),2),h:round(Math.min(0.52,h*0.60),2),label:'Sofa Flatpack Box'};
+  if(item.type==='bed')return {w:round(Math.max(1.1,w*1.02),2),d:round(Math.min(0.45,d*0.28),2),h:0.35,label:'Mattress & Frame Carton'};
+  if(['shelf','dresser','desk'].includes(item.type))return {w:round(w*1.02,2),d:round(d*1.02,2),h:0.16,label:'Knockdown Flat Carton'};
+  if(['table','coffee'].includes(item.type))return {w:round(w*1.02,2),d:round(d*1.02,2),h:0.12,label:'Tabletop & Legs Box'};
+  if(['chair','officechair','armchair'].includes(item.type))return {w:0.68,d:0.68,h:0.48,label:'Knockdown Chair Box'};
+  return {w:round(w*1.02,2),d:round(d*1.02,2),h:round(h*1.02,2),label:'Shipping Carton'};
+}
+function checkMovingClearance(item,isCarton=false){
+  const sp=(typeof itemSpec==='function')?itemSpec(item):(FURNITURE[item.type]||{w:.8,d:.8,h:.8});
+  let w=item.w||sp.w,d=item.d||sp.d,h=item.h||sp.h;
+  if(isCarton){const c=itemCartonSpec(item);w=c.w;d=c.d;h=c.h;}
+  const minCross=Math.min(Math.min(w,d),Math.min(w,h),Math.min(d,h));
+  const maxLen=Math.max(w,d,h);
+  const chokePoints=[
+    {id:'portico',name:'Ground Entry Portico (0.86m / 34″)',width:0.86,ok:minCross<=0.86},
+    {id:'stairs',name:'2nd-Fl Stair Flight (1.02m / 40″)',width:1.02,ok:minCross<=1.02},
+    {id:'landing',name:'Landing 90° Turn (1.15m / 45″)',width:1.15,ok:minCross<=0.82||maxLen<=2.25},
+    {id:'door',name:'Apartment E Entrance (0.86m / 34″)',width:0.86,ok:minCross<=0.86}
+  ];
+  const clearsAll=chokePoints.every(c=>c.ok);
+  let recommendation='Clears all 4 stairwell and doorway choke points comfortably.';
+  if(!clearsAll){
+    recommendation=isCarton?'Boxed carton exceeds doorway width; unbox before moving through doorway.':'Assembled profile exceeds doorway width; transport as flatpack carton or remove legs.';
+  }else if(maxLen>2.05){
+    recommendation='Long item: requires vertical tilt when pivoting on the 2nd-floor stair landing.';
+  }
+  return {clearsAll,minCross:round(minCross,2),maxLen:round(maxLen,2),chokePoints,recommendation,isCarton};
+}
+function wallAcousticProfile(wall,plan){
+  const mx=(wall.a[0]+wall.b[0])/2,mz=(wall.a[1]+wall.b[1])/2;
+  const isExterior=mx>7.2;
+  const isParty=mz<0.3||mx<0.3;
+  if(isExterior){
+    return {type:'exterior',label:'Exterior Wall · N Front St / Riverfront',stc:32,noiseSource:'Street traffic & park breezes',color:'#4a90e2',recommendation:'Good for living & dining seating. Window daylight ingress zone.'};
+  }else if(isParty){
+    return {type:'party',label:'Party Wall · Neighbor Partition',stc:50,noiseSource:'Adjacent residential unit',color:'#e53e3e',recommendation:'Decouple heavy subwoofers and TV mounts with rubber isolation pads.'};
+  }else{
+    return {type:'interior',label:'Interior Room Partition',stc:38,noiseSource:'Internal airflow & room footsteps',color:'#48bb78',recommendation:'Ideal for bedroom headboards, bookcases, and workstations.'};
+  }
+}
+function generateBoxGLTF(boxes,name='HomePlanApartment'){
+  if(!Array.isArray(boxes)||!boxes.length)return JSON.stringify({asset:{version:'2.0',generator:'HomePlan Studio'},scenes:[{nodes:[]}],scene:0,nodes:[],meshes:[],buffers:[]});
+  const totalVerts=boxes.length*24;
+  const totalIndices=boxes.length*36;
+  const posArr=new Float32Array(totalVerts*3);
+  const normArr=new Float32Array(totalVerts*3);
+  const colArr=new Float32Array(totalVerts*4);
+  const idxArr=new Uint32Array(totalIndices);
+  const faceNormals=[[0,1,0],[0,-1,0],[-1,0,0],[1,0,0],[0,0,1],[0,0,-1]];
+  const faceCorners=[
+    [[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]],
+    [[-1,-1,1],[1,-1,1],[1,-1,-1],[-1,-1,-1]],
+    [[-1,-1,-1],[-1,-1,1],[-1,1,1],[-1,1,-1]],
+    [[1,-1,1],[1,-1,-1],[1,1,-1],[1,1,1]],
+    [[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],
+    [[1,-1,-1],[-1,-1,-1],[-1,1,-1],[1,1,-1]]
+  ];
+  let vOffset=0,iOffset=0;
+  let minX=Infinity,minY=Infinity,minZ=Infinity,maxX=-Infinity,maxY=-Infinity,maxZ=-Infinity;
+  for(let b=0;b<boxes.length;b++){
+    const box=boxes[b];
+    const cosR=Math.cos(box.rot||0),sinR=Math.sin(box.rot||0);
+    const hex=(box.color||'#888888').replace('#','');
+    const cr=(parseInt(hex.slice(0,2),16)||136)/255,cg=(parseInt(hex.slice(2,4),16)||136)/255,cb=(parseInt(hex.slice(4,6),16)||136)/255;
+    for(let f=0;f<6;f++){
+      const fn=faceNormals[f];
+      const rnx=fn[0]*cosR-fn[2]*sinR,rnz=fn[0]*sinR+fn[2]*cosR;
+      const baseV=vOffset;
+      for(let c=0;c<4;c++){
+        const corner=faceCorners[f][c];
+        const lx=corner[0]*box.sx*0.5,ly=corner[1]*box.sy*0.5,lz=corner[2]*box.sz*0.5;
+        const wx=box.x+lx*cosR-lz*sinR,wy=box.y+ly,wz=box.z+lx*sinR+lz*cosR;
+        const vi=(vOffset+c)*3;
+        posArr[vi]=wx;posArr[vi+1]=wy;posArr[vi+2]=wz;
+        normArr[vi]=rnx;normArr[vi+1]=fn[1];normArr[vi+2]=rnz;
+        const ci=(vOffset+c)*4;
+        colArr[ci]=cr;colArr[ci+1]=cg;colArr[ci+2]=cb;colArr[ci+3]=1.0;
+        minX=Math.min(minX,wx);minY=Math.min(minY,wy);minZ=Math.min(minZ,wz);
+        maxX=Math.max(maxX,wx);maxY=Math.max(maxY,wy);maxZ=Math.max(maxZ,wz);
+      }
+      idxArr[iOffset++]=baseV;idxArr[iOffset++]=baseV+1;idxArr[iOffset++]=baseV+2;
+      idxArr[iOffset++]=baseV;idxArr[iOffset++]=baseV+2;idxArr[iOffset++]=baseV+3;
+      vOffset+=4;
+    }
+  }
+  const posBytes=new Uint8Array(posArr.buffer),normBytes=new Uint8Array(normArr.buffer),colBytes=new Uint8Array(colArr.buffer),idxBytes=new Uint8Array(idxArr.buffer);
+  const totalByteLength=posBytes.byteLength+normBytes.byteLength+colBytes.byteLength+idxBytes.byteLength;
+  const combined=new Uint8Array(totalByteLength);
+  let ptr=0;
+  combined.set(posBytes,ptr);const posByteOffset=ptr;ptr+=posBytes.byteLength;
+  combined.set(normBytes,ptr);const normByteOffset=ptr;ptr+=normBytes.byteLength;
+  combined.set(colBytes,ptr);const colByteOffset=ptr;ptr+=colBytes.byteLength;
+  combined.set(idxBytes,ptr);const idxByteOffset=ptr;ptr+=idxBytes.byteLength;
+  let base64='';
+  if(typeof Buffer!=='undefined'){
+    base64=Buffer.from(combined.buffer).toString('base64');
+  }else if(typeof btoa!=='undefined'){
+    let binary='';const bytes=combined;const len=bytes.byteLength;
+    for(let i=0;i<len;i++)binary+=String.fromCharCode(bytes[i]);
+    base64=btoa(binary);
+  }else{
+    const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    let res='';
+    for(let i=0;i<combined.length;i+=3){
+      const b0=combined[i],b1=(i+1<combined.length)?combined[i+1]:0,b2=(i+2<combined.length)?combined[i+2]:0;
+      res+=chars[b0>>2];
+      res+=chars[((b0&3)<<4)|(b1>>4)];
+      res+=i+1<combined.length?chars[((b1&15)<<2)|(b2>>6)]:'=';
+      res+=i+2<combined.length?chars[b2&63]:'=';
+    }
+    base64=res;
+  }
+  const gltf={
+    asset:{version:'2.0',generator:'HomePlan Studio WebXR/QuickLook AR Exporter'},
+    scenes:[{nodes:[0]}],scene:0,
+    nodes:[{mesh:0,name:String(name).slice(0,60)}],
+    meshes:[{primitives:[{attributes:{POSITION:0,NORMAL:1,COLOR_0:2},indices:3,material:0}]}],
+    materials:[{pbrMetallicRoughness:{roughnessFactor:0.85,metallicFactor:0.05},name:'Finishes'}],
+    accessors:[
+      {bufferView:0,byteOffset:0,componentType:5126,count:totalVerts,type:'VEC3',max:[maxX,maxY,maxZ],min:[minX,minY,minZ]},
+      {bufferView:1,byteOffset:0,componentType:5126,count:totalVerts,type:'VEC3'},
+      {bufferView:2,byteOffset:0,componentType:5126,count:totalVerts,type:'VEC4'},
+      {bufferView:3,byteOffset:0,componentType:5125,count:totalIndices,type:'SCALAR',max:[totalVerts-1],min:[0]}
+    ],
+    bufferViews:[
+      {buffer:0,byteOffset:posByteOffset,byteLength:posBytes.byteLength,target:34962},
+      {buffer:0,byteOffset:normByteOffset,byteLength:normBytes.byteLength,target:34962},
+      {buffer:0,byteOffset:colByteOffset,byteLength:colBytes.byteLength,target:34962},
+      {buffer:0,byteOffset:idxByteOffset,byteLength:idxBytes.byteLength,target:34963}
+    ],
+    buffers:[{byteLength:totalByteLength,uri:'data:application/octet-stream;base64,'+base64}]
+  };
+  return JSON.stringify(gltf,null,2);
 }
