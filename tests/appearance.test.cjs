@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const listeners=new Map();
 const elements=new Map();
 for(const id of ['sceneBackgroundColor','sceneBackgroundValue','sceneBackgroundReset']){
- elements.set(id,{id,value:'#c9e9ff',textContent:'',disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}});
+ elements.set(id,{id,value:'#103b4a',textContent:'',disabled:false,handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}});
 }
 const saved=new Map();
 const rootStyle=new Map();
@@ -19,8 +19,8 @@ context.window=context;
 vm.runInNewContext(fs.readFileSync(__dirname+'/../src/appearance.js','utf8'),context);
 const api=context.HomePlanAppearance;
 context.homePlanStudioBridge={draw:()=>renders++};
-assert.equal(api.getColor(),'#C9E9FF');
-assert.equal(rootStyle.get('--scene-background'),'#C9E9FF');
+assert.equal(api.getColor(),'#103B4A');
+assert.equal(rootStyle.get('--scene-background'),'#103B4A');
 assert.equal(elements.get('sceneBackgroundReset').disabled,true);
 assert.equal(api.setColor('#e032f0'),true);
 assert.equal(api.getColor(),'#E032F0');
@@ -42,4 +42,4 @@ elements.get('sceneBackgroundReset').handlers.click();
 assert.equal(api.getColor(),api.DEFAULT);
 assert.equal(saved.has(api.STORAGE_KEY),false);
 assert.equal(elements.get('sceneBackgroundReset').disabled,true);
-console.log('PASS appearance: default baby blue, spectrum, validation, picker, storage, reset, redraw');
+console.log('PASS appearance: default teal azure, spectrum, validation, picker, storage, reset, redraw');

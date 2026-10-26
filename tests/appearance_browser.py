@@ -13,7 +13,7 @@ async def test(browser,width,height):
  errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
  await page.evaluate('''() => {const values=new Map();Object.defineProperty(window,'localStorage',{configurable:true,value:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,String(value)),removeItem:key=>values.delete(key)}});}''')
  await page.set_content(HTML,wait_until='domcontentloaded')
- assert await page.evaluate('HomePlanAppearance.getColor()')=='#C9E9FF'
+ assert await page.evaluate('HomePlanAppearance.getColor()')=='#103B4A'
  assert await page.locator('#sceneBackgroundReset').is_disabled()
  assert not await page.locator('#appearanceSettings').evaluate('(el)=>el.open')
  plan=await page.evaluate('JSON.stringify(homePlanStudioBridge.getPlan())')
@@ -46,7 +46,7 @@ async def test(browser,width,height):
  assert await page.evaluate('JSON.stringify(homePlanStudioBridge.getPlan())')==plan
  await page.locator('#sceneBackgroundReset').click()
  await page.wait_for_timeout(40)
- assert await page.evaluate('HomePlanAppearance.getColor()')=='#C9E9FF'
+ assert await page.evaluate('HomePlanAppearance.getColor()')=='#103B4A'
  assert await page.evaluate('localStorage.getItem(HomePlanAppearance.STORAGE_KEY)') is None
  assert await page.locator('#sceneBackgroundReset').is_disabled()
  await picker.fill('#3355cc')
@@ -67,7 +67,7 @@ async def test(browser,width,height):
  page.on('pageerror',lambda error:errors.append(str(error)))
  await page.evaluate('''() => {const values=new Map([['homeplan-scene-background-v1','javascript:alert(1)']]);Object.defineProperty(window,'localStorage',{configurable:true,value:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,String(value)),removeItem:key=>values.delete(key)}});}''')
  await page.set_content(HTML,wait_until='domcontentloaded')
- assert await page.evaluate('HomePlanAppearance.getColor()')=='#C9E9FF'
+ assert await page.evaluate('HomePlanAppearance.getColor()')=='#103B4A'
  assert not errors,errors
  print('PASS appearance browser',width,original,updated)
  await page.close()

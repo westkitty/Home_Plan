@@ -1,7 +1,7 @@
 'use strict';
 /* Local-only scene appearance preference. Never alters apartment geometry or exported layouts. */
 (() => {
-  const DEFAULT = '#C9E9FF';
+  const DEFAULT = '#103B4A';
   const STORAGE_KEY = 'homeplan-scene-background-v1';
   const valid = value => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
   const normalize = value => valid(value) ? value.toUpperCase() : null;
@@ -10,7 +10,14 @@
   const resetButton = document.getElementById('sceneBackgroundReset');
   let color = DEFAULT;
   let drawScheduled = false;
-  try { color = normalize(localStorage.getItem(STORAGE_KEY)) || DEFAULT; } catch (_) { /* private storage can be disabled */ }
+  try {
+    let stored = normalize(localStorage.getItem(STORAGE_KEY));
+    if (stored === '#C9E9FF') {
+      stored = DEFAULT;
+      try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    }
+    color = stored || DEFAULT;
+  } catch (_) { /* private storage can be disabled */ }
   function reflect() {
     document.documentElement.style.setProperty('--scene-background', color);
     if (picker && picker.value.toUpperCase() !== color) picker.value = color;

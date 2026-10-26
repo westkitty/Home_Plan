@@ -2,7 +2,7 @@
 :root{--focus-ink:#0b1e24;--focus-surface:rgba(10,38,46,.25);--focus-surface-grad:linear-gradient(145deg,rgba(8,36,44,.22) 0%,rgba(4,22,28,.32) 100%);--focus-line:rgba(92,225,214,.38);--focus-glow:0 16px 44px rgba(0,0,0,.35),0 0 32px rgba(78,205,196,.35),inset 0 1.5px 1px rgba(255,255,255,.38),inset 0 0 20px rgba(78,205,196,.12);--focus-card-bg:rgba(10,48,58,.18);--focus-card-border:rgba(92,225,214,.24);--focus-card-hover:rgba(20,80,95,.34);--focus-card-hover-border:rgba(120,245,235,.65);--focus-card-active:linear-gradient(135deg,rgba(28,110,122,.48),rgba(14,75,85,.55));--focus-card-active-border:#5ce1d6;--focus-text:#ffffff;--focus-desc:#b2f5ed;--focus-accent:#5ce1d6}
 html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .shell{position:relative;display:block;isolation:isolate;width:100%;max-width:100vw;height:100dvh;min-height:0;overflow:hidden}
-.stage{position:absolute;inset:0;width:100%;max-width:none;height:100%;min-width:0;min-height:0;overflow:hidden;z-index:1;background:var(--scene-background,#C9E9FF)}
+.stage{position:absolute;inset:0;width:100%;max-width:none;height:100%;min-width:0;min-height:0;overflow:hidden;z-index:1;background:var(--scene-background,#103B4A)}
 #stage{position:absolute;inset:0;width:100%;height:100%;max-width:none}
 #stage canvas{width:100%;height:100%;max-width:none}
 .stage::after{box-shadow:inset 0 0 50px rgba(17,33,24,.055);pointer-events:none}

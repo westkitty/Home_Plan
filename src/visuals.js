@@ -3,7 +3,7 @@
 window.HomePlanVisuals = (() => {
   const TAU = Math.PI * 2;
   const palette = {
-    day: { sky: '#C9E9FF', low: '#E9F6FF', desk: '#e5dfd1', ink: '#233c38', sunlight: '#fff0b6', shade: '#193c37' },
+    day: { sky: '#103B4A', low: '#184b5c', desk: '#e5dfd1', ink: '#233c38', sunlight: '#fff0b6', shade: '#193c37' },
     evening: { sky: '#e3c8af', low: '#899d9d', desk: '#c4b5a3', ink: '#283c38', sunlight: '#ffcb8e', shade: '#293344' },
     night: { sky: '#4b6271', low: '#243b48', desk: '#677a7b', ink: '#21353b', sunlight: '#e1c69f', shade: '#0e2632' }
   };
@@ -47,7 +47,7 @@ window.HomePlanVisuals = (() => {
   }
   function background(ctx, w, h, light, colors, studio={}) {
     // The color behind the model is a personal workspace setting, not a plan material.
-    const chosen = window.HomePlanAppearance?.getColor?.() || '#C9E9FF';
+    const chosen = window.HomePlanAppearance?.getColor?.() || '#103B4A';
     const tint = light === 'night' ? '#1B2C45' : light === 'evening' ? '#FFF0DE' : '#FFFFFF';
     const strength = light === 'night' ? .20 : light === 'evening' ? .12 : .17;
     const dayColor=light==='night'?blend(chosen,'#0a1427',(studio.outdoorDim??85)/100*.97):light==='evening'?blend(chosen,'#c48c82',.30):chosen;
@@ -789,18 +789,28 @@ function annotations(ctx, engine, app) {
         if(box.kind==='shadow'){
           ctx.save();ctx.globalAlpha=light==='night'?.31:.17;trace(ctx,face.poly);ctx.fillStyle='#142a24';ctx.fill();ctx.restore();continue;
         }
+        function wallAlpha(b, pl, eng){
+          if(b.kind!=='wall'||(pl.view.style!=='dollhouse'&&pl.view.style!=='orbit'))return 1;
+          const tx=pl.view.target[0],tz=pl.view.target[2];
+          const cx=eng.C?eng.C[0]:(tx+pl.view.dist*Math.sin(pl.view.yaw));
+          const cz=eng.C?eng.C[2]:(tz+pl.view.dist*Math.cos(pl.view.yaw));
+          const dx=cx-tx,dz=cz-tz,len=Math.hypot(dx,dz)||1;
+          const dot=(b.x-tx)*(dx/len)+(b.z-tz)*(dz/len);
+          const t=Math.max(0,Math.min(1,(dot+0.6)/1.2));
+          return 0.95-t*0.80;
+        }
         // In the adaptive dense-scene mode, avoid per-face Canvas save/restore,
         // gradient allocations and subpixel outlines. The edit/hit model is unchanged.
         if (quality === 'eco') {
           if (face.pixelArea < (denseScene ? 18 : .38)) continue;
-          ctx.globalAlpha=box.kind==='wall'&&plan.view.style==='dollhouse'?.33:box.kind==='selection'?.44:1;
+          ctx.globalAlpha=box.kind==='wall'?wallAlpha(box,plan,engine):box.kind==='selection'?.44:1;
           trace(ctx,face.poly);
           ctx.fillStyle=faceGradient(ctx,face,quality,light);ctx.fill();
           if(!box.customFloor&&(face.pixelArea>70 || box.kind==='selection'))faceOutline(ctx,face,light);
           ctx.globalAlpha=1;
         } else {
           ctx.save();
-          ctx.globalAlpha=box.kind==='wall'&&plan.view.style==='dollhouse'?.33:box.kind==='selection'?.44:1;
+          ctx.globalAlpha=box.kind==='wall'?wallAlpha(box,plan,engine):box.kind==='selection'?.44:1;
           trace(ctx,face.poly);
           ctx.fillStyle=faceGradient(ctx,face,quality,light);ctx.fill();
           if(!box.customFloor)faceOutline(ctx,face,light);

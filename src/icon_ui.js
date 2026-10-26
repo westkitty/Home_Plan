@@ -85,7 +85,7 @@
   zoomIn:['zoom','Zoom in','Move the camera closer to the model.'],
   fitBtn:['fit','Fit model','Fit the apartment to the available viewport.'],
   mobileInspectorBtn:['sliders','Inspector','Open editing controls.'],
-  sceneBackgroundReset:['undo','Reset background','Restore the default baby-blue scene color.']
+  sceneBackgroundReset:['undo','Reset background','Restore the default teal azure scene color.']
  };
  const toolDefs={furnish:['sofa','Furniture','Arrange items','Select, move and arrange furniture.'],build:['wall','Walls','Draw & edit','Edit or draw walls; change their endpoints.'],navigate:['orbit','Explore','Orbit & pan','Drag empty space to orbit; pan and zoom.'],measure:['ruler','Tape','Measure 2 pts','Tap two model positions to measure their distance.'],annotate:['note','Notes','Floor notes','Tap the floor to leave a note.'],opening:['door','Openings','Doors & more','Choose a door, window, outlet or passage, then tap a wall.']};
  const railActionDefs={railStudio:['sliders','Design Lab','Room metrics','Inspect room dimensions, finishes, diagnostics and budget.'],railSurvey:['scan','Survey','Guided photos','Capture a guided apartment survey.'],focusDetails:['sliders','Inspector','Item details','Inspect the currently selected object.'],helpBtn:['help','Controls','Key reference','Open the full control reference.']};
