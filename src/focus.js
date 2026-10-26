@@ -10,10 +10,88 @@
  let opened=null;
  function isVisible(el){return !!el&&el.getClientRects().length>0&&getComputedStyle(el).visibility!=='hidden';}
  function updateExpanded(){for(const [key,p] of Object.entries(panels)){const open=shell.classList.contains(p.name);byId(p.trigger)?.setAttribute('aria-expanded',String(open));}}
+ function applySavedPosition(el){
+  if(!el||!el.dataset.dragX||!el.dataset.dragY)return;
+  const rect=el.getBoundingClientRect();
+  const w=rect.width||320,h=rect.height||220;
+  const maxLeft=Math.max(4,window.innerWidth-w-4);
+  const maxTop=Math.max(4,window.innerHeight-h-4);
+  const left=Math.min(Math.max(4,parseFloat(el.dataset.dragX)),maxLeft);
+  const top=Math.min(Math.max(4,parseFloat(el.dataset.dragY)),maxTop);
+  el.style.left=left+'px';
+  el.style.top=top+'px';
+  el.style.right='auto';
+  el.style.bottom='auto';
+  el.style.transform='none';
+  el.style.margin='0';
+ }
+ function makeDraggable(panel){
+  if(!panel||panel.dataset.dragInit==='true')return;
+  panel.dataset.dragInit='true';
+  if(!panel.querySelector('.hp-menu-drag-handle')){
+   const handle=document.createElement('div');
+   handle.className='hp-menu-drag-handle';
+   handle.title='Hold and drag to move menu';
+   handle.setAttribute('aria-hidden','true');
+   handle.innerHTML='<span class="hp-menu-drag-pill"></span>';
+   panel.prepend(handle);
+  }
+  let isDragging=false,startX=0,startY=0,panelStartX=0,panelStartY=0,panelWidth=0,panelHeight=0,activePointerId=null;
+  function onPointerDown(e){
+   if(e.button!==0)return;
+   const isHandle=e.target.closest('.hp-menu-drag-handle');
+   const interactive=e.target.closest('button,input,select,textarea,a,summary,[role="tab"],[role="button"],input[type="range"],input[type="color"],.shelf-items,.hp-arch-grid,.hp-tools-grid,.ins-body,.shelf-categories');
+   if(interactive&&!isHandle)return;
+   const rect=panel.getBoundingClientRect();
+   panelWidth=rect.width;panelHeight=rect.height;
+   startX=e.clientX;startY=e.clientY;
+   panelStartX=rect.left;panelStartY=rect.top;
+   activePointerId=e.pointerId;
+   document.addEventListener('pointermove',onPointerMove,{passive:false});
+   document.addEventListener('pointerup',onPointerUp);
+   document.addEventListener('pointercancel',onPointerUp);
+  }
+  function onPointerMove(e){
+   const dx=e.clientX-startX,dy=e.clientY-startY;
+   if(!isDragging){
+    if(Math.hypot(dx,dy)<4)return;
+    isDragging=true;
+    panel.classList.add('is-dragging');
+    try{panel.setPointerCapture?.(activePointerId);}catch(_){}
+    panel.style.transform='none';
+    panel.style.right='auto';
+    panel.style.bottom='auto';
+    panel.style.margin='0';
+   }
+   e.preventDefault();
+   const maxLeft=Math.max(4,window.innerWidth-panelWidth-4);
+   const maxTop=Math.max(4,window.innerHeight-panelHeight-4);
+   const newLeft=Math.min(Math.max(4,panelStartX+dx),maxLeft);
+   const newTop=Math.min(Math.max(4,panelStartY+dy),maxTop);
+   panel.style.left=newLeft+'px';
+   panel.style.top=newTop+'px';
+   panel.dataset.dragX=String(newLeft);
+   panel.dataset.dragY=String(newTop);
+  }
+  function onPointerUp(e){
+   document.removeEventListener('pointermove',onPointerMove);
+   document.removeEventListener('pointerup',onPointerUp);
+   document.removeEventListener('pointercancel',onPointerUp);
+   if(isDragging){
+    try{panel.releasePointerCapture?.(activePointerId);}catch(_){}
+    panel.classList.remove('is-dragging');
+    isDragging=false;
+    const rect=panel.getBoundingClientRect();
+    panel.dataset.dragX=String(rect.left);
+    panel.dataset.dragY=String(rect.top);
+   }
+  }
+  panel.addEventListener('pointerdown',onPointerDown);
+ }
  function closeFloating(restore=false){const was=opened,active=document.activeElement;for(const p of Object.values(panels))shell.classList.remove(p.name);opened=null;updateExpanded();if(restore&&was){const p=panels[was];const surface=byId(p.surface);if(surface?.contains(active)||!isVisible(active))byId(p.trigger)?.focus({preventScroll:true});}}
- function toggle(key){const same=shell.classList.contains(panels[key].name);closeFloating();if(same){byId(panels[key].trigger)?.focus({preventScroll:true});return;}const p=panels[key];shell.classList.add(p.name);opened=key;updateExpanded();const first=p.first?byId(p.first):byId(p.surface)?.querySelector('button.active, button');if(isVisible(first))first.focus({preventScroll:true});}
+ function toggle(key){const same=shell.classList.contains(panels[key].name);closeFloating();if(same){byId(panels[key].trigger)?.focus({preventScroll:true});return;}const p=panels[key];shell.classList.add(p.name);opened=key;updateExpanded();applySavedPosition(byId(p.surface));const first=p.first?byId(p.first):byId(p.surface)?.querySelector('button.active, button');if(isVisible(first))first.focus({preventScroll:true});}
  function closeInspector(){if(byId('inspector').classList.contains('mobile-open'))byId('closeInspector')?.click();}
- function openInspector(){closeFloating();byId('mobileInspectorBtn')?.click();const close=byId('closeInspector');if(isVisible(close))close.focus({preventScroll:true});sync();}
+ function openInspector(){closeFloating();byId('mobileInspectorBtn')?.click();applySavedPosition(byId('inspector'));const close=byId('closeInspector');if(isVisible(close))close.focus({preventScroll:true});sync();}
  function visibleMode(){return document.querySelector('#toolsPanel [data-tool].active')?.dataset.tool||'furnish';}
  function sync(){
   const tool=visibleMode();const advanced={navigate:'Explore',opening:'Openings',measure:'Tape',annotate:'Notes'};byId('focusToolsLabel').textContent=advanced[tool]||'Tools';byId('focusTools').classList.toggle('is-active',!!advanced[tool]);for(const id of ['focusMove','focusBuild']){const active=tool===(id==='focusMove'?'furnish':'build');byId(id)?.classList.toggle('is-active',active);byId(id)?.setAttribute('aria-pressed',String(active));}
@@ -71,6 +149,13 @@
  },true);
  // Prevent stale focus pointing to a hidden dismissable drawer.
  byId('closeInspector').addEventListener('click',()=>{if(document.activeElement===byId('closeInspector'))byId('focusTools').focus({preventScroll:true});sync();});
- window.HomePlanFocus={sync,closeFloating};
+ for(const id of ['toolsPanel','architecturePalette','projectPanel','viewControls','catalogShelf','inspector']){
+  const el=byId(id);if(el)makeDraggable(el);
+ }
+ window.addEventListener('resize',()=>{
+  for(const p of Object.values(panels)){applySavedPosition(byId(p.surface));}
+  applySavedPosition(byId('inspector'));
+ },{passive:true});
+ window.HomePlanFocus={sync,closeFloating,makeDraggable,applySavedPosition};
  sync();
 })();

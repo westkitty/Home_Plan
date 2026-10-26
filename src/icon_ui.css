@@ -17,11 +17,11 @@
 .header .header-end .hp-icon{width:22px;height:22px}
 .header .header-end #engineStatus{grid-column:1/-1}
 .header .header-end .hp-help-trigger{grid-column:4}
-.rail{grid-template-columns:repeat(4,minmax(0,1fr));width:min(316px,calc(100vw - 22px));gap:7px}
-.rail .rail-button{position:relative;flex-direction:column;justify-content:center;gap:4px;padding:7px 3px;font-size:0!important;min-height:52px;height:52px;}
-.rail .rail-button .symbol{display:flex;justify-content:center;align-items:center;width:auto;font-size:0!important}
-.rail .rail-button .hp-icon{width:25px;height:25px}
-.rail .hp-help-trigger{min-height:52px;height:52px;width:auto;border:1px solid rgba(147,177,151,.22);border-radius:11px;background:rgba(38,70,55,.48)}
+.rail{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s cubic-bezier(0.16,1,0.3,1),opacity .15s,visibility .15s}
+.shell.tools-open .rail{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.hp-tools-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(82,196,190,.20);flex-shrink:0}
+.hp-tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:rgba(78,205,196,.4) transparent;touch-action:pan-y}
+.rail .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
 .view-controls [data-view],.view-controls #focusFit,.view-controls #focusMap,.view-controls #focusZoom,.view-controls #focusInfo{display:flex;align-items:center;gap:10px;text-align:left;}
 .view-controls .hp-icon{width:19px;height:19px}
 .view-controls .hp-help-trigger{width:100%;margin-top:6px}
@@ -35,47 +35,62 @@
 .shelf .shelf-top .hp-help-trigger{margin-left:auto}
 .ins-tabs button .hp-command-icon,.studio-tabs button .hp-command-icon{display:inline-flex;vertical-align:middle;margin-right:6px}
 .ins-tabs button .hp-icon,.studio-tabs button .hp-icon{width:16px;height:16px}
-.hp-help-trigger{display:grid;place-items:center;flex:none;width:39px;min-width:39px;height:39px;padding:6px;color:#e5e9da;background:#315142;border:1px solid rgba(205,227,201,.35);border-radius:10px;cursor:pointer}
-.hp-help-trigger:hover,.hp-help-trigger:focus-visible{background:#476955;border-color:#eed097}
-.hp-help-trigger:focus-visible{outline:3px solid #eed097;outline-offset:2px}
+.hp-help-trigger{display:grid;place-items:center;flex:none;width:39px;min-width:39px;height:39px;padding:6px;color:#d8f6f2;background:rgba(20,52,62,.65);border:1px solid rgba(78,205,196,.3);border-radius:10px;cursor:pointer}
+.hp-help-trigger:hover,.hp-help-trigger:focus-visible{background:rgba(30,80,92,.85);border-color:#5ce1d6;box-shadow:0 0 12px rgba(92,225,214,.35)}
+.hp-help-trigger:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
 .hp-help-trigger .hp-icon{width:20px;height:20px}
 .ins-head{position:relative;padding-right:60px}
 .ins-head .hp-help-trigger{position:absolute;right:14px;top:12px}
 .studio-head .hp-help-trigger,.survey-header-actions .hp-help-trigger{flex:none;align-self:center}
-.hp-tooltip{position:fixed;z-index:99999;pointer-events:none;max-width:min(320px,calc(100vw - 20px));padding:8px 11px;border:1px solid #839e83;border-radius:10px;background:#152b22;color:#f7f5e9;font:500 12px/1.4 system-ui,-apple-system,sans-serif;box-shadow:0 9px 25px rgba(0,0,0,.33);white-space:normal;overflow-wrap:break-word;transition:opacity .16s cubic-bezier(0.16,1,0.3,1),transform .16s cubic-bezier(0.16,1,0.3,1)}
+.hp-tooltip{position:fixed;z-index:99999;pointer-events:none;max-width:min(320px,calc(100vw - 20px));padding:8px 11px;border:1px solid rgba(78,205,196,.35);border-radius:10px;background:linear-gradient(155deg,rgba(14,38,48,.96),rgba(8,24,32,.98));color:var(--focus-text);font:500 12px/1.4 system-ui,-apple-system,sans-serif;box-shadow:0 9px 25px rgba(0,0,0,.45),0 0 16px rgba(78,205,196,.2);backdrop-filter:blur(14px);white-space:normal;overflow-wrap:break-word;transition:opacity .16s cubic-bezier(0.16,1,0.3,1),transform .16s cubic-bezier(0.16,1,0.3,1)}
 .hp-tooltip[hidden]{display:none!important}
-.hp-context-dialog{position:fixed;z-index:200000;inset:0;margin:auto;width:min(470px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;background:#1b3529;color:#f2f4e9;border:1px solid #a1b8a2;border-radius:18px;box-shadow:0 22px 80px #0009;font:400 15px/1.65 system-ui,-apple-system,sans-serif}
-.hp-context-dialog::backdrop{background:rgba(4,18,12,.64);backdrop-filter:blur(3px)}
+.hp-context-dialog{position:fixed;z-index:200000;inset:0;margin:auto;width:min(470px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;background:var(--focus-surface-grad);color:var(--focus-text);border:1px solid var(--focus-line);border-radius:20px;box-shadow:0 24px 70px rgba(1,10,14,.8),0 0 36px rgba(78,205,196,.3);backdrop-filter:blur(20px) saturate(160%);font:400 15px/1.65 system-ui,-apple-system,sans-serif}
+.hp-context-dialog::backdrop{background:rgba(2,12,16,.68);backdrop-filter:blur(4px)}
 .hp-help-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.hp-help-kicker{font-size:10px;letter-spacing:.16em;color:#c6d9c9;font-weight:750}
-.hp-context-dialog h2{margin:10px 0 13px;font-size:24px;line-height:1.2;color:#fff0d1}
+.hp-help-kicker{font-size:10px;letter-spacing:.16em;color:#8dc5be;font-weight:750}
+.hp-context-dialog h2{margin:10px 0 13px;font-size:24px;line-height:1.2;color:#c4ede8}
 .hp-context-dialog p{margin:0 0 15px}
-.hp-context-dialog .hp-help-note{background:#2a4739;padding:12px;border-radius:10px;font-size:13px;color:#dce7d8}
-.hp-context-dialog button{border:1px solid #afc6aa;border-radius:9px;background:#315241;color:#fff;padding:9px 13px;cursor:pointer}
+.hp-context-dialog .hp-help-note{background:rgba(18,48,58,.6);padding:12px;border-radius:10px;font-size:13px;color:#a2d4cd;border:1px solid rgba(78,205,196,.2)}
+.hp-context-dialog button{border:1px solid rgba(78,205,196,.35);border-radius:9px;background:rgba(22,58,68,.7);color:#fff;padding:9px 13px;cursor:pointer}
 .hp-context-dialog #hpContextClose{width:38px;height:38px;min-width:38px;padding:0;font-size:25px;line-height:1}
 .hp-help-actions{display:flex;justify-content:flex-end;margin-top:15px}
-.hp-context-dialog #hpContextDone{background:#eed09a;color:#213b2c;font-weight:750;border-color:#eed09a}
-.hp-context-dialog button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.hp-context-dialog #hpContextDone{background:linear-gradient(135deg,#3bb8ac,#268d83);color:#08201d;font-weight:750;border-color:#5ce1d6}
+.hp-context-dialog button:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
 @media(max-width:480px){.rail{width:min(316px,calc(100vw - 22px))}.focus-dock button{width:45px;height:45px;padding:7px!important}.focus-project,.focus-view-toggle{width:45px!important;min-width:45px!important;min-height:45px}.shelf .shelf-top{align-items:center}.shelf .shelf-categories [data-category]{width:38px;min-width:38px;height:38px}.hp-context-dialog{padding:19px}}
 @media(prefers-reduced-motion:reduce){.hp-context-dialog::backdrop{backdrop-filter:none}}
 
-/* Build is a two-level architectural category, not an enormous permanent panel. */
-.architecture-palette{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:9px;padding:12px;border:1px solid var(--focus-line);border-radius:17px;background:var(--focus-surface);box-shadow:0 14px 46px var(--focus-glow);backdrop-filter:blur(18px);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s,opacity .15s,visibility .15s}
+/* Drag handle affordance for all floating menus */
+.hp-menu-drag-handle{display:flex;align-items:center;justify-content:center;width:100%;height:14px;min-height:14px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;flex-shrink:0;margin-bottom:2px}
+.hp-menu-drag-pill{width:36px;height:4px;border-radius:999px;background:rgba(92,225,214,.42);box-shadow:0 0 6px rgba(92,225,214,.35);transition:background .15s ease,width .15s ease}
+.hp-menu-drag-handle:hover .hp-menu-drag-pill{background:rgba(92,225,214,.88);width:48px;box-shadow:0 0 10px rgba(92,225,214,.6)}
+.is-dragging{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important;z-index:1000!important;box-shadow:0 24px 60px rgba(1,10,14,.85),0 0 38px rgba(78,205,196,.45),inset 0 1px 0 rgba(220,255,252,.4)!important;transition:none!important}
+.is-dragging *{cursor:grabbing!important;pointer-events:none!important}
+
+/* Build is a two-level architectural category, matching More Tools layout */
+.architecture-palette{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s cubic-bezier(0.16,1,0.3,1),opacity .15s,visibility .15s}
 .shell.architecture-open .architecture-palette{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
-.hp-arch-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(147,177,151,.20);flex-shrink:0}
+.hp-arch-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(82,196,190,.20);flex-shrink:0}
+.hp-menu-title{font-size:11px;font-weight:800;letter-spacing:.08em;color:#c4ede8}
 .hp-arch-categories{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .hp-arch-categories::-webkit-scrollbar{display:none}
-.hp-arch-cat-btn{padding:6px 11px;min-height:34px;font-size:11px;font-weight:750;letter-spacing:.02em;color:#a9beae;background:rgba(30,55,42,.6);border:1px solid rgba(147,177,151,.18);border-radius:8px;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .12s ease,color .12s ease,border-color .12s ease,transform .1s ease}
-.hp-arch-cat-btn:hover{background:#2e523e;color:#f2eee3;border-color:rgba(182,212,183,.32)}
-.hp-arch-cat-btn.active{background:linear-gradient(135deg,#365e47,#2b4f3b);color:#f6d295;border-color:#e4ba77;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.hp-arch-cat-btn{padding:6px 11px;min-height:34px;font-size:11px;font-weight:750;letter-spacing:.02em;color:#a2d4cd;background:rgba(18,48,58,.5);border:1px solid rgba(78,205,196,.22);border-radius:8px;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .12s ease,color .12s ease,border-color .12s ease,transform .1s ease}
+.hp-arch-cat-btn:hover{background:rgba(28,74,86,.7);color:#f2fffe;border-color:rgba(120,230,220,.5)}
+.hp-arch-cat-btn.active{background:linear-gradient(135deg,rgba(34,96,106,.9),rgba(20,64,72,.95));color:#5ce1d6;border-color:#5ce1d6;box-shadow:0 0 10px rgba(92,225,214,.3)}
 .hp-arch-header .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
-.hp-arch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:#4a6956 transparent;touch-action:pan-y}
-.hp-architecture-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:64px;min-width:0;padding:8px 4px 6px;border:1px solid rgba(147,177,151,.24);border-radius:11px;color:#f0eee3;background:#2a4d39;cursor:pointer;touch-action:manipulation;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease}
-.hp-architecture-tool:hover{background:#456c4d;border-color:#efd39d;transform:translateY(-1px)}
-.hp-architecture-tool:active{transform:scale(0.96) translateY(1px)}
-.hp-architecture-tool:focus-visible{outline:3px solid #efd39d;outline-offset:2px}
-.hp-architecture-tool .hp-icon{width:24px;height:24px;flex-shrink:0}
-.hp-architecture-label{font-size:10px;font-weight:650;letter-spacing:.01em;color:#e5ede6;text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+.hp-arch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:rgba(78,205,196,.4) transparent;touch-action:pan-y}
+
+/* Unified tool cards in Build and More Tools */
+.hp-architecture-tool,.rail .rail-button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;min-width:0;width:100%;padding:8px 4px 6px;border:1px solid var(--focus-card-border);border-radius:12px;color:var(--focus-text);background:var(--focus-card-bg);cursor:pointer;touch-action:manipulation;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease}
+.hp-architecture-tool:hover,.rail .rail-button:hover{background:var(--focus-card-hover);border-color:var(--focus-card-hover-border);transform:translateY(-2px);box-shadow:0 4px 14px rgba(4,18,24,.4),0 0 10px rgba(78,205,196,.25)}
+.hp-architecture-tool:active,.rail .rail-button:active{transform:scale(0.96) translateY(1px)}
+.hp-architecture-tool:focus-visible,.rail .rail-button:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
+.hp-architecture-tool.active,.rail .rail-button.active{background:var(--focus-card-active)!important;border-color:var(--focus-card-active-border)!important;color:#ffffff!important;box-shadow:0 0 14px rgba(92,225,214,.35),inset 0 1px 0 rgba(220,255,252,.3)!important;transform:none}
+.rail .rail-button.active::before{display:none}
+.rail .rail-button .symbol,.hp-architecture-tool .symbol{display:flex;justify-content:center;align-items:center;width:auto;font-size:0}
+.rail .rail-button .hp-icon,.hp-architecture-tool .hp-icon{width:23px;height:23px;flex-shrink:0;stroke:currentColor}
+.hp-tool-label,.hp-architecture-label{font-size:10.5px;font-weight:700;letter-spacing:.01em;color:var(--focus-text);text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+.hp-tool-desc{font-size:9px;font-weight:500;color:var(--focus-desc);text-align:center;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+.rail .rail-button.active .hp-tool-desc,.hp-architecture-tool.active .hp-tool-desc{color:#a4eee6}
 @media(prefers-reduced-motion:reduce){.architecture-palette,.hp-architecture-tool,.hp-arch-cat-btn,.hp-tooltip{transition:none}}
 /* Project drawer appearance settings: collapsed until requested. */
 .header .hp-appearance{width:100%;min-width:0;border:1px solid rgba(187,214,193,.27);border-radius:12px;background:rgba(21,48,38,.52);color:#eef4e8}
@@ -103,10 +118,11 @@
 .hp-context-dialog button{min-width:44px;min-height:44px;touch-action:manipulation}
 .hp-help-trigger{min-width:34px;min-height:34px;touch-action:manipulation}
 @media(max-width:480px){
-  .architecture-palette{width:calc(100vw - 12px);max-height:min(66dvh,440px);padding:10px;gap:7px}
-  .hp-arch-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-  .hp-architecture-tool{min-height:60px;padding:6px 3px 5px}
-  .hp-architecture-tool .hp-icon{width:22px;height:22px}
-  .hp-architecture-label{font-size:9.5px}
+  .architecture-palette,.rail{width:calc(100vw - 12px);max-height:min(66dvh,440px);padding:10px;gap:7px}
+  .hp-arch-grid,.hp-tools-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .hp-architecture-tool,.rail .rail-button{min-height:60px;padding:6px 3px 5px}
+  .hp-architecture-tool .hp-icon,.rail .rail-button .hp-icon{width:22px;height:22px}
+  .hp-tool-label,.hp-architecture-label{font-size:9.5px}
+  .hp-tool-desc{font-size:8.5px}
   .hp-arch-cat-btn{padding:5px 8px;min-height:30px;font-size:10.5px}
 }

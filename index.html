@@ -209,7 +209,7 @@
 </style><style>/* HOME PLAN / architectural diorama finish. Overrides only; all original controls remain functional. */
 :root{--panel:#182824;--panel2:#22342d;--line:#41594c;--text:#f1f1e8;--muted:#a4b9ac;--accent:#f2c381;--accent2:#93d2c2;--radius:12px}
 body{background:#10201c}
-.header{background:linear-gradient(115deg,#14221f 0%,#1e3129 50%,#17241f 100%);border-bottom:1px solid #52644b;box-shadow:0 7px 24px #0b1a1638}
+.header{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .header::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#deaf72 23%,#91bca4 61%,transparent);pointer-events:none}
 .mark{background:linear-gradient(150deg,#ffe1a0,#d9a967);color:#1d332c;box-shadow:inset 0 1px 0 #ffefc7,0 2px 9px #03130c3b;font-family:Georgia,serif}
 .wordmark{font-weight:900;letter-spacing:.10em;color:#fbf6e8}
@@ -218,7 +218,7 @@ body{background:#10201c}
 .header .btn{box-shadow:inset 0 1px 0 #ffffff19;letter-spacing:.01em}
 .header .btn.primary{background:linear-gradient(145deg,#ffd99a,#eab370);border-color:#eac28b}
 .header .studio-cta{background:#a5d4bb!important;color:#15362c!important}
-.rail{background:linear-gradient(175deg,#1e322c,#132520);border-right-color:#385345;box-shadow:inset -1px 0 0 #72957b15}
+.rail{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .rail-button{color:#b7cfc0;border-radius:12px;position:relative;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease,border-color .14s ease}
 .rail-button:hover{background:#294737;color:#fff8e6;transform:translateY(-1px)}
 .rail-button:active{transform:scale(0.96) translateY(1px)}
@@ -232,17 +232,17 @@ body{background:#10201c}
 .viewport-hud .eyebrow{color:#2b4539;letter-spacing:.20em;font-size:9px}
 .viewport-hud h2{font-size:clamp(19px,1.85vw,27px);line-height:1.13;font-weight:700;color:#263c34;margin:4px 0}
 .viewport-hud p{color:#4c695b;line-height:1.54;font-weight:540;font-size:11px}
-.view-controls{background:#182e2be8;border-color:#688e7f66;box-shadow:0 8px 25px rgba(0,0,0,0.28),inset 0 1px 0 #ffffff2c;backdrop-filter:blur(12px);padding:5px;border-radius:13px}
-.view-controls button{letter-spacing:.035em;color:#bbd2c6;padding:11px 13px;border-radius:9px}
-.view-controls button:hover{background:#36594b;color:#fff4df}
-.view-controls button.active{background:linear-gradient(135deg,#ffdda5,#f2bd77);color:#1b3730;box-shadow:0 3px 9px #121c1970}
+.view-controls{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);padding:5px;border-radius:18px}
+.view-controls button{letter-spacing:.035em;color:var(--focus-text);padding:11px 13px;border-radius:9px}
+.view-controls button:hover{background:var(--focus-card-hover);color:#fff;border-color:var(--focus-card-hover-border)}
+.view-controls button.active{background:var(--focus-card-active)!important;border-color:var(--focus-card-active-border)!important;color:#fff!important;box-shadow:0 0 12px rgba(92,225,214,.35)!important}
 .map-card{background:#142a25ec;border-color:#7196868b;box-shadow:0 16px 35px #0b262244,inset 0 1px 0 #a3c8ac1a;border-radius:14px;backdrop-filter:blur(10px)}
 .map-title{color:#eed5ac}
 .map-card canvas{outline:1px solid #5b796b55;border-radius:7px}
 .round-btn{background:#1a342ce9;border-color:#739e8875;color:#ffe1ac;border-radius:14px;box-shadow:0 5px 15px #132b263f,inset 0 1px 0 #ffffff20;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease,box-shadow .14s ease}
 .round-btn:hover{background:#2f584a;transform:translateY(-2px);box-shadow:0 8px 20px #132b2655}
 .round-btn:active{transform:translateY(1px) scale(0.95);box-shadow:0 2px 8px #132b2630}
-.inspector{background:linear-gradient(175deg,#1c2e27,#152720);border-left:1px solid #4a6a57}
+.inspector{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .ins-head{background:linear-gradient(180deg,#274138,#1c3028);border-bottom:1px solid #597b60;padding-top:22px;padding-bottom:20px}
 .ins-head h3{font-family:Georgia,serif;font-size:23px;font-weight:650;color:#fbf1da}
 .ins-head p{line-height:1.5;color:#aec8b6}
@@ -260,7 +260,7 @@ body{background:#10201c}
 .btn.primary:hover{background:#ffe1aa;transform:translateY(-1.5px);box-shadow:0 4px 14px rgba(0,0,0,0.24)}
 .btn.primary:active{transform:scale(0.97) translateY(1.5px);box-shadow:0 1px 3px rgba(0,0,0,0.18)}
 .btn:focus-visible,.round-btn:focus-visible,.rail-button:focus-visible{outline:3px solid #eac07a;outline-offset:3px}
-.shelf{background:linear-gradient(180deg,#1a3027,#142720);border-top:1px solid #6b866d;box-shadow:0 -9px 23px #19292525}
+.shelf{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .shelf-title{color:#f2cd91;letter-spacing:.19em}
 .shelf-categories button{border-radius:8px;color:#b4c9b9}
 .shelf-categories button.active{background:#526246;color:#ffe2a3}
@@ -417,7 +417,7 @@ input[type="checkbox"]:checked + .exp-toggle-switch::after{transform:translateX(
   .map-card{display:block!important;position:static!important;margin:20px auto!important;box-shadow:none!important;border:1px solid #000!important}
 }
 </style><style>/* Model-first workspace. Original editor modules remain mounted and reachable on demand. */
-:root{--focus-ink:#152b23;--focus-surface:rgba(23,43,35,.94);--focus-line:rgba(182,212,183,.30);--focus-glow:rgba(7,25,17,.22)}
+:root{--focus-ink:#0b1e24;--focus-surface:rgba(12,32,40,.88);--focus-surface-grad:linear-gradient(155deg,rgba(14,38,48,.90) 0%,rgba(8,24,32,.94) 100%);--focus-line:rgba(82,196,190,.32);--focus-glow:0 18px 48px rgba(2,12,16,.65),0 0 28px rgba(78,205,196,.22),inset 0 1px 0 rgba(190,245,240,.22);--focus-card-bg:rgba(18,48,58,.52);--focus-card-border:rgba(78,205,196,.24);--focus-card-hover:rgba(28,74,86,.76);--focus-card-hover-border:rgba(120,230,220,.60);--focus-card-active:linear-gradient(135deg,rgba(32,94,104,.92),rgba(18,62,70,.96));--focus-card-active-border:#5ce1d6;--focus-text:#edf9f7;--focus-desc:#8dc5be;--focus-accent:#5ce1d6}
 html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .shell{position:relative;display:block;isolation:isolate;width:100%;max-width:100vw;height:100dvh;min-height:0;overflow:hidden}
 .stage{position:absolute;inset:0;width:100%;max-width:none;height:100%;min-width:0;min-height:0;overflow:hidden;z-index:1;background:var(--scene-background,#C9E9FF)}
@@ -432,7 +432,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .map-card{z-index:15;bottom:86px;left:14px}
 .floating-actions{z-index:15;bottom:86px;right:14px}
 /* The entire legacy header lives in a compact project popover. */
-.header{position:fixed;top:61px;left:14px;right:auto;bottom:auto;display:flex;flex-direction:column;align-items:stretch;width:min(340px,calc(100vw - 28px));max-height:min(75dvh,660px);min-width:0;overflow-y:auto;gap:12px;padding:17px;border-radius:17px;border:1px solid var(--focus-line);background:var(--focus-surface);box-shadow:0 16px 48px rgba(5,24,14,.29);backdrop-filter:blur(18px);z-index:40;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility .15s}
+.header{position:fixed;top:61px;left:14px;right:auto;bottom:auto;display:flex;flex-direction:column;align-items:stretch;width:min(340px,calc(100vw - 28px));max-height:min(75dvh,660px);min-width:0;overflow-y:auto;gap:12px;padding:17px;border-radius:18px;border:1px solid var(--focus-line);background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);z-index:40;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility .15s}
 .header::after{display:none}
 .shell.project-open .header{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0)}
 .header .brand{min-width:0;width:100%;gap:9px}
@@ -446,25 +446,25 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .header .header-end .status-pill i{flex:none}
 .mobile-actions-toggle,.mobile-actions-panel,.mobile-actions-panel:not([hidden]){display:none!important}
 /* Original navigation moves into a discoverable tool palette rather than occupying a rail. */
-.rail{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));top:auto;right:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;width:min(340px,calc(100vw - 22px));max-width:none;max-height:min(65dvh,390px);min-height:0;overflow-y:auto;padding:13px;background:var(--focus-surface);border:1px solid var(--focus-line);border-radius:17px;box-shadow:0 14px 46px var(--focus-glow);backdrop-filter:blur(18px);z-index:40;visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,9px);transition:opacity .15s,transform .15s,visibility .15s;scroll-snap-type:none}
+.rail{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));top:auto;right:auto;display:flex;flex-direction:column;gap:8px;width:min(460px,calc(100vw - 18px));max-width:none;max-height:min(64dvh,480px);min-height:0;overflow:hidden;padding:12px;background:var(--focus-surface-grad);border:1px solid var(--focus-line);border-radius:18px;box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);z-index:40;visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,9px);transition:opacity .15s,transform .15s,visibility .15s;scroll-snap-type:none}
 .shell.tools-open .rail{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
-.rail .rail-button{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;height:49px;width:100%;min-width:0;max-width:none;flex:none;padding:10px 12px;text-align:left;font-size:12px;font-weight:740;border:1px solid rgba(147,177,151,.17);border-radius:11px;background:rgba(38,70,55,.48)}
-.rail .rail-button .symbol{font-size:20px;width:24px;text-align:center;flex:none;color:#c4dbc4}
-.rail .rail-button.active{border-color:#d6bb86!important;background:rgba(234,196,124,.13)}
-.rail .rail-button.active::before{display:none}
-.rail .rail-button.help-only{display:flex}
-.rail .rail-separator,.rail .rail-spacer{display:none}
+.rail-button{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;height:49px;width:100%;min-width:0;max-width:none;flex:none;padding:10px 12px;text-align:left;font-size:12px;font-weight:740;border:1px solid var(--focus-card-border);border-radius:12px;background:var(--focus-card-bg)}
+.rail-button .symbol{font-size:20px;width:24px;text-align:center;flex:none;color:#c4dbc4}
+.rail-button.active{border-color:var(--focus-card-active-border)!important;background:var(--focus-card-active)!important}
+.rail-button.active::before{display:none}
+.rail-button.help-only{display:flex}
+.rail-separator,.rail-spacer{display:none}
 /* Inspector and object library become temporary, independently scrollable work surfaces. */
-.inspector,.inspector.mobile-open{grid-area:auto;position:fixed;top:66px;right:13px;bottom:13px;left:auto;display:flex;flex-direction:column;width:min(356px,calc(100vw - 26px));max-width:none;height:auto;max-height:calc(100dvh - 79px);min-height:0;overflow:hidden;border:1px solid #6a9479b3;border-radius:17px;background:rgba(21,42,32,.97);box-shadow:0 21px 60px rgba(4,21,15,.35);backdrop-filter:blur(18px);z-index:43;visibility:hidden;opacity:0;pointer-events:none;transform:translateX(calc(100% + 30px));transition:opacity .17s,transform .2s,visibility .2s}
+.inspector,.inspector.mobile-open{grid-area:auto;position:fixed;top:66px;right:13px;bottom:13px;left:auto;display:flex;flex-direction:column;width:min(356px,calc(100vw - 26px));max-width:none;height:auto;max-height:calc(100dvh - 79px);min-height:0;overflow:hidden;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);z-index:43;visibility:hidden;opacity:0;pointer-events:none;transform:translateX(calc(100% + 30px));transition:opacity .17s,transform .2s,visibility .2s}
 .inspector.mobile-open{visibility:visible;opacity:1;pointer-events:auto;transform:translateX(0)}
-.ins-head{padding:14px 16px 11px;background:none;border-bottom:1px solid rgba(184,209,181,.2)}
+.ins-head{padding:14px 16px 11px;background:none;border-bottom:1px solid rgba(82,196,190,.2)}
 .ins-head h3{font-size:20px;margin:5px 0}
 .ins-head p{font-size:11px}
 .ins-tabs{position:relative;padding:3px 46px 0 10px;gap:0;flex:none}
 .ins-tabs button{padding:10px 5px;font-size:10px}
-#closeInspector,#closeInspector.hidden{position:absolute;right:7px;top:4px;display:grid;place-items:center;width:35px;height:35px;min-width:0;flex:none;padding:0;border:1px solid #63806b;border-radius:9px;background:#30483b;color:#eaf4e8;font-size:16px}
+#closeInspector,#closeInspector.hidden{position:absolute;right:7px;top:4px;display:grid;place-items:center;width:35px;height:35px;min-width:0;flex:none;padding:0;border:1px solid rgba(82,196,190,.3);border-radius:9px;background:rgba(22,58,68,.7);color:#eaf4e8;font-size:16px}
 .ins-body{padding:13px 15px 25px;min-height:0}
-.shelf{grid-area:auto;position:fixed;left:50%;bottom:calc(75px + env(safe-area-inset-bottom,0px));top:auto;right:auto;display:flex;flex-direction:column;width:min(800px,calc(100vw - 26px));max-width:none;height:min(310px,46dvh);max-height:calc(100dvh - 110px);min-height:0;padding:14px;z-index:38;overflow:hidden;border:1px solid var(--focus-line);border-radius:17px;background:var(--focus-surface);box-shadow:0 17px 48px rgba(5,24,14,.3);backdrop-filter:blur(18px);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,12px);transition:transform .17s,opacity .17s,visibility .17s}
+.shelf{grid-area:auto;position:fixed;left:50%;bottom:calc(75px + env(safe-area-inset-bottom,0px));top:auto;right:auto;display:flex;flex-direction:column;width:min(800px,calc(100vw - 26px));max-width:none;height:min(310px,46dvh);max-height:calc(100dvh - 110px);min-height:0;padding:14px;z-index:38;overflow:hidden;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,12px);transition:transform .17s,opacity .17s,visibility .17s}
 .shell.catalog-open .shelf{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
 .shelf .shelf-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;flex:none}
 .shelf .shelf-title{font-size:10px;letter-spacing:.12em}
@@ -475,35 +475,35 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .shelf .catalog-card{height:100%;width:100%}
 /* Model-first controls: only three small islands are visible by default. */
 .focus-project,.focus-view-toggle,.focus-dock,.focus-selection{position:absolute;z-index:30}
-.focus-project,.focus-view-toggle,.focus-dock button,.focus-selection button{appearance:none;-webkit-appearance:none;border:1px solid rgba(211,228,206,.24);color:#f0f3e8;background:rgba(18,42,32,.90);backdrop-filter:blur(15px);box-shadow:0 6px 25px rgba(17,37,26,.22);font-weight:750;line-height:1.1;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease,color .14s ease}
-.focus-project:hover,.focus-view-toggle:hover,.focus-dock button:hover:not(.is-active),.focus-selection button:hover{background:rgba(32,66,49,.97);border-color:#a7c4ac;transform:translateY(-1px);box-shadow:0 8px 28px rgba(17,37,26,.32)}
-.focus-project:active,.focus-view-toggle:active,.focus-dock button:active,.focus-selection button:active{transform:translateY(1.5px) scale(0.96);box-shadow:0 3px 12px rgba(17,37,26,.18)}
-.focus-project:focus-visible,.focus-view-toggle:focus-visible,.focus-dock button:focus-visible,.focus-selection button:focus-visible{outline:3px solid #edc280;outline-offset:3px}
-.focus-project{top:13px;left:14px;display:flex;align-items:center;gap:8px;min-height:43px;padding:5px 12px 5px 6px;border-radius:14px;font-size:12px;letter-spacing:.025em;white-space:nowrap}
-.focus-project .focus-monogram{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#f0c78a;color:#203a30;font:900 18px Georgia,serif}
-.focus-view-toggle{top:13px;right:14px;display:flex;align-items:center;gap:7px;justify-content:center;min-height:43px;min-width:128px;padding:9px 12px;border-radius:14px;font-size:12px}
-.focus-view-toggle .focus-chevron{font-size:12px;color:#e4c48d}
-.focus-dock{bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;display:flex;align-items:center;gap:3px;max-width:calc(100vw - 20px);padding:4px;border:1px solid rgba(204,228,201,.25);border-radius:18px;background:rgba(15,38,29,.82);backdrop-filter:blur(14px);box-shadow:0 11px 29px rgba(10,25,20,.25);transform:translateX(-50%)}
+.focus-project,.focus-view-toggle,.focus-dock button,.focus-selection button{appearance:none;-webkit-appearance:none;border:1px solid var(--focus-line);color:var(--focus-text);background:var(--focus-surface-grad);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 6px 25px rgba(2,12,16,.4);font-weight:750;line-height:1.1;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease,color .14s ease}
+.focus-project:hover,.focus-view-toggle:hover,.focus-dock button:hover:not(.is-active),.focus-selection button:hover{background:var(--focus-card-hover);border-color:var(--focus-card-hover-border);transform:translateY(-1px);box-shadow:0 8px 28px rgba(2,12,16,.5),0 0 16px rgba(78,205,196,.25)}
+.focus-project:active,.focus-view-toggle:active,.focus-dock button:active,.focus-selection button:active{transform:translateY(1.5px) scale(0.96);box-shadow:0 3px 12px rgba(2,12,16,.3)}
+.focus-project:focus-visible,.focus-view-toggle:focus-visible,.focus-dock button:focus-visible,.focus-selection button:focus-visible{outline:3px solid #5ce1d6;outline-offset:3px}
+.focus-project{top:13px;left:14px;display:flex;align-items:center;gap:8px;min-height:43px;padding:5px 12px 5px 6px;border-radius:15px;font-size:12px;letter-spacing:.025em;white-space:nowrap;box-shadow:0 8px 26px rgba(2,12,16,.5),0 0 18px rgba(78,205,196,.18),inset 0 1px 0 rgba(190,245,240,.2)}
+.focus-project .focus-monogram{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:linear-gradient(135deg,#3bb8ac,#268d83);color:#08201d;font:900 18px Georgia,serif}
+.focus-view-toggle{top:13px;right:14px;display:flex;align-items:center;gap:7px;justify-content:center;min-height:43px;min-width:128px;padding:9px 12px;border-radius:15px;font-size:12px;box-shadow:0 8px 26px rgba(2,12,16,.5),0 0 18px rgba(78,205,196,.18),inset 0 1px 0 rgba(190,245,240,.2)}
+.focus-view-toggle .focus-chevron{font-size:12px;color:#5ce1d6}
+.focus-dock{bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;display:flex;align-items:center;gap:3px;max-width:calc(100vw - 20px);padding:4px;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 12px 36px rgba(2,12,16,.55),0 0 22px rgba(78,205,196,.2),inset 0 1px 0 rgba(190,245,240,.2);transform:translateX(-50%)}
 .focus-dock button{display:flex;align-items:center;justify-content:center;gap:7px;height:43px;min-width:0;padding:9px 14px;border:0;box-shadow:none;background:transparent;border-radius:13px;font-size:12px;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease,box-shadow .14s ease}
-.focus-dock button:hover:not(.is-active){background:rgba(38,72,55,.68);transform:translateY(-1px)}
+.focus-dock button:hover:not(.is-active){background:var(--focus-card-hover);color:#fff;transform:translateY(-1px)}
 .focus-dock button:active{transform:scale(0.93) translateY(1px)}
-.focus-dock button.is-active{background:#efc789;color:#1a382d;box-shadow:0 2px 8px rgba(10,25,20,.24);transform:none}
-.focus-dock button.is-active .focus-icon{color:#28513b}
+.focus-dock button.is-active{background:var(--focus-card-active);border:1px solid var(--focus-card-active-border);color:#fff;box-shadow:0 0 14px rgba(92,225,214,.4),inset 0 1px 0 rgba(220,255,252,.3);transform:none}
+.focus-dock button.is-active .focus-icon{color:#5ce1d6}
 .focus-dock .focus-icon{font-size:19px;font-weight:400;line-height:1}
-.focus-dock button[aria-expanded="true"]:not(.is-active){background:#395747}
-.focus-selection{bottom:calc(82px + env(safe-area-inset-bottom,0px));left:50%;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 24px);padding:5px 6px 5px 13px;border-radius:14px;background:rgba(20,52,41,.94);border:1px solid rgba(185,218,190,.48);box-shadow:0 10px 30px rgba(4,21,14,.28);transform:translateX(-50%)}
+.focus-dock button[aria-expanded="true"]:not(.is-active){background:rgba(28,74,86,.6)}
+.focus-selection{bottom:calc(82px + env(safe-area-inset-bottom,0px));left:50%;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 24px);padding:5px 6px 5px 13px;border-radius:15px;background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:0 10px 32px rgba(2,12,16,.55),0 0 20px rgba(78,205,196,.25);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);transform:translateX(-50%)}
 .focus-selection[hidden]{display:none!important}
-.focus-selection-name{overflow:hidden;max-width:210px;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700;color:#eff4e8}
-.focus-selection button{min-height:33px;min-width:42px;padding:7px 10px;border-radius:9px;background:#e9c58b;border-color:#e9c58b;color:#1b392c;font-size:11px}
-.focus-selection button.focus-quick-btn{min-width:32px;width:32px;height:32px;min-height:32px;padding:0;background:rgba(38,70,55,.6);border:1px solid rgba(147,177,151,.3);color:#ffd898;font-size:14px;display:inline-flex;align-items:center;justify-content:center}
-.focus-selection button.focus-quick-btn:hover{background:rgba(54,98,77,.8);color:#fff;border-color:#f0cb91}
-.focus-selection button.focus-deselect{min-width:30px;padding:6px 8px;background:transparent;color:#dae8d9;border-color:transparent;font-size:18px}
-.view-controls{top:61px;right:14px;left:auto;display:flex;flex-direction:column;align-items:stretch;gap:5px;width:min(232px,calc(100vw - 28px));height:auto;max-height:75dvh;overflow-y:auto;padding:9px;border-radius:15px;background:var(--focus-surface);border:1px solid var(--focus-line);box-shadow:0 16px 38px var(--focus-glow);backdrop-filter:blur(18px);z-index:33}
-.view-controls button{min-height:41px;width:100%;text-align:left;padding:10px 13px;font-size:12px;font-weight:650;letter-spacing:0;color:#e5efdf;border:0;border-radius:9px;background:transparent;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease}
-.view-controls button:hover:not(.active){background:rgba(50,86,67,.65);color:#fff5df;transform:translateX(2px)}
+.focus-selection-name{overflow:hidden;max-width:210px;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700;color:var(--focus-text)}
+.focus-selection button{min-height:33px;min-width:42px;padding:7px 10px;border-radius:9px;background:var(--focus-card-active);border-color:var(--focus-card-active-border);color:#fff;font-size:11px}
+.focus-selection button.focus-quick-btn{min-width:32px;width:32px;height:32px;min-height:32px;padding:0;background:var(--focus-card-bg);border:1px solid var(--focus-card-border);color:#5ce1d6;font-size:14px;display:inline-flex;align-items:center;justify-content:center}
+.focus-selection button.focus-quick-btn:hover{background:var(--focus-card-hover);color:#fff;border-color:var(--focus-card-hover-border)}
+.focus-selection button.focus-deselect{min-width:30px;padding:6px 8px;background:transparent;color:#a2d4cd;border-color:transparent;font-size:18px}
+.view-controls{top:61px;right:14px;left:auto;display:flex;flex-direction:column;align-items:stretch;gap:5px;width:min(232px,calc(100vw - 28px));height:auto;max-height:75dvh;overflow-y:auto;padding:9px;border-radius:18px;background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);z-index:33}
+.view-controls button{min-height:41px;width:100%;text-align:left;padding:10px 13px;font-size:12px;font-weight:650;letter-spacing:0;color:var(--focus-text);border:1px solid transparent;border-radius:10px;background:transparent;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease,border-color .14s ease}
+.view-controls button:hover:not(.active){background:var(--focus-card-hover);border-color:var(--focus-card-hover-border);color:#fff;transform:translateX(2px)}
 .view-controls button:active{transform:scale(0.97) translateX(1px)}
-.view-controls button.active{background:#edc68a;color:#1c392c;box-shadow:0 2px 8px rgba(0,0,0,.22)}
-.view-controls button[aria-pressed="true"]:not(.active){background:#456453;color:#fff5df}
+.view-controls button.active{background:var(--focus-card-active)!important;border-color:var(--focus-card-active-border)!important;color:#fff!important;box-shadow:0 0 12px rgba(92,225,214,.35)!important}
+.view-controls button[aria-pressed="true"]:not(.active){background:rgba(28,74,86,.6);color:#fff}
 .focus-view-divider{height:1px;margin:4px 2px;background:#72877666}
 /* Keep interactive context visible in select mode, not explanatory panels. */
 .shell.info-open .viewport-hud{padding:12px 14px;max-width:305px;background:#f9f5e9ec}
@@ -578,11 +578,11 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .header .header-end .hp-icon{width:22px;height:22px}
 .header .header-end #engineStatus{grid-column:1/-1}
 .header .header-end .hp-help-trigger{grid-column:4}
-.rail{grid-template-columns:repeat(4,minmax(0,1fr));width:min(316px,calc(100vw - 22px));gap:7px}
-.rail .rail-button{position:relative;flex-direction:column;justify-content:center;gap:4px;padding:7px 3px;font-size:0!important;min-height:52px;height:52px;}
-.rail .rail-button .symbol{display:flex;justify-content:center;align-items:center;width:auto;font-size:0!important}
-.rail .rail-button .hp-icon{width:25px;height:25px}
-.rail .hp-help-trigger{min-height:52px;height:52px;width:auto;border:1px solid rgba(147,177,151,.22);border-radius:11px;background:rgba(38,70,55,.48)}
+.rail{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s cubic-bezier(0.16,1,0.3,1),opacity .15s,visibility .15s}
+.shell.tools-open .rail{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.hp-tools-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(82,196,190,.20);flex-shrink:0}
+.hp-tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:rgba(78,205,196,.4) transparent;touch-action:pan-y}
+.rail .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
 .view-controls [data-view],.view-controls #focusFit,.view-controls #focusMap,.view-controls #focusZoom,.view-controls #focusInfo{display:flex;align-items:center;gap:10px;text-align:left;}
 .view-controls .hp-icon{width:19px;height:19px}
 .view-controls .hp-help-trigger{width:100%;margin-top:6px}
@@ -596,47 +596,62 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .shelf .shelf-top .hp-help-trigger{margin-left:auto}
 .ins-tabs button .hp-command-icon,.studio-tabs button .hp-command-icon{display:inline-flex;vertical-align:middle;margin-right:6px}
 .ins-tabs button .hp-icon,.studio-tabs button .hp-icon{width:16px;height:16px}
-.hp-help-trigger{display:grid;place-items:center;flex:none;width:39px;min-width:39px;height:39px;padding:6px;color:#e5e9da;background:#315142;border:1px solid rgba(205,227,201,.35);border-radius:10px;cursor:pointer}
-.hp-help-trigger:hover,.hp-help-trigger:focus-visible{background:#476955;border-color:#eed097}
-.hp-help-trigger:focus-visible{outline:3px solid #eed097;outline-offset:2px}
+.hp-help-trigger{display:grid;place-items:center;flex:none;width:39px;min-width:39px;height:39px;padding:6px;color:#d8f6f2;background:rgba(20,52,62,.65);border:1px solid rgba(78,205,196,.3);border-radius:10px;cursor:pointer}
+.hp-help-trigger:hover,.hp-help-trigger:focus-visible{background:rgba(30,80,92,.85);border-color:#5ce1d6;box-shadow:0 0 12px rgba(92,225,214,.35)}
+.hp-help-trigger:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
 .hp-help-trigger .hp-icon{width:20px;height:20px}
 .ins-head{position:relative;padding-right:60px}
 .ins-head .hp-help-trigger{position:absolute;right:14px;top:12px}
 .studio-head .hp-help-trigger,.survey-header-actions .hp-help-trigger{flex:none;align-self:center}
-.hp-tooltip{position:fixed;z-index:99999;pointer-events:none;max-width:min(320px,calc(100vw - 20px));padding:8px 11px;border:1px solid #839e83;border-radius:10px;background:#152b22;color:#f7f5e9;font:500 12px/1.4 system-ui,-apple-system,sans-serif;box-shadow:0 9px 25px rgba(0,0,0,.33);white-space:normal;overflow-wrap:break-word;transition:opacity .16s cubic-bezier(0.16,1,0.3,1),transform .16s cubic-bezier(0.16,1,0.3,1)}
+.hp-tooltip{position:fixed;z-index:99999;pointer-events:none;max-width:min(320px,calc(100vw - 20px));padding:8px 11px;border:1px solid rgba(78,205,196,.35);border-radius:10px;background:linear-gradient(155deg,rgba(14,38,48,.96),rgba(8,24,32,.98));color:var(--focus-text);font:500 12px/1.4 system-ui,-apple-system,sans-serif;box-shadow:0 9px 25px rgba(0,0,0,.45),0 0 16px rgba(78,205,196,.2);backdrop-filter:blur(14px);white-space:normal;overflow-wrap:break-word;transition:opacity .16s cubic-bezier(0.16,1,0.3,1),transform .16s cubic-bezier(0.16,1,0.3,1)}
 .hp-tooltip[hidden]{display:none!important}
-.hp-context-dialog{position:fixed;z-index:200000;inset:0;margin:auto;width:min(470px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;background:#1b3529;color:#f2f4e9;border:1px solid #a1b8a2;border-radius:18px;box-shadow:0 22px 80px #0009;font:400 15px/1.65 system-ui,-apple-system,sans-serif}
-.hp-context-dialog::backdrop{background:rgba(4,18,12,.64);backdrop-filter:blur(3px)}
+.hp-context-dialog{position:fixed;z-index:200000;inset:0;margin:auto;width:min(470px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;background:var(--focus-surface-grad);color:var(--focus-text);border:1px solid var(--focus-line);border-radius:20px;box-shadow:0 24px 70px rgba(1,10,14,.8),0 0 36px rgba(78,205,196,.3);backdrop-filter:blur(20px) saturate(160%);font:400 15px/1.65 system-ui,-apple-system,sans-serif}
+.hp-context-dialog::backdrop{background:rgba(2,12,16,.68);backdrop-filter:blur(4px)}
 .hp-help-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.hp-help-kicker{font-size:10px;letter-spacing:.16em;color:#c6d9c9;font-weight:750}
-.hp-context-dialog h2{margin:10px 0 13px;font-size:24px;line-height:1.2;color:#fff0d1}
+.hp-help-kicker{font-size:10px;letter-spacing:.16em;color:#8dc5be;font-weight:750}
+.hp-context-dialog h2{margin:10px 0 13px;font-size:24px;line-height:1.2;color:#c4ede8}
 .hp-context-dialog p{margin:0 0 15px}
-.hp-context-dialog .hp-help-note{background:#2a4739;padding:12px;border-radius:10px;font-size:13px;color:#dce7d8}
-.hp-context-dialog button{border:1px solid #afc6aa;border-radius:9px;background:#315241;color:#fff;padding:9px 13px;cursor:pointer}
+.hp-context-dialog .hp-help-note{background:rgba(18,48,58,.6);padding:12px;border-radius:10px;font-size:13px;color:#a2d4cd;border:1px solid rgba(78,205,196,.2)}
+.hp-context-dialog button{border:1px solid rgba(78,205,196,.35);border-radius:9px;background:rgba(22,58,68,.7);color:#fff;padding:9px 13px;cursor:pointer}
 .hp-context-dialog #hpContextClose{width:38px;height:38px;min-width:38px;padding:0;font-size:25px;line-height:1}
 .hp-help-actions{display:flex;justify-content:flex-end;margin-top:15px}
-.hp-context-dialog #hpContextDone{background:#eed09a;color:#213b2c;font-weight:750;border-color:#eed09a}
-.hp-context-dialog button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.hp-context-dialog #hpContextDone{background:linear-gradient(135deg,#3bb8ac,#268d83);color:#08201d;font-weight:750;border-color:#5ce1d6}
+.hp-context-dialog button:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
 @media(max-width:480px){.rail{width:min(316px,calc(100vw - 22px))}.focus-dock button{width:45px;height:45px;padding:7px!important}.focus-project,.focus-view-toggle{width:45px!important;min-width:45px!important;min-height:45px}.shelf .shelf-top{align-items:center}.shelf .shelf-categories [data-category]{width:38px;min-width:38px;height:38px}.hp-context-dialog{padding:19px}}
 @media(prefers-reduced-motion:reduce){.hp-context-dialog::backdrop{backdrop-filter:none}}
 
-/* Build is a two-level architectural category, not an enormous permanent panel. */
-.architecture-palette{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:9px;padding:12px;border:1px solid var(--focus-line);border-radius:17px;background:var(--focus-surface);box-shadow:0 14px 46px var(--focus-glow);backdrop-filter:blur(18px);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s,opacity .15s,visibility .15s}
+/* Drag handle affordance for all floating menus */
+.hp-menu-drag-handle{display:flex;align-items:center;justify-content:center;width:100%;height:14px;min-height:14px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;flex-shrink:0;margin-bottom:2px}
+.hp-menu-drag-pill{width:36px;height:4px;border-radius:999px;background:rgba(92,225,214,.42);box-shadow:0 0 6px rgba(92,225,214,.35);transition:background .15s ease,width .15s ease}
+.hp-menu-drag-handle:hover .hp-menu-drag-pill{background:rgba(92,225,214,.88);width:48px;box-shadow:0 0 10px rgba(92,225,214,.6)}
+.is-dragging{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important;z-index:1000!important;box-shadow:0 24px 60px rgba(1,10,14,.85),0 0 38px rgba(78,205,196,.45),inset 0 1px 0 rgba(220,255,252,.4)!important;transition:none!important}
+.is-dragging *{cursor:grabbing!important;pointer-events:none!important}
+
+/* Build is a two-level architectural category, matching More Tools layout */
+.architecture-palette{position:fixed;z-index:40;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:50%;width:min(460px,calc(100vw - 18px));max-height:min(64dvh,480px);display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--focus-line);border-radius:18px;background:var(--focus-surface-grad);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);visibility:hidden;opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:transform .15s cubic-bezier(0.16,1,0.3,1),opacity .15s,visibility .15s}
 .shell.architecture-open .architecture-palette{visibility:visible;opacity:1;pointer-events:auto;transform:translate(-50%,0)}
-.hp-arch-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(147,177,151,.20);flex-shrink:0}
+.hp-arch-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:7px;border-bottom:1px solid rgba(82,196,190,.20);flex-shrink:0}
+.hp-menu-title{font-size:11px;font-weight:800;letter-spacing:.08em;color:#c4ede8}
 .hp-arch-categories{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .hp-arch-categories::-webkit-scrollbar{display:none}
-.hp-arch-cat-btn{padding:6px 11px;min-height:34px;font-size:11px;font-weight:750;letter-spacing:.02em;color:#a9beae;background:rgba(30,55,42,.6);border:1px solid rgba(147,177,151,.18);border-radius:8px;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .12s ease,color .12s ease,border-color .12s ease,transform .1s ease}
-.hp-arch-cat-btn:hover{background:#2e523e;color:#f2eee3;border-color:rgba(182,212,183,.32)}
-.hp-arch-cat-btn.active{background:linear-gradient(135deg,#365e47,#2b4f3b);color:#f6d295;border-color:#e4ba77;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.hp-arch-cat-btn{padding:6px 11px;min-height:34px;font-size:11px;font-weight:750;letter-spacing:.02em;color:#a2d4cd;background:rgba(18,48,58,.5);border:1px solid rgba(78,205,196,.22);border-radius:8px;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .12s ease,color .12s ease,border-color .12s ease,transform .1s ease}
+.hp-arch-cat-btn:hover{background:rgba(28,74,86,.7);color:#f2fffe;border-color:rgba(120,230,220,.5)}
+.hp-arch-cat-btn.active{background:linear-gradient(135deg,rgba(34,96,106,.9),rgba(20,64,72,.95));color:#5ce1d6;border-color:#5ce1d6;box-shadow:0 0 10px rgba(92,225,214,.3)}
 .hp-arch-header .hp-help-trigger{width:34px;min-width:34px;height:34px;min-height:34px;padding:5px;border-radius:8px;flex-shrink:0}
-.hp-arch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:#4a6956 transparent;touch-action:pan-y}
-.hp-architecture-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:64px;min-width:0;padding:8px 4px 6px;border:1px solid rgba(147,177,151,.24);border-radius:11px;color:#f0eee3;background:#2a4d39;cursor:pointer;touch-action:manipulation;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease}
-.hp-architecture-tool:hover{background:#456c4d;border-color:#efd39d;transform:translateY(-1px)}
-.hp-architecture-tool:active{transform:scale(0.96) translateY(1px)}
-.hp-architecture-tool:focus-visible{outline:3px solid #efd39d;outline-offset:2px}
-.hp-architecture-tool .hp-icon{width:24px;height:24px;flex-shrink:0}
-.hp-architecture-label{font-size:10px;font-weight:650;letter-spacing:.01em;color:#e5ede6;text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+.hp-arch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow-y:auto;overscroll-behavior:contain;padding:2px 1px;max-height:min(44dvh,340px);scrollbar-width:thin;scrollbar-color:rgba(78,205,196,.4) transparent;touch-action:pan-y}
+
+/* Unified tool cards in Build and More Tools */
+.hp-architecture-tool,.rail .rail-button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;min-width:0;width:100%;padding:8px 4px 6px;border:1px solid var(--focus-card-border);border-radius:12px;color:var(--focus-text);background:var(--focus-card-bg);cursor:pointer;touch-action:manipulation;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,border-color .14s ease,box-shadow .14s ease}
+.hp-architecture-tool:hover,.rail .rail-button:hover{background:var(--focus-card-hover);border-color:var(--focus-card-hover-border);transform:translateY(-2px);box-shadow:0 4px 14px rgba(4,18,24,.4),0 0 10px rgba(78,205,196,.25)}
+.hp-architecture-tool:active,.rail .rail-button:active{transform:scale(0.96) translateY(1px)}
+.hp-architecture-tool:focus-visible,.rail .rail-button:focus-visible{outline:3px solid #5ce1d6;outline-offset:2px}
+.hp-architecture-tool.active,.rail .rail-button.active{background:var(--focus-card-active)!important;border-color:var(--focus-card-active-border)!important;color:#ffffff!important;box-shadow:0 0 14px rgba(92,225,214,.35),inset 0 1px 0 rgba(220,255,252,.3)!important;transform:none}
+.rail .rail-button.active::before{display:none}
+.rail .rail-button .symbol,.hp-architecture-tool .symbol{display:flex;justify-content:center;align-items:center;width:auto;font-size:0}
+.rail .rail-button .hp-icon,.hp-architecture-tool .hp-icon{width:23px;height:23px;flex-shrink:0;stroke:currentColor}
+.hp-tool-label,.hp-architecture-label{font-size:10.5px;font-weight:700;letter-spacing:.01em;color:var(--focus-text);text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+.hp-tool-desc{font-size:9px;font-weight:500;color:var(--focus-desc);text-align:center;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
+.rail .rail-button.active .hp-tool-desc,.hp-architecture-tool.active .hp-tool-desc{color:#a4eee6}
 @media(prefers-reduced-motion:reduce){.architecture-palette,.hp-architecture-tool,.hp-arch-cat-btn,.hp-tooltip{transition:none}}
 /* Project drawer appearance settings: collapsed until requested. */
 .header .hp-appearance{width:100%;min-width:0;border:1px solid rgba(187,214,193,.27);border-radius:12px;background:rgba(21,48,38,.52);color:#eef4e8}
@@ -664,23 +679,24 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .hp-context-dialog button{min-width:44px;min-height:44px;touch-action:manipulation}
 .hp-help-trigger{min-width:34px;min-height:34px;touch-action:manipulation}
 @media(max-width:480px){
-  .architecture-palette{width:calc(100vw - 12px);max-height:min(66dvh,440px);padding:10px;gap:7px}
-  .hp-arch-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-  .hp-architecture-tool{min-height:60px;padding:6px 3px 5px}
-  .hp-architecture-tool .hp-icon{width:22px;height:22px}
-  .hp-architecture-label{font-size:9.5px}
+  .architecture-palette,.rail{width:calc(100vw - 12px);max-height:min(66dvh,440px);padding:10px;gap:7px}
+  .hp-arch-grid,.hp-tools-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .hp-architecture-tool,.rail .rail-button{min-height:60px;padding:6px 3px 5px}
+  .hp-architecture-tool .hp-icon,.rail .rail-button .hp-icon{width:22px;height:22px}
+  .hp-tool-label,.hp-architecture-label{font-size:9.5px}
+  .hp-tool-desc{font-size:8.5px}
   .hp-arch-cat-btn{padding:5px 8px;min-height:30px;font-size:10.5px}
 }
 </style></head><body>
 <div class="shell">
 <header class="header" id="projectPanel" aria-label="Project actions"><div class="brand"><div class="mark" aria-hidden="true">H.</div><div class="wordmark">HOME PLAN<small>APARTMENT WORKSHOP</small></div><h1 class="sr-only">Home Plan — Offline Apartment Workshop</h1></div><input class="project-input" id="projectName" aria-label="Project name" maxlength="80" value="Walkthrough study"><details id="appearanceSettings" class="hp-appearance"><summary id="appearanceToggle" data-tooltip="Appearance settings — change the scene background color">Settings</summary><div class="hp-appearance-body"><div class="hp-appearance-head"><label for="sceneBackgroundColor">Scene background</label><output id="sceneBackgroundValue" for="sceneBackgroundColor">#C9E9FF</output></div><div class="hp-appearance-controls"><input type="color" id="sceneBackgroundColor" value="#C9E9FF" aria-label="Scene background color" data-tooltip="Choose any color for the background behind the apartment model"><button type="button" id="sceneBackgroundReset" data-tooltip="Restore the baby-blue background">Reset</button></div><p class="hp-appearance-note">Saved on this device. Does not change the apartment layout.</p></div></details><div class="header-end"><button type="button" id="launchStudio" class="btn primary studio-cta" title="Interior design, measurements, lighting and budget">✦ Design Lab</button><button type="button" id="launchSurvey" class="btn scan-cta" title="Guided photos, video and measurements">◉ Scan apartment</button><span id="engineStatus" class="status-pill"><i></i>Loading 3D editor</span><button id="undoBtn" class="btn ghost small-button" aria-label="Undo" title="Undo (Ctrl+Z)">↶ Undo</button><button id="redoBtn" class="btn ghost small-button" aria-label="Redo" title="Redo (Ctrl+Shift+Z)">↷</button><button id="saveBtn" class="btn primary small-button">Save</button><button id="openExport" class="btn ghost small-button">Export ↗</button></div><button type="button" id="mobileActionsToggle" class="mobile-actions-toggle" aria-expanded="false" aria-controls="mobileActions">☰ Actions</button><div id="mobileActions" class="mobile-actions-panel" hidden role="group" aria-label="Project and workspace commands"><button type="button" data-mobile-command="saveBtn">Save layout</button><button type="button" data-mobile-command="openExport">Project &amp; export</button><button type="button" data-mobile-command="undoBtn">Undo</button><button type="button" data-mobile-command="redoBtn">Redo</button><button type="button" data-mobile-command="launchStudio">Design Lab</button><button type="button" data-mobile-command="launchSurvey">Survey Studio</button><button type="button" data-mobile-command="helpBtn">Help and controls</button></div></header>
-<nav class="rail" id="toolsPanel" aria-label="All editing tools"><button type="button" class="rail-button active" data-tool="furnish" title="Select and move furniture"><span class="symbol">▦</span>Furnish</button><button type="button" class="rail-button" data-tool="build" title="Select or edit walls"><span class="symbol">◫</span>Build</button><button type="button" class="rail-button" data-tool="navigate" title="Orbit and explore the apartment"><span class="symbol">◎</span>Explore</button><div class="rail-separator"></div><button type="button" class="rail-button studio-rail" id="railStudio" title="Open design tools and diagnostics"><span class="symbol">✦</span>Studio</button><button type="button" class="rail-button" data-tool="measure" title="Two taps measure distance"><span class="symbol">↔</span>Tape</button><button type="button" class="rail-button" data-tool="annotate" title="Tap floor to place a note"><span class="symbol">✎</span>Notes</button><button type="button" class="rail-button scan-rail" id="railSurvey" title="Capture a guided apartment survey"><span class="symbol">◉</span>Scan</button><button type="button" class="rail-button" data-tool="opening" title="Place doors, windows, or outlets"><span class="symbol">▥</span>Openings</button><button id="focusDetails" class="rail-button" type="button" title="Show the selection inspector"><span class="symbol">☷</span>Inspector</button><div class="rail-spacer"></div><button id="helpBtn" class="rail-button help-only" title="Controls & help"><span class="symbol">?</span>Help</button></nav>
+<nav class="rail" id="toolsPanel" aria-label="All editing tools"><div class="hp-tools-header"><span class="hp-menu-title">MORE TOOLS</span></div><div class="hp-tools-grid" id="toolsGrid"><button type="button" class="rail-button active" data-tool="furnish" title="Select and move furniture"><span class="symbol">▦</span>Furnish</button><button type="button" class="rail-button" data-tool="build" title="Select or edit walls"><span class="symbol">◫</span>Build</button><button type="button" class="rail-button" data-tool="navigate" title="Orbit and explore the apartment"><span class="symbol">◎</span>Explore</button><button type="button" class="rail-button studio-rail" id="railStudio" title="Open design tools and diagnostics"><span class="symbol">✦</span>Studio</button><button type="button" class="rail-button" data-tool="measure" title="Two taps measure distance"><span class="symbol">↔</span>Tape</button><button type="button" class="rail-button" data-tool="annotate" title="Tap floor to place a note"><span class="symbol">✎</span>Notes</button><button type="button" class="rail-button scan-rail" id="railSurvey" title="Capture a guided apartment survey"><span class="symbol">◉</span>Scan</button><button type="button" class="rail-button" data-tool="opening" title="Place doors, windows, or outlets"><span class="symbol">▥</span>Openings</button><button id="focusDetails" class="rail-button" type="button" title="Show the selection inspector"><span class="symbol">☷</span>Inspector</button><button id="helpBtn" class="rail-button help-only" title="Controls & help"><span class="symbol">?</span>Help</button></div></nav>
 <main class="stage" id="stageMain" aria-label="Interactive apartment scene"><div id="stage" role="application" aria-label="3D apartment model; drag items to move them, drag empty space to orbit, wheel to zoom" tabindex="0"></div>
  <button type="button" id="focusProject" class="focus-project" aria-expanded="false" aria-controls="projectPanel" aria-label="Project, save and export"><span class="focus-monogram" aria-hidden="true">H.</span><span class="focus-project-label">Home Plan</span></button>
  <button type="button" id="focusViews" class="focus-view-toggle" aria-expanded="false" aria-controls="viewControls" aria-label="Choose camera view"><span id="focusViewName">Dollhouse</span><span class="focus-chevron" aria-hidden="true">⌄</span></button>
  <nav class="focus-dock" aria-label="Quick editing tools"><button type="button" id="focusMove" class="is-active" aria-pressed="true" title="Select and move furniture (V)"><span class="focus-icon" aria-hidden="true">↖</span>Move</button><button type="button" id="focusAdd" aria-expanded="false" aria-controls="catalogShelf" title="Add furniture (A)"><span class="focus-icon" aria-hidden="true">＋</span>Add</button><button type="button" id="focusBuild" aria-pressed="false" title="Edit walls (B)"><span class="focus-icon" aria-hidden="true">▱</span>Build</button><button type="button" id="focusTools" aria-expanded="false" aria-controls="toolsPanel" title="All tools and help"><span class="focus-icon" aria-hidden="true">☷</span><span id="focusToolsLabel">Tools</span></button></nav>
  <section id="architecturePalette" class="architecture-palette" aria-label="Architectural build tools"></section><div id="focusSelection" class="focus-selection" hidden aria-live="polite"><span class="focus-selection-name" id="focusSelectionName"></span><button type="button" id="focusRotateLeft" class="focus-quick-btn" title="Rotate counter-clockwise (Q)" aria-label="Rotate counter-clockwise">↺</button><button type="button" id="focusRotateRight" class="focus-quick-btn" title="Rotate clockwise (E)" aria-label="Rotate clockwise">↻</button><button type="button" id="focusEdit" aria-controls="inspector" aria-expanded="false">Edit</button><button type="button" id="focusDeselect" class="focus-deselect" title="Deselect" aria-label="Deselect">×</button></div>
- <div class="viewport-hud"><span class="eyebrow" id="sceneModeLabel">01 / Dollhouse workshop</span><h2 id="sceneTitle">Your apartment, from above.</h2><p id="sceneSubtitle">Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.</p></div><div class="view-controls" id="viewControls" role="group" aria-label="Camera views"><button data-view="dollhouse" class="active">Dollhouse</button><button data-view="orbit">3D orbit</button><button data-view="top">Top plan</button><button data-view="realworld" id="viewRealWorld" title="Real-world location: 613 N Front St, Apt E (2nd Floor), Niles, MI">Real world</button><button type="button" id="btnExperimental" class="experimental-gate-btn" title="Experimental Features Gate — access real-world 3D, acoustic map, truck simulator, AR export, and advanced tools">🧪 Experimental</button><button data-view="walk" id="viewWalk" title="Eye-level first-person walkthrough: WASD / Arrow keys move, drag looks around">Walkthrough</button><button data-view="truck" id="viewTruck" title="Pack the Moving Truck: 3D cargo simulator with 10ft, 15ft, 20ft truck boxes" hidden>Moving truck</button><div class="focus-view-divider"></div><button type="button" id="focusHeatmap" aria-pressed="false" title="Toggle provisional vs tape-certified verification heatmap" hidden>▦ Verification heatmap</button><button type="button" id="focusAcoustic" aria-pressed="false" title="Toggle multi-unit acoustic &amp; shared-wall insulation mapping" hidden>🔊 Acoustic map</button><button type="button" id="focusBlueprint" aria-pressed="false" title="Generate printable 1/4\" architectural blueprint sheet" hidden>🖶 Print blueprint sheet</button><button type="button" id="focusShare" aria-pressed="false" title="Share floor plan via offline URL and QR code">⎘ Share via link &amp; QR</button><button type="button" id="focusFit">⌖ Fit entire apartment</button><button type="button" id="focusMap" aria-pressed="false">▦ Show floor map</button><button type="button" id="focusZoom" aria-pressed="false">＋ Show zoom controls</button><button type="button" id="focusInfo" aria-pressed="false">ⓘ About this model</button></div><div class="map-card" aria-label="2D apartment minimap"><div class="map-title">FLOOR INDEX <span id="roomBadge">ALL ROOMS</span></div><canvas id="minimap" width="348" height="312" aria-label="Overhead mini-map; tap a room to focus on it"></canvas><p class="legend">AMBER = provisional openings · BLUE = selected</p></div><div class="floating-actions"><button class="round-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button><button class="round-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button class="round-btn" id="fitBtn" title="Fit whole apartment" aria-label="Fit model">⌖</button><button class="round-btn" id="mobileInspectorBtn" title="Show editor controls" aria-label="Show editor controls">≡</button></div><div id="selectionLabel" class="selection-label"></div><div id="walkReticle" class="walk-reticle" hidden aria-hidden="true"></div><div id="walkControls" class="walk-controls" hidden aria-label="First-person walking controls"><button type="button" id="walkFwd" class="walk-btn" aria-label="Step forward">▲</button><div class="walk-row"><button type="button" id="walkLeft" class="walk-btn" aria-label="Step left">◀</button><button type="button" id="walkBack" class="walk-btn" aria-label="Step back">▼</button><button type="button" id="walkRight" class="walk-btn" aria-label="Step right">▶</button></div></div><div class="time-timeline" id="timeTimeline" hidden aria-label="Day in the life solar timeline"><div class="time-header"><span id="timeIcon">☀️</span> <span id="timeDisplay">12:00 PM</span><span class="time-sub">Niles, MI</span><button type="button" id="soundToggle" class="sound-toggle-btn" title="Toggle procedural soundscape (St. Joseph River &amp; courtyard breeze)">🔇 Audio</button></div><div class="season-row"><button type="button" class="season-btn active" data-season="summer">Summer</button><button type="button" class="season-btn" data-season="equinox">Equinox</button><button type="button" class="season-btn" data-season="winter">Winter</button></div><input type="range" id="timeSlider" min="0" max="1440" step="15" value="720" aria-label="Time of day in Niles MI"></div><div id="toast" role="status" aria-live="polite" class="toast"></div></main>
+ <div class="viewport-hud"><span class="eyebrow" id="sceneModeLabel">01 / Dollhouse workshop</span><h2 id="sceneTitle">Your apartment, from above.</h2><p id="sceneSubtitle">Illustrative geometry from two walkthrough videos. Move things to explore; verify measurements before buying furniture.</p></div><div class="view-controls" id="viewControls" role="group" aria-label="Camera views"><button data-view="dollhouse" class="active">Dollhouse</button><button data-view="orbit">3D orbit</button><button data-view="top">Top plan</button><button type="button" id="btnExperimental" class="experimental-gate-btn" title="Experimental Features Gate — access real-world 3D, acoustic map, truck simulator, AR export, and advanced tools">🧪 Experimental</button><button data-view="walk" id="viewWalk" title="Eye-level first-person walkthrough: WASD / Arrow keys move, drag looks around">Walkthrough</button><button data-view="truck" id="viewTruck" title="Pack the Moving Truck: 3D cargo simulator with 10ft, 15ft, 20ft truck boxes" hidden>Moving truck</button><div class="focus-view-divider"></div><button type="button" id="focusHeatmap" aria-pressed="false" title="Toggle provisional vs tape-certified verification heatmap" hidden>▦ Verification heatmap</button><button type="button" id="focusAcoustic" aria-pressed="false" title="Toggle multi-unit acoustic &amp; shared-wall insulation mapping" hidden>🔊 Acoustic map</button><button type="button" id="focusBlueprint" aria-pressed="false" title="Generate printable 1/4\" architectural blueprint sheet" hidden>🖶 Print blueprint sheet</button><button type="button" id="focusShare" aria-pressed="false" title="Share floor plan via offline URL and QR code">⎘ Share via link &amp; QR</button><button type="button" id="focusFit">⌖ Fit entire apartment</button><button type="button" id="focusMap" aria-pressed="false">▦ Show floor map</button><button type="button" id="focusZoom" aria-pressed="false">＋ Show zoom controls</button><button type="button" id="focusInfo" aria-pressed="false">ⓘ About this model</button></div><div class="map-card" aria-label="2D apartment minimap"><div class="map-title">FLOOR INDEX <span id="roomBadge">ALL ROOMS</span></div><canvas id="minimap" width="348" height="312" aria-label="Overhead mini-map; tap a room to focus on it"></canvas><p class="legend">AMBER = provisional openings · BLUE = selected</p></div><div class="floating-actions"><button class="round-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button><button class="round-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button><button class="round-btn" id="fitBtn" title="Fit whole apartment" aria-label="Fit model">⌖</button><button class="round-btn" id="mobileInspectorBtn" title="Show editor controls" aria-label="Show editor controls">≡</button></div><div id="selectionLabel" class="selection-label"></div><div id="walkReticle" class="walk-reticle" hidden aria-hidden="true"></div><div id="walkControls" class="walk-controls" hidden aria-label="First-person walking controls"><button type="button" id="walkFwd" class="walk-btn" aria-label="Step forward">▲</button><div class="walk-row"><button type="button" id="walkLeft" class="walk-btn" aria-label="Step left">◀</button><button type="button" id="walkBack" class="walk-btn" aria-label="Step back">▼</button><button type="button" id="walkRight" class="walk-btn" aria-label="Step right">▶</button></div></div><div class="time-timeline" id="timeTimeline" hidden aria-label="Day in the life solar timeline"><div class="time-header"><span id="timeIcon">☀️</span> <span id="timeDisplay">12:00 PM</span><span class="time-sub">Niles, MI</span><button type="button" id="soundToggle" class="sound-toggle-btn" title="Toggle procedural soundscape (St. Joseph River &amp; courtyard breeze)">🔇 Audio</button></div><div class="season-row"><button type="button" class="season-btn active" data-season="summer">Summer</button><button type="button" class="season-btn" data-season="equinox">Equinox</button><button type="button" class="season-btn" data-season="winter">Winter</button></div><input type="range" id="timeSlider" min="0" max="1440" step="15" value="720" aria-label="Time of day in Niles MI"></div><div id="toast" role="status" aria-live="polite" class="toast"></div></main>
 <aside class="inspector" id="inspector"><div class="ins-head"><span class="eyebrow">DESIGN INSPECTOR</span><h3 id="panelHeading">Edit your space</h3><p id="panelSubtitle">Select furniture or a wall to make changes.</p></div><div class="ins-tabs" role="tablist" aria-label="Inspector panels"><button class="active" data-tab="edit" role="tab" aria-selected="true">EDIT</button><button data-tab="space" role="tab" aria-selected="false">SPACE</button><button data-tab="project" role="tab" aria-selected="false">PROJECT</button><button id="closeInspector" class="hidden" aria-label="Close inspector">✕</button></div><div class="ins-body" id="inspectorBody"></div></aside>
 <section class="shelf" id="catalogShelf" aria-label="Furniture and fixture catalog"><div class="shelf-top"><span class="shelf-title">OBJECT LIBRARY</span><div class="shelf-categories" id="categories"></div><div class="catalog-search"><label for="catalogSearch" class="sr-only">Search furniture</label><input id="catalogSearch" type="search" placeholder="Search furniture…" autocomplete="off"><button type="button" id="catalogFavorites" aria-pressed="false" title="Show favorite items">☆ Favorites</button><button type="button" id="catalogCustom" class="btn small-button" title="Create custom 3D furniture piece">+ Custom</button></div></div><div class="shelf-items" id="catalog"></div></section>
 </div>
@@ -3033,10 +3049,88 @@ install();
  let opened=null;
  function isVisible(el){return !!el&&el.getClientRects().length>0&&getComputedStyle(el).visibility!=='hidden';}
  function updateExpanded(){for(const [key,p] of Object.entries(panels)){const open=shell.classList.contains(p.name);byId(p.trigger)?.setAttribute('aria-expanded',String(open));}}
+ function applySavedPosition(el){
+  if(!el||!el.dataset.dragX||!el.dataset.dragY)return;
+  const rect=el.getBoundingClientRect();
+  const w=rect.width||320,h=rect.height||220;
+  const maxLeft=Math.max(4,window.innerWidth-w-4);
+  const maxTop=Math.max(4,window.innerHeight-h-4);
+  const left=Math.min(Math.max(4,parseFloat(el.dataset.dragX)),maxLeft);
+  const top=Math.min(Math.max(4,parseFloat(el.dataset.dragY)),maxTop);
+  el.style.left=left+'px';
+  el.style.top=top+'px';
+  el.style.right='auto';
+  el.style.bottom='auto';
+  el.style.transform='none';
+  el.style.margin='0';
+ }
+ function makeDraggable(panel){
+  if(!panel||panel.dataset.dragInit==='true')return;
+  panel.dataset.dragInit='true';
+  if(!panel.querySelector('.hp-menu-drag-handle')){
+   const handle=document.createElement('div');
+   handle.className='hp-menu-drag-handle';
+   handle.title='Hold and drag to move menu';
+   handle.setAttribute('aria-hidden','true');
+   handle.innerHTML='<span class="hp-menu-drag-pill"></span>';
+   panel.prepend(handle);
+  }
+  let isDragging=false,startX=0,startY=0,panelStartX=0,panelStartY=0,panelWidth=0,panelHeight=0,activePointerId=null;
+  function onPointerDown(e){
+   if(e.button!==0)return;
+   const isHandle=e.target.closest('.hp-menu-drag-handle');
+   const interactive=e.target.closest('button,input,select,textarea,a,summary,[role="tab"],[role="button"],input[type="range"],input[type="color"],.shelf-items,.hp-arch-grid,.hp-tools-grid,.ins-body,.shelf-categories');
+   if(interactive&&!isHandle)return;
+   const rect=panel.getBoundingClientRect();
+   panelWidth=rect.width;panelHeight=rect.height;
+   startX=e.clientX;startY=e.clientY;
+   panelStartX=rect.left;panelStartY=rect.top;
+   activePointerId=e.pointerId;
+   document.addEventListener('pointermove',onPointerMove,{passive:false});
+   document.addEventListener('pointerup',onPointerUp);
+   document.addEventListener('pointercancel',onPointerUp);
+  }
+  function onPointerMove(e){
+   const dx=e.clientX-startX,dy=e.clientY-startY;
+   if(!isDragging){
+    if(Math.hypot(dx,dy)<4)return;
+    isDragging=true;
+    panel.classList.add('is-dragging');
+    try{panel.setPointerCapture?.(activePointerId);}catch(_){}
+    panel.style.transform='none';
+    panel.style.right='auto';
+    panel.style.bottom='auto';
+    panel.style.margin='0';
+   }
+   e.preventDefault();
+   const maxLeft=Math.max(4,window.innerWidth-panelWidth-4);
+   const maxTop=Math.max(4,window.innerHeight-panelHeight-4);
+   const newLeft=Math.min(Math.max(4,panelStartX+dx),maxLeft);
+   const newTop=Math.min(Math.max(4,panelStartY+dy),maxTop);
+   panel.style.left=newLeft+'px';
+   panel.style.top=newTop+'px';
+   panel.dataset.dragX=String(newLeft);
+   panel.dataset.dragY=String(newTop);
+  }
+  function onPointerUp(e){
+   document.removeEventListener('pointermove',onPointerMove);
+   document.removeEventListener('pointerup',onPointerUp);
+   document.removeEventListener('pointercancel',onPointerUp);
+   if(isDragging){
+    try{panel.releasePointerCapture?.(activePointerId);}catch(_){}
+    panel.classList.remove('is-dragging');
+    isDragging=false;
+    const rect=panel.getBoundingClientRect();
+    panel.dataset.dragX=String(rect.left);
+    panel.dataset.dragY=String(rect.top);
+   }
+  }
+  panel.addEventListener('pointerdown',onPointerDown);
+ }
  function closeFloating(restore=false){const was=opened,active=document.activeElement;for(const p of Object.values(panels))shell.classList.remove(p.name);opened=null;updateExpanded();if(restore&&was){const p=panels[was];const surface=byId(p.surface);if(surface?.contains(active)||!isVisible(active))byId(p.trigger)?.focus({preventScroll:true});}}
- function toggle(key){const same=shell.classList.contains(panels[key].name);closeFloating();if(same){byId(panels[key].trigger)?.focus({preventScroll:true});return;}const p=panels[key];shell.classList.add(p.name);opened=key;updateExpanded();const first=p.first?byId(p.first):byId(p.surface)?.querySelector('button.active, button');if(isVisible(first))first.focus({preventScroll:true});}
+ function toggle(key){const same=shell.classList.contains(panels[key].name);closeFloating();if(same){byId(panels[key].trigger)?.focus({preventScroll:true});return;}const p=panels[key];shell.classList.add(p.name);opened=key;updateExpanded();applySavedPosition(byId(p.surface));const first=p.first?byId(p.first):byId(p.surface)?.querySelector('button.active, button');if(isVisible(first))first.focus({preventScroll:true});}
  function closeInspector(){if(byId('inspector').classList.contains('mobile-open'))byId('closeInspector')?.click();}
- function openInspector(){closeFloating();byId('mobileInspectorBtn')?.click();const close=byId('closeInspector');if(isVisible(close))close.focus({preventScroll:true});sync();}
+ function openInspector(){closeFloating();byId('mobileInspectorBtn')?.click();applySavedPosition(byId('inspector'));const close=byId('closeInspector');if(isVisible(close))close.focus({preventScroll:true});sync();}
  function visibleMode(){return document.querySelector('#toolsPanel [data-tool].active')?.dataset.tool||'furnish';}
  function sync(){
   const tool=visibleMode();const advanced={navigate:'Explore',opening:'Openings',measure:'Tape',annotate:'Notes'};byId('focusToolsLabel').textContent=advanced[tool]||'Tools';byId('focusTools').classList.toggle('is-active',!!advanced[tool]);for(const id of ['focusMove','focusBuild']){const active=tool===(id==='focusMove'?'furnish':'build');byId(id)?.classList.toggle('is-active',active);byId(id)?.setAttribute('aria-pressed',String(active));}
@@ -3094,7 +3188,14 @@ install();
  },true);
  // Prevent stale focus pointing to a hidden dismissable drawer.
  byId('closeInspector').addEventListener('click',()=>{if(document.activeElement===byId('closeInspector'))byId('focusTools').focus({preventScroll:true});sync();});
- window.HomePlanFocus={sync,closeFloating};
+ for(const id of ['toolsPanel','architecturePalette','projectPanel','viewControls','catalogShelf','inspector']){
+  const el=byId(id);if(el)makeDraggable(el);
+ }
+ window.addEventListener('resize',()=>{
+  for(const p of Object.values(panels)){applySavedPosition(byId(p.surface));}
+  applySavedPosition(byId('inspector'));
+ },{passive:true});
+ window.HomePlanFocus={sync,closeFloating,makeDraggable,applySavedPosition};
  sync();
 })();
 </script><script>'use strict';
@@ -3181,7 +3282,18 @@ install();
   mobileInspectorBtn:['sliders','Inspector','Open editing controls.'],
   sceneBackgroundReset:['undo','Reset background','Restore the default baby-blue scene color.']
  };
- const toolDefs={furnish:['sofa','Furniture','Select, move and arrange furniture.'],build:['wall','Walls','Edit or draw walls; change their endpoints.'],navigate:['orbit','Explore','Drag empty space to orbit; pan and zoom.'],measure:['ruler','Measure','Tap two model positions to measure their distance.'],annotate:['note','Notes','Tap the floor to leave a note.'],opening:['door','Openings','Choose a door, window, outlet or passage, then tap a wall.']};
+ const toolDefs={furnish:['sofa','Furniture','Arrange items','Select, move and arrange furniture.'],build:['wall','Walls','Draw & edit','Edit or draw walls; change their endpoints.'],navigate:['orbit','Explore','Orbit & pan','Drag empty space to orbit; pan and zoom.'],measure:['ruler','Tape','Measure 2 pts','Tap two model positions to measure their distance.'],annotate:['note','Notes','Floor notes','Tap the floor to leave a note.'],opening:['door','Openings','Doors & more','Choose a door, window, outlet or passage, then tap a wall.']};
+ const railActionDefs={railStudio:['sliders','Design Lab','Room metrics','Inspect room dimensions, finishes, diagnostics and budget.'],railSurvey:['scan','Survey','Guided photos','Capture a guided apartment survey.'],focusDetails:['sliders','Inspector','Item details','Inspect the currently selected object.'],helpBtn:['help','Controls','Key reference','Open the full control reference.']};
+ function decorateToolCard(el,entry){
+  if(!el||!entry)return;
+  const [ico,label,shortDesc,detail]=entry;
+  el.setAttribute('aria-label',label);
+  el.dataset.tooltip=detail?`${label} — ${detail}`:label;
+  el.removeAttribute('title');
+  el.dataset.iconName=ico;
+  el.classList.add('hp-tool-card');
+  el.innerHTML=`<span class="symbol">${svg(ico)}</span><span class="hp-tool-label">${label}</span><span class="hp-tool-desc">${shortDesc}</span>`;
+ }
  const categoryDefs={All:['grid','All furniture'],Favorites:['star','Favorite furniture'],Living:['sofa','Living room'],Storage:['storage','Storage'],Bedroom:['bed','Bedroom'],Office:['sliders','Desks and office'],Kitchen:['kitchen','Kitchen'],Appliances:['kitchen','Major appliances'],Bathroom:['bath','Bathroom'],Plumbing:['outlet','Plumbing and vents'],Laundry:['circle','Laundry machines'],Outdoor:['porch','Patio and balcony'],Markers:['marker','Markers and fixtures']};
  const viewDefs={dollhouse:['house','Dollhouse view'],orbit:['orbit','3D orbit view'],top:['plan','Top floor plan'],realworld:['map','Real world 3D view','Real-world 3D site context: 613 N Front St, Apt E (2nd Floor), Niles, MI'],walk:['hand','First-person walk','Eye-level first person walkthrough: WASD / Arrow keys move, mouse/touch looks'],truck:['cube','Moving truck cargo simulator','Pack the Moving Truck: 3D cargo simulator with 10ft, 15ft, 20ft truck boxes']};
  function decorate(el,entry,kind){if(!el||!entry)return;const [ico,label,detail]=entry;el.setAttribute('aria-label',label);el.dataset.tooltip=detail?`${label} — ${detail}`:label;el.removeAttribute('title');el.dataset.iconName=ico;const existing=el.querySelector('.focus-icon,.symbol');if(existing){existing.innerHTML=svg(ico);}else if(kind==='compact'){
@@ -3197,7 +3309,8 @@ install();
   }
   decorate($('appearanceToggle'),['sliders','Appearance settings','Choose the color behind the apartment model.'],'prepend');
   decorate($('sceneBackgroundReset'),definitions.sceneBackgroundReset,'prepend');
-  d.querySelectorAll('#toolsPanel [data-tool]').forEach(el=>decorate(el,toolDefs[el.dataset.tool],'prepend'));
+  d.querySelectorAll('#toolsPanel [data-tool]').forEach(el=>{const entry=toolDefs[el.dataset.tool];if(entry)decorateToolCard(el,entry);});
+  for(const [id,entry] of Object.entries(railActionDefs)){const el=$(id);if(el&&el.closest('#toolsPanel'))decorateToolCard(el,entry);}
   d.querySelectorAll('#viewControls [data-view]').forEach(el=>decorate(el,viewDefs[el.dataset.view],'prepend'));
   const ins={edit:['sliders','Edit selected'],space:['plan','Space and rooms'],project:['folder','Project exports']};
   d.querySelectorAll('.ins-tabs [data-tab]').forEach(el=>decorate(el,ins[el.dataset.tab],'prepend'));
@@ -3218,24 +3331,24 @@ install();
   ['setup','Setup']
  ];
  const architecture=[
-  ['walls','walls','wall','Select walls','Select a wall and move its ends.'],
-  ['draw','walls','draw','Single wall','Tap two positions to draw a wall segment.'],
-  ['rectangle','walls','rectangle','Rectangle','Drag an enclosed rectangular room. Tap two corners instead on touch.'],
-  ['circle','walls','circle','Circle','Drag a circle as a perimeter of editable wall segments.'],
-  ['ellipse','walls','ellipse','Oval','Drag an oval room. Each segment remains editable.'],
-  ['triangle','walls','triangle','Triangle','Drag a triangular room outline.'],
-  ['l-shape','walls','lshape','L-Shape','Drag an L-shaped room outline.'],
-  ['door','openings','door','Door','Place a provisional door on a wall.'],
-  ['window','openings','window','Window','Place a provisional window on a wall.'],
-  ['outlet','openings','outlet','Outlet','Mark a provisional electrical outlet.'],
-  ['opening','openings','passage','Passage','Make an open passage through a wall.'],
-  ['entry','openings','house','Main entry','Place the entrance doorway on an architectural wall.'],
-  ['rooms','rooms','plan','Edit rooms','Rename, add, remove rooms and set indoor/outdoor zones.'],
-  ['porch','rooms','porch','Porch','Add an outdoor floor zone for a porch.'],
-  ['balcony','rooms','balcony','Balcony','Add a balcony study zone outside the unit.'],
-  ['lighting','setup','moon','Lighting','Choose night, exterior dimming, and indoor glow.'],
-  ['finishes','setup','paint','Floor finishes','Choose carpet, hardwood, and tile material styles in the room editor.'],
-  ['blank','setup','broom','Blank plan','Start from empty space; requires confirmation.']
+  ['walls','walls','wall','Walls','Move ends','Select a wall and move its ends.'],
+  ['draw','walls','draw','Single wall','Two taps','Tap two positions to draw a wall segment.'],
+  ['rectangle','walls','rectangle','Rectangle','Enclosed room','Drag an enclosed rectangular room. Tap two corners instead on touch.'],
+  ['circle','walls','circle','Circle','Round room','Drag a circle as a perimeter of editable wall segments.'],
+  ['ellipse','walls','ellipse','Oval','Curved room','Drag an oval room. Each segment remains editable.'],
+  ['triangle','walls','triangle','Triangle','Angled room','Drag a triangular room outline.'],
+  ['l-shape','walls','lshape','L-Shape','Corner room','Drag an L-shaped room outline.'],
+  ['door','openings','door','Door','Hinged door','Place a provisional door on a wall.'],
+  ['window','openings','window','Window','Glazed pane','Place a provisional window on a wall.'],
+  ['outlet','openings','outlet','Outlet','Electric box','Mark a provisional electrical outlet.'],
+  ['opening','openings','passage','Passage','Open archway','Make an open passage through a wall.'],
+  ['entry','openings','house','Main entry','Entrance door','Place the entrance doorway on an architectural wall.'],
+  ['rooms','rooms','plan','Edit rooms','Zones & names','Rename, add, remove rooms and set indoor/outdoor zones.'],
+  ['porch','rooms','porch','Porch','Outdoor zone','Add an outdoor floor zone for a porch.'],
+  ['balcony','rooms','balcony','Balcony','Terrace zone','Add a balcony study zone outside the unit.'],
+  ['lighting','setup','moon','Lighting','Sun & glow','Choose night, exterior dimming, and indoor glow.'],
+  ['finishes','setup','paint','Finishes','Carpet & tile','Choose carpet, hardwood, and tile material styles in the room editor.'],
+  ['blank','setup','broom','Blank plan','Start over','Start from empty space; requires confirmation.']
  ];
  const arch=$('architecturePalette');
  if(arch){
@@ -3247,8 +3360,8 @@ install();
   header.append(catBar);
   arch.append(header);
   const grid=d.createElement('div');grid.className='hp-arch-grid';grid.id='archToolsGrid';
-  for(const [id,cat,ico,label,detail] of architecture){
-   const b=d.createElement('button');b.type='button';b.dataset.buildAction=id;b.dataset.archCategory=cat;b.className='hp-architecture-tool';b.setAttribute('aria-label',label);b.dataset.tooltip=label+' — '+detail;b.innerHTML=`${svg(ico)}<span class="hp-architecture-label">${label}</span>`;grid.append(b);
+  for(const [id,cat,ico,label,shortDesc,detail] of architecture){
+   const b=d.createElement('button');b.type='button';b.dataset.buildAction=id;b.dataset.archCategory=cat;b.className='hp-architecture-tool hp-tool-card';b.setAttribute('aria-label',label);b.dataset.tooltip=label+' — '+detail;b.innerHTML=`<span class="symbol">${svg(ico)}</span><span class="hp-tool-label">${label}</span><span class="hp-tool-desc">${shortDesc}</span>`;grid.append(b);
   }
   arch.append(grid);
   catBar.addEventListener('click',e=>{
@@ -3285,7 +3398,7 @@ install();
   studio:['Design Lab','Insights reviews the plan. Layout handles geometry and placement analysis. Finishes explores materials. Views controls presentation. Budget estimates costs.','Changes to the editable model remain distinct from your original survey evidence. Finish returns you to the apartment.'],
   survey:['Survey Studio','Follow the room route, collect useful photos or videos, and record real measurements with a source. The capture and review tools help distinguish confirmed facts from provisional geometry.','Survey media remains private on the device unless you explicitly export or share a ZIP. A photograph alone does not certify dimensions.']
  };
- const mounts=[['project','projectPanel','.header .header-end'],['appearance','appearanceSettings','.hp-appearance-head'],['tools','toolsPanel',null],['architecture','architecturePalette','.hp-arch-header'],['views','viewControls',null],['catalog','catalogShelf','.shelf-top'],['inspector','inspector','.ins-head'],['studio','studioLayer','.studio-head'],['survey','surveyLayer','.survey-header-actions']];
+ const mounts=[['project','projectPanel','.header .header-end'],['appearance','appearanceSettings','.hp-appearance-head'],['tools','toolsPanel','.hp-tools-header'],['architecture','architecturePalette','.hp-arch-header'],['views','viewControls',null],['catalog','catalogShelf','.shelf-top'],['inspector','inspector','.ins-head'],['studio','studioLayer','.studio-head'],['survey','surveyLayer','.survey-header-actions']];
  for(const [key,id,target] of mounts){const host=target?d.querySelector(target):$(id);if(!host)continue;const b=d.createElement('button');b.type='button';b.className='hp-help-trigger';b.dataset.help=key;b.setAttribute('aria-label',`Help with ${help[key][0]}`);b.dataset.tooltip=`Help with ${help[key][0]}`;b.innerHTML=svg('help');host.append(b);}
  const dlg=d.createElement('dialog');dlg.id='hpContextHelp';dlg.className='hp-context-dialog';dlg.setAttribute('aria-labelledby','hpContextTitle');dlg.innerHTML=`<div class="hp-help-head"><span class="hp-help-kicker">HOME PLAN / GUIDE</span><button type="button" id="hpContextClose" aria-label="Close guide" title="Close guide">×</button></div><h2 id="hpContextTitle"></h2><p id="hpContextBody"></p><p class="hp-help-note" id="hpContextNote"></p><div class="hp-help-actions"><button type="button" id="hpContextDone">Back to apartment</button></div>`;d.body.append(dlg);
  let returnFocus=null;

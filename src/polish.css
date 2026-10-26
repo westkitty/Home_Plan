@@ -1,7 +1,7 @@
 /* HOME PLAN / architectural diorama finish. Overrides only; all original controls remain functional. */
 :root{--panel:#182824;--panel2:#22342d;--line:#41594c;--text:#f1f1e8;--muted:#a4b9ac;--accent:#f2c381;--accent2:#93d2c2;--radius:12px}
 body{background:#10201c}
-.header{background:linear-gradient(115deg,#14221f 0%,#1e3129 50%,#17241f 100%);border-bottom:1px solid #52644b;box-shadow:0 7px 24px #0b1a1638}
+.header{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .header::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#deaf72 23%,#91bca4 61%,transparent);pointer-events:none}
 .mark{background:linear-gradient(150deg,#ffe1a0,#d9a967);color:#1d332c;box-shadow:inset 0 1px 0 #ffefc7,0 2px 9px #03130c3b;font-family:Georgia,serif}
 .wordmark{font-weight:900;letter-spacing:.10em;color:#fbf6e8}
@@ -10,7 +10,7 @@ body{background:#10201c}
 .header .btn{box-shadow:inset 0 1px 0 #ffffff19;letter-spacing:.01em}
 .header .btn.primary{background:linear-gradient(145deg,#ffd99a,#eab370);border-color:#eac28b}
 .header .studio-cta{background:#a5d4bb!important;color:#15362c!important}
-.rail{background:linear-gradient(175deg,#1e322c,#132520);border-right-color:#385345;box-shadow:inset -1px 0 0 #72957b15}
+.rail{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .rail-button{color:#b7cfc0;border-radius:12px;position:relative;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease,border-color .14s ease}
 .rail-button:hover{background:#294737;color:#fff8e6;transform:translateY(-1px)}
 .rail-button:active{transform:scale(0.96) translateY(1px)}
@@ -24,17 +24,17 @@ body{background:#10201c}
 .viewport-hud .eyebrow{color:#2b4539;letter-spacing:.20em;font-size:9px}
 .viewport-hud h2{font-size:clamp(19px,1.85vw,27px);line-height:1.13;font-weight:700;color:#263c34;margin:4px 0}
 .viewport-hud p{color:#4c695b;line-height:1.54;font-weight:540;font-size:11px}
-.view-controls{background:#182e2be8;border-color:#688e7f66;box-shadow:0 8px 25px rgba(0,0,0,0.28),inset 0 1px 0 #ffffff2c;backdrop-filter:blur(12px);padding:5px;border-radius:13px}
-.view-controls button{letter-spacing:.035em;color:#bbd2c6;padding:11px 13px;border-radius:9px}
-.view-controls button:hover{background:#36594b;color:#fff4df}
-.view-controls button.active{background:linear-gradient(135deg,#ffdda5,#f2bd77);color:#1b3730;box-shadow:0 3px 9px #121c1970}
+.view-controls{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow);backdrop-filter:blur(20px) saturate(160%);padding:5px;border-radius:18px}
+.view-controls button{letter-spacing:.035em;color:var(--focus-text);padding:11px 13px;border-radius:9px}
+.view-controls button:hover{background:var(--focus-card-hover);color:#fff;border-color:var(--focus-card-hover-border)}
+.view-controls button.active{background:var(--focus-card-active)!important;border-color:var(--focus-card-active-border)!important;color:#fff!important;box-shadow:0 0 12px rgba(92,225,214,.35)!important}
 .map-card{background:#142a25ec;border-color:#7196868b;box-shadow:0 16px 35px #0b262244,inset 0 1px 0 #a3c8ac1a;border-radius:14px;backdrop-filter:blur(10px)}
 .map-title{color:#eed5ac}
 .map-card canvas{outline:1px solid #5b796b55;border-radius:7px}
 .round-btn{background:#1a342ce9;border-color:#739e8875;color:#ffe1ac;border-radius:14px;box-shadow:0 5px 15px #132b263f,inset 0 1px 0 #ffffff20;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease,box-shadow .14s ease}
 .round-btn:hover{background:#2f584a;transform:translateY(-2px);box-shadow:0 8px 20px #132b2655}
 .round-btn:active{transform:translateY(1px) scale(0.95);box-shadow:0 2px 8px #132b2630}
-.inspector{background:linear-gradient(175deg,#1c2e27,#152720);border-left:1px solid #4a6a57}
+.inspector{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .ins-head{background:linear-gradient(180deg,#274138,#1c3028);border-bottom:1px solid #597b60;padding-top:22px;padding-bottom:20px}
 .ins-head h3{font-family:Georgia,serif;font-size:23px;font-weight:650;color:#fbf1da}
 .ins-head p{line-height:1.5;color:#aec8b6}
@@ -52,7 +52,7 @@ body{background:#10201c}
 .btn.primary:hover{background:#ffe1aa;transform:translateY(-1.5px);box-shadow:0 4px 14px rgba(0,0,0,0.24)}
 .btn.primary:active{transform:scale(0.97) translateY(1.5px);box-shadow:0 1px 3px rgba(0,0,0,0.18)}
 .btn:focus-visible,.round-btn:focus-visible,.rail-button:focus-visible{outline:3px solid #eac07a;outline-offset:3px}
-.shelf{background:linear-gradient(180deg,#1a3027,#142720);border-top:1px solid #6b866d;box-shadow:0 -9px 23px #19292525}
+.shelf{background:var(--focus-surface-grad);border:1px solid var(--focus-line);box-shadow:var(--focus-glow)}
 .shelf-title{color:#f2cd91;letter-spacing:.19em}
 .shelf-categories button{border-radius:8px;color:#b4c9b9}
 .shelf-categories button.active{background:#526246;color:#ffe2a3}
