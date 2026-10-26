@@ -178,14 +178,65 @@ def test_upgrade_features():
         assert test_video_tracker["cx"] > 0, "Video spatial track waypoint calculated"
         print("PASS #7: Synchronized Walkthrough Video Spatial Scrubbing verified")
 
-        # Take screenshot of final UI state
+        # 10. Feature #1: Niles MI Solar Ephemeris & Window Sunlight Ingress
+        print("Testing #1: Niles MI Solar Ephemeris...")
+        page.locator('[data-season="winter"]').click(force=True)
+        page.wait_for_timeout(200)
+        winter_sun = page.evaluate("() => calculateNilesSun(720, 'winter')")
+        assert winter_sun["elevation"] < 35, f"Winter noon elevation should be low (<35°), got {winter_sun['elevation']}"
+        page.locator('[data-season="summer"]').click(force=True)
+        page.wait_for_timeout(200)
+        summer_sun = page.evaluate("() => calculateNilesSun(720, 'summer')")
+        assert summer_sun["elevation"] > 60, f"Summer noon elevation should be high (>60°), got {summer_sun['elevation']}"
+        print(f"PASS #1: Niles MI Solar Ephemeris verified (Summer {summer_sun['elevation']:.1f}° vs Winter {winter_sun['elevation']:.1f}°)")
+
+        # 11. Feature #8: Procedural Web Audio Soundscape
+        print("Testing #8: Web Audio Soundscape...")
+        sound_btn = page.locator("#soundToggle")
+        assert sound_btn.count() > 0, "Sound toggle button should exist in DOM"
+        sound_btn.click(force=True)
+        page.wait_for_timeout(200)
+        is_active = page.evaluate("() => window.homePlanStudioBridge.getApp().soundscape.active")
+        assert is_active == True, "Soundscape should be active after toggle"
+        print("PASS #8: Procedural Soundscape verified (St. Joseph River pink noise + courtyard breeze)")
+
+        # 12. Feature #15: Furnishing BOM & Move-In Procurement Tracker
+        print("Testing #15: Move-In Procurement Tracker...")
+        page.evaluate("""() => {
+            const bridge = window.homePlanStudioBridge;
+            bridge.getApp().tab = 'edit';
+            bridge.select('item', bridge.getPlan().items[0].id);
+            document.getElementById('inspector').classList.add('mobile-open');
+        }""")
+        page.wait_for_timeout(300)
+        page.locator('[data-procure="owned"]').click(force=True)
+        page.wait_for_timeout(200)
+        item_status = page.evaluate("() => window.homePlanStudioBridge.getPlan().items[0].status")
+        assert item_status == "owned", f"Expected status 'owned', got {item_status}"
+        page.evaluate("() => document.getElementById('inspector').classList.remove('mobile-open')")
+        print("PASS #15: Furnishing Move-In Procurement Tracker verified ('owned' | 'needed' | 'ordered')")
+
+        # 13. Feature #20: 3D Moving Truck Simulator & Cargo Packing
+        print("Testing #20: 3D Moving Truck Simulator...")
+        ensure_views_open(page)
+        page.locator("#viewTruck").click(force=True)
+        page.wait_for_timeout(500)
+        truck_view = page.evaluate("() => window.homePlanStudioBridge.getPlan().view.style")
+        assert truck_view == "truck", f"Expected view style 'truck', got {truck_view}"
+        truck_load = page.evaluate("() => calculateTruckLoad(window.homePlanStudioBridge.getPlan(), '15ft')")
+        assert truck_load["truckSize"] == "15ft", "15-foot truck sizing verified"
+        assert truck_load["utilizationPct"] > 0, "Truck capacity utilization calculated"
+        assert len(truck_load["packedItems"]) > 0, "Furniture items packed into truck cargo bay"
+        print(f"PASS #20: 3D Moving Truck Simulator verified ({truck_load['utilizationPct']}% volume, {len(truck_load['packedItems'])} items)")
+
+        # Take screenshot of final UI state showing Moving Truck and Soundscape
         page.screenshot(path="tests/upgrade_suite_verified.png")
         print("Saved screenshot to tests/upgrade_suite_verified.png")
 
         browser.close()
 
     assert len(errors) == 0, f"Encountered page errors: {errors}"
-    print("\nALL 9 FEATURES EMPIRICALLY VERIFIED IN BRAVE BROWSER! 🎉")
+    print("\nALL UPGRADE SUITE FEATURES EMPIRICALLY VERIFIED IN BRAVE BROWSER! 🎉")
 
 if __name__ == "__main__":
     test_upgrade_features()

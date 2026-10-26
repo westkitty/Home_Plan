@@ -222,9 +222,65 @@ function parsePlan(x){if(x?.schema===1)x=migrateLegacy(x);if(!x||typeof x!=='obj
 const rooms=x.rooms.map((r,i)=>{if(!r||![r.x,r.z,r.w,r.d].every(Number.isFinite)||r.w<=0||r.d<=0||r.w>100||r.d>100)throw Error('Invalid room geometry');return{id:safeId(r.id,'room'+i),name:String(r.name||'Room').slice(0,60),x:r.x,z:r.z,w:r.w,d:r.d,color:/^#[0-9a-fA-F]{6}$/.test(r.color)?r.color:'#dce5e2',zone:ROOM_ZONES.includes(r.zone)?r.zone:'indoor',flooring:FLOOR_MATERIALS[r.flooring]?r.flooring:'',shape:SHAPE_KINDS.includes(r.shape)?r.shape:'rectangle',confidence:String(r.confidence||'unverified').slice(0,30),note:String(r.note||'').slice(0,250)};});
 const walls=x.walls.map((w,i)=>({id:safeId(w.id,'wall'+i),a:w.a.map(n=>round(n,3)),b:w.b.map(n=>round(n,3)),height:clamp(w.height,.5,5),thick:clamp(Number(w.thick)||.12,.06,.8),confidence:w.confidence==='measured'?'measured':'estimated',color:typeof HP_COLOR==='function'&&HP_COLOR(w.color)?w.color:undefined}));const wallIds=new Set(walls.map(w=>w.id));
 const fixtures=x.fixtures.map((f,i)=>{if(!wallIds.has(safeId(f.wall,''))||!['door','window','opening','outlet','entry'].includes(f.type)||!finiteBound(f.at,0,1)||!finiteBound(f.width,.05,5))throw Error('Invalid fixture reference');return{id:safeId(f.id,'fixture'+i),wall:safeId(f.wall,''),type:f.type,at:clamp(f.at,.03,.97),width:clamp(f.width,.08,5),confidence:String(f.confidence||'unverified').slice(0,30),swing:f.swing==='right'?'right':'left'};});
-const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:f.room?safeId(f.room,''):'',...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
+const items=x.items.map((f,i)=>({id:safeId(f.id,'item'+i),type:f.type,x:f.x,z:f.z,r:f.r,room:f.room?safeId(f.room,''):'',...(f.w?{w:f.w}:{}),...(f.d?{d:f.d}:{}),...(f.h?{h:f.h}:{}),label:String(f.label||'').slice(0,70),note:String(f.note||'').slice(0,250),price:Number.isFinite(f.price)&&f.price>=0&&f.price<=100000?f.price:undefined,status:['owned','needed','ordered'].includes(f.status)?f.status:undefined,color:typeof HP_COLOR==='function'&&HP_COLOR(f.color)?f.color:undefined,locked:f.locked===true,hidden:f.hidden===true,group:String(f.group||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,60)}));
 const v=x.view||{},start=initialPlan().view;
-return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit','realworld','walk'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};
+return{schema:MODEL_VERSION,name:String(x.name||'Imported plan').slice(0,80),units:'meters',measured:false,notes:String(x.notes||'Imported and unverified').slice(0,500),rooms,walls,fixtures,items,survey:normalizeSurvey(x.survey,rooms,walls),studio:typeof normalizeStudio==='function'?normalizeStudio(x.studio):{},view:{...start,yaw:finiteBound(v.yaw,-100,100)?v.yaw:start.yaw,pitch:finiteBound(v.pitch,.1,1.6)?v.pitch:start.pitch,dist:finiteBound(v.dist,3,45)?v.dist:start.dist,target:Array.isArray(v.target)&&v.target.length===3&&v.target.every(Number.isFinite)?v.target:start.target,style:['top','dollhouse','orbit','realworld','walk','truck'].includes(v.style)?v.style:start.style,snap:[0,.05,.1,.25,.5].includes(v.snap)?v.snap:start.snap,walls:v.walls!==false,grid:v.grid!==false}};
+}
+function calculateNilesSun(timeMinutes, season='summer'){
+  const lat=41.8298*Math.PI/180;
+  const declMap={summer:23.45,equinox:0,winter:-23.45};
+  const declDeg=declMap[season]!==undefined?declMap[season]:23.45;
+  const decl=declDeg*Math.PI/180;
+  const tSolar=(timeMinutes-45)/60;
+  const hourAngle=(tSolar-12)*15*Math.PI/180;
+  const sinElev=Math.sin(lat)*Math.sin(decl)+Math.cos(lat)*Math.cos(decl)*Math.cos(hourAngle);
+  const elev=Math.asin(clamp(sinElev,-1,1));
+  const cosElev=Math.cos(elev);
+  let az=Math.PI;
+  if(cosElev>0.001){
+    const cosAz=(Math.sin(decl)-Math.sin(lat)*sinElev)/(Math.cos(lat)*cosElev);
+    const azRad=Math.acos(clamp(cosAz,-1,1));
+    az=hourAngle>0?(2*Math.PI-azRad):azRad;
+  }
+  const elevDeg=round(elev*180/Math.PI,1);
+  const azDeg=round(az*180/Math.PI,1);
+  const isDay=elevDeg>0;
+  const lx=-Math.sin(az)*Math.cos(elev),ly=Math.sin(elev),lz=-Math.cos(az)*Math.cos(elev);
+  return {elevation:elevDeg,azimuth:azDeg,isDay,lightVector:[round(lx,3),round(ly,3),round(lz,3)],season};
+}
+function calculateTruckLoad(plan, truckSize='15ft'){
+  const specs={
+    '10ft':{w:1.9,d:3.0,h:1.8,label:'10-Foot Cargo Van'},
+    '15ft':{w:2.3,d:4.5,h:2.1,label:'15-Foot Standard Moving Truck'},
+    '20ft':{w:2.3,d:6.0,h:2.1,label:'20-Foot Large Moving Truck'}
+  };
+  const trk=specs[truckSize]||specs['15ft'];
+  const trkVol=round(trk.w*trk.d*trk.h,2);
+  const eligible=(plan?.items||[]).filter(it=>it.type!=='fountain'&&!it.hidden);
+  let totalFurnVol=0;
+  const sorted=[...eligible].sort((a,b)=>{
+    const sa=FURNITURE[a.type]||{w:.8,d:.8,h:.8},sb=FURNITURE[b.type]||{w:.8,d:.8,h:.8};
+    return ((b.w||sb.w)*(b.d||sb.d)*(b.h||sb.h))-((a.w||sa.w)*(a.d||sa.d)*(a.h||sa.h));
+  });
+  const packedItems=[];
+  let curX=-trk.w/2+0.15,curZ=-trk.d/2+0.15,maxRowD=0;
+  for(const it of sorted){
+    const sp=FURNITURE[it.type]||{w:.8,d:.8,h:.8};
+    const iw=it.w||sp.w,id=it.d||sp.d,ih=it.h||sp.h;
+    const vol=iw*id*ih;
+    totalFurnVol+=vol;
+    if(curX+iw>trk.w/2-0.15){
+      curX=-trk.w/2+0.15;
+      curZ+=maxRowD+0.08;
+      maxRowD=0;
+    }
+    const inside=(curZ+id<=trk.d/2);
+    packedItems.push({id:it.id,type:it.type,label:it.label||sp.label,x:round(curX+iw/2,2),y:round(ih/2,2),z:round(curZ+id/2,2),w:iw,d:id,h:ih,color:sp.color,fitsInside:inside});
+    curX+=iw+0.08;
+    if(id>maxRowD)maxRowD=id;
+  }
+  const utilPct=round((totalFurnVol/trkVol)*100,1);
+  return {truckSize,truckSpec:trk,truckVolume:trkVol,furnitureVolume:round(totalFurnVol,2),utilizationPct:utilPct,itemsCount:eligible.length,fits:utilPct<=85.0&&packedItems.every(p=>p.fitsInside),packedItems};
 }
 function doorObstructions(plan){
   const obstructions=[];if(!plan?.fixtures||!plan?.items)return obstructions;

@@ -219,6 +219,21 @@ window.HomePlanVisuals = (() => {
       drawRealWorldGround(ctx, engine, light, quality);
       return;
     }
+    if (plan?.view?.style === 'truck') {
+      const pad = 7;
+      const dock = poly(engine, [[-pad, -.05, -pad], [pad, -.05, -pad], [pad, -.05, pad], [-pad, -.05, pad]]);
+      if (dock) {
+        ctx.save();
+        trace(ctx, dock);
+        ctx.fillStyle = light === 'night' ? '#182420' : '#2b3832';
+        ctx.fill();
+        ctx.strokeStyle = '#43554d';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+      }
+      return;
+    }
     const b = bounds, r = .1;
     const deck = poly(engine, [[b.minX, -.21, b.minZ], [b.maxX, -.21, b.minZ], [b.maxX, -.21, b.maxZ], [b.minX, -.21, b.maxZ]]);
     if (!deck) return;
@@ -604,6 +619,73 @@ function annotations(ctx, engine, app) {
     g.addColorStop(0,'rgba(16,27,31,0)');g.addColorStop(1,light==='night'?'rgba(5,13,22,.27)':'rgba(27,37,31,.11)');
     ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
   }
+  function drawSunlightIngress(ctx, engine, plan, app) {
+    const timeMins = app.timeSliderMinutes ?? 720;
+    const season = app.plan.studio?.season || 'summer';
+    if (typeof calculateNilesSun !== 'function') return;
+    const sun = calculateNilesSun(timeMins, season);
+    if (!sun.isDay || sun.elevation <= 1) return;
+    const isReal = plan.view?.style === 'realworld', floorY = isReal ? 2.8 : 0;
+    const lx = sun.lightVector[0], ly = -Math.abs(sun.lightVector[1]), lz = sun.lightVector[2];
+    if (Math.abs(ly) < 0.05) return;
+    for (const f of plan.fixtures) {
+      if (f.type !== 'window') continue;
+      const wall = plan.walls.find(w => w.id === f.wall);
+      if (!wall) continue;
+      const dx = wall.b[0] - wall.a[0], dz = wall.b[1] - wall.a[1], len = Math.hypot(dx, dz) || 1;
+      const halfW = Math.min(f.width / 2, len * 0.45);
+      const pCenter = wallPoint(wall, f.at);
+      const ySill = 0.87 + floorY, yTop = 2.02 + floorY;
+      const w0 = [pCenter[0] - (dx / len) * halfW, pCenter[1] - (dz / len) * halfW];
+      const w1 = [pCenter[0] + (dx / len) * halfW, pCenter[1] + (dz / len) * halfW];
+      const cast = (x, y, z) => {
+        const t = ((floorY + 0.015) - y) / ly;
+        return [x + lx * t, floorY + 0.015, z + lz * t];
+      };
+      const f0 = cast(w0[0], yTop, w0[1]);
+      const f1 = cast(w1[0], yTop, w1[1]);
+      const f2 = cast(w1[0], ySill, w1[1]);
+      const f3 = cast(w0[0], ySill, w0[1]);
+      const p0 = engine.project(...f0), p1 = engine.project(...f1), p2 = engine.project(...f2), p3 = engine.project(...f3);
+      if (!p0 || !p1 || !p2 || !p3) continue;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.lineTo(p3.x, p3.y);
+      ctx.closePath();
+      const alpha = Math.min(0.32, Math.sin(sun.elevation * Math.PI / 180) * 0.40);
+      ctx.fillStyle = `rgba(255, 235, 160, ${alpha})`;
+      ctx.fill();
+      ctx.strokeStyle = `rgba(255, 215, 120, ${alpha * 0.65})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  function drawTruckHUD(ctx, engine, plan) {
+    const w = engine.w, h = engine.h;
+    if (typeof calculateTruckLoad !== 'function') return;
+    const load = calculateTruckLoad(plan, '15ft');
+    ctx.save();
+    const tw = Math.min(380, w - 32);
+    ctx.fillStyle = 'rgba(15,28,23,0.92)';
+    ctx.fillRect(16, 16, tw, 68);
+    ctx.strokeStyle = '#436151';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(16, 16, tw, 68);
+    ctx.fillStyle = '#eed09a';
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillText(`15-FOOT MOVING TRUCK · ${load.utilizationPct}% VOL`, 28, 36);
+    ctx.fillStyle = '#a1c2b0';
+    ctx.font = '10px system-ui';
+    ctx.fillText(`Total Cargo: ${load.furnitureVolume} m³ / ${load.truckVolume} m³ · ${load.itemsCount} planned pieces`, 28, 52);
+    ctx.fillStyle = load.fits ? '#48bb78' : '#e53e3e';
+    ctx.font = 'bold 10px system-ui';
+    ctx.fillText(load.fits ? '✓ SINGLE-TRIP VIABLE (Fits in 15ft truck)' : '⚠️ OVERLOAD: Upgrade to 20ft truck to avoid 2 trips', 28, 68);
+    ctx.restore();
+  }
   function render(engine, app, boxes) {
     if(!engine || !engine.w || !engine.h || engine.disposed) return true;
     const ctx=engine.ctx,plan=app.plan,light=plan.studio?.light||'day',c=palette[light]||palette.day;
@@ -673,6 +755,8 @@ function annotations(ctx, engine, app) {
       annotations(ctx,engine,app);
       if(plan.view?.style==='realworld') drawRealWorldLandmarks(ctx,engine,light);
       selectedHighlight(ctx,engine,app,quality);
+      drawSunlightIngress(ctx,engine,plan,app);
+      if(plan.view?.style==='truck') drawTruckHUD(ctx,engine,plan);
       if(app.tool==='build'){
         for(const wall of plan.walls)for(let k=0;k<2;k++){
           const point=wall[k?'b':'a'],p=engine.project(point[0],.08,point[1]);if(!p)continue;

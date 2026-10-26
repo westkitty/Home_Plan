@@ -132,10 +132,24 @@ body{background:#10201c}
 .walk-btn:active{background:#efc789;color:#172922}
 
 /* 24-Hour Day in the Life Timeline */
-.time-timeline{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(21,43,35,0.94);padding:6px 14px 8px;border-radius:24px;border:1px solid rgba(182,212,183,0.32);backdrop-filter:blur(10px);z-index:22;width:min(300px,calc(100vw - 32px));box-shadow:0 8px 24px rgba(4,21,14,.28)}
-.time-header{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:#eed09a}
+.time-timeline{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(21,43,35,0.94);padding:6px 14px 8px;border-radius:24px;border:1px solid rgba(182,212,183,0.32);backdrop-filter:blur(10px);z-index:22;width:min(340px,calc(100vw - 32px));box-shadow:0 8px 24px rgba(4,21,14,.28)}
+.time-header{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:#eed09a;width:100%;justify-content:space-between}
 .time-sub{font-size:9px;color:#a3baa9;font-weight:500}
+.sound-toggle-btn{background:rgba(44,70,58,0.7);border:1px solid #4a6c5a;color:#dce9dd;font-size:9.5px;padding:2px 7px;border-radius:12px;cursor:pointer;transition:all .14s ease}
+.sound-toggle-btn:hover{background:#3d614f;color:#ffe3b3}
+.sound-toggle-btn.active{background:#235745;border-color:#5bd1a2;color:#6fe6c5}
+.season-row{display:flex;gap:4px;margin:2px 0 3px;width:100%;justify-content:center}
+.season-btn{background:transparent;border:1px solid rgba(120,160,140,0.3);color:#a8c4b2;font-size:9px;padding:1px 8px;border-radius:10px;cursor:pointer}
+.season-btn.active{background:#416955;border-color:#eec486;color:#fae9c7;font-weight:600}
 .time-timeline input[type="range"]{width:100%;height:5px;accent-color:#efc789;cursor:pointer;margin:2px 0}
+
+/* Procurement Status Pills */
+.procure-row{display:flex;gap:6px;margin:6px 0 10px}
+.procure-btn{flex:1;background:#172a22;border:1px solid #3c5446;color:#9bbda9;font-size:10px;padding:4px 6px;border-radius:6px;cursor:pointer;transition:all .14s ease}
+.procure-btn:hover{border-color:#6da285;color:#e8f5ec}
+.procure-btn.active[data-status="owned"]{background:#1e432c;border-color:#48bb78;color:#a3e6be;font-weight:600}
+.procure-btn.active[data-status="needed"]{background:#4a3219;border-color:#ed8936;color:#fbd38d;font-weight:600}
+.procure-btn.active[data-status="ordered"]{background:#1d3a4d;border-color:#4299e1;color:#bee3f8;font-weight:600}
 
 /* Elevation modal & Blueprint Print styles */
 .elevation-canvas-container{width:100%;height:220px;background:#182823;border:1px solid #41594c;border-radius:8px;margin:8px 0;overflow:hidden;position:relative}

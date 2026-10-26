@@ -17,7 +17,7 @@
  function visibleMode(){return document.querySelector('#toolsPanel [data-tool].active')?.dataset.tool||'furnish';}
  function sync(){
   const tool=visibleMode();const advanced={navigate:'Explore',opening:'Openings',measure:'Tape',annotate:'Notes'};byId('focusToolsLabel').textContent=advanced[tool]||'Tools';byId('focusTools').classList.toggle('is-active',!!advanced[tool]);for(const id of ['focusMove','focusBuild']){const active=tool===(id==='focusMove'?'furnish':'build');byId(id)?.classList.toggle('is-active',active);byId(id)?.setAttribute('aria-pressed',String(active));}
-  const style=bridge.getPlan()?.view?.style||'dollhouse';const viewLabel={dollhouse:'Dollhouse',orbit:'3D orbit',top:'Top plan',realworld:'Real world',walk:'Walkthrough'}[style]||'Views';if(byId('focusViewName'))byId('focusViewName').textContent=viewLabel;
+  const style=bridge.getPlan()?.view?.style||'dollhouse';const viewLabel={dollhouse:'Dollhouse',orbit:'3D orbit',top:'Top plan',realworld:'Real world',walk:'Walkthrough',truck:'Moving truck'}[style]||'Views';if(byId('focusViewName'))byId('focusViewName').textContent=viewLabel;
   const selected=bridge.getSelection();const chip=byId('focusSelection');chip.hidden=!selected;
   if(selected){const label=(byId('selectionLabel').textContent||'Selected item').replace(/ · drag or edit measurements$/,'');byId('focusSelectionName').textContent=label||'Selected object';}
   const open=byId('inspector').classList.contains('mobile-open');byId('focusEdit')?.setAttribute('aria-expanded',String(open));

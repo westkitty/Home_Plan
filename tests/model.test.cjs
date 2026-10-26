@@ -1,7 +1,11 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map});vm.runInContext(src+'\nthis.test={initialPlan,parsePlan,migrateLegacy,nearestWall,collisions,satCollision,FURNITURE,wallPoint,doorObstructions};',ctx);const m=ctx.test;
+const src=fs.readFileSync(__dirname+'/../src/model.js','utf8');const ctx=vm.createContext({Math,JSON,Number,Array,Object,String,Set,Map});vm.runInContext(src+'\nthis.test={initialPlan,parsePlan,migrateLegacy,nearestWall,collisions,satCollision,FURNITURE,wallPoint,doorObstructions,calculateNilesSun,calculateTruckLoad};',ctx);const m=ctx.test;
 const p=m.initialPlan();assert.equal(p.schema,5);assert.equal(p.rooms.length,5);assert.equal(p.walls.length,12);assert.ok(p.items.length>=13);assert.ok(p.fixtures.some(f=>f.type==='entry'));
 const obs=m.doorObstructions(p);assert.ok(Array.isArray(obs));assert.ok(obs.length>=0);
+const sunNoon=m.calculateNilesSun(720,'summer');assert.ok(sunNoon.isDay);assert.ok(sunNoon.elevation>50);
+const sunNight=m.calculateNilesSun(60,'summer');assert.ok(!sunNight.isDay);assert.ok(sunNight.elevation<0);
+const truck=m.calculateTruckLoad(p,'15ft');assert.equal(truck.truckSize,'15ft');assert.ok(truck.furnitureVolume>0);assert.ok(truck.utilizationPct>0&&truck.utilizationPct<=100);assert.ok(Array.isArray(truck.packedItems));
+const pStatus=JSON.parse(JSON.stringify(p));pStatus.items[0].status='owned';pStatus.items[1].status='ordered';pStatus.view.style='truck';const pStatusParsed=m.parsePlan(pStatus);assert.equal(pStatusParsed.items[0].status,'owned');assert.equal(pStatusParsed.items[1].status,'ordered');assert.equal(pStatusParsed.view.style,'truck');
 const restored=m.parsePlan(JSON.parse(JSON.stringify(p)));assert.equal(restored.items.length,p.items.length);assert.equal(restored.walls.length,p.walls.length);
 const a={id:'a',type:'sofa',x:0,z:0,r:0},b={id:'b',type:'sofa',x:1,z:0,r:0};assert.ok(m.satCollision(a,b));assert.ok(!m.satCollision(a,{...b,x:4}));assert.ok(m.satCollision({...a,r:45},{...b,x:.8,z:.7,r:90}));
 const resized=[{...a,w:.3,d:.3},{...b,x:1.1,w:.3,d:.3}];assert.equal(m.collisions({...p,items:resized}).size,0);
