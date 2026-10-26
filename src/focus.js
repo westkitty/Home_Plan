@@ -31,6 +31,8 @@
  byId('focusMove').addEventListener('click',()=>mode('furnish'));
  byId('focusBuild').addEventListener('click',()=>{mode('build');toggle('architecture');});
  byId('focusEdit').addEventListener('click',openInspector);
+ byId('focusRotateLeft')?.addEventListener('click',()=>{bridge.rotateSelected?.(-1);sync();});
+ byId('focusRotateRight')?.addEventListener('click',()=>{bridge.rotateSelected?.(1);sync();});
  byId('focusDeselect').addEventListener('click',()=>{bridge.clearSelect?.();closeInspector();sync();byId('focusMove').focus({preventScroll:true});});
  byId('focusFit').addEventListener('click',()=>{byId('fitBtn').click();closeFloating(true);});
  for(const [id,cls] of [['focusMap','map-open'],['focusZoom','zoom-open'],['focusInfo','info-open']])byId(id).addEventListener('click',()=>{shell.classList.toggle(cls);sync();closeFloating(true);});

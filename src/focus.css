@@ -77,6 +77,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}
 .focus-selection[hidden]{display:none!important}
 .focus-selection-name{overflow:hidden;max-width:210px;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:700;color:#eff4e8}
 .focus-selection button{min-height:33px;min-width:42px;padding:7px 10px;border-radius:9px;background:#e9c58b;border-color:#e9c58b;color:#1b392c;font-size:11px}
+.focus-selection button.focus-quick-btn{min-width:32px;width:32px;height:32px;min-height:32px;padding:0;background:rgba(38,70,55,.6);border:1px solid rgba(147,177,151,.3);color:#ffd898;font-size:14px;display:inline-flex;align-items:center;justify-content:center}
+.focus-selection button.focus-quick-btn:hover{background:rgba(54,98,77,.8);color:#fff;border-color:#f0cb91}
 .focus-selection button.focus-deselect{min-width:30px;padding:6px 8px;background:transparent;color:#dae8d9;border-color:transparent;font-size:18px}
 .view-controls{top:61px;right:14px;left:auto;display:flex;flex-direction:column;align-items:stretch;gap:5px;width:min(232px,calc(100vw - 28px));height:auto;max-height:75dvh;overflow-y:auto;padding:9px;border-radius:15px;background:var(--focus-surface);border:1px solid var(--focus-line);box-shadow:0 16px 38px var(--focus-glow);backdrop-filter:blur(18px);z-index:33}
 .view-controls button{min-height:41px;width:100%;text-align:left;padding:10px 13px;font-size:12px;font-weight:650;letter-spacing:0;color:#e5efdf;border:0;border-radius:9px;background:transparent;transition:transform .12s cubic-bezier(0.16,1,0.3,1),background .14s ease,color .14s ease}
